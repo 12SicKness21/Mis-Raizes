@@ -10,11 +10,15 @@ const firebaseConfig = {
     projectId: "carta-mis-raizes",
     storageBucket: "carta-mis-raizes.firebasestorage.app",
     messagingSenderId: "686838234637",
-    appId: "1:686838234637:web:2425e3fccc79304a02df44"
+    appId: "1:686838234637:web:2425e3fccc79304a02df44",
+    measurementId: "G-5V760BD5YX"
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+// Initialize Analytics
+const analytics = firebase.analytics ? firebase.analytics() : null;
 
 // Exports
 const db = firebase.firestore();
