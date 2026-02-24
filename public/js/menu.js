@@ -25,7 +25,7 @@ function getCategoryIcon(category) {
 function getCategorySubtitle(category) {
     const upper = category.toUpperCase();
     if (upper.includes('DESAYUNOS')) return 'Servido de 9:00 a 12:00';
-    if (upper.includes('CRIOLLOS')) return 'Nuestros platos estrella';
+    if (upper.includes('CRIOLLOS')) return 'Platos que regresan al Perú';
     if (upper.includes('COMBOS')) return 'Las mejores combinaciones';
     if (upper.includes('ENTRADAS')) return 'Para empezar';
     if (upper.includes('POSTRES')) return 'El broche de oro';
