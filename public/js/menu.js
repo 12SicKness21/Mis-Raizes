@@ -81,6 +81,14 @@ async function loadMenu() {
         }
 
         // Build navigation
+        const menuBtn = document.createElement('button');
+        menuBtn.className = 'nav-btn highlight-gold'; // Added a special class for visibility
+        menuBtn.textContent = 'MENÚ DEL DÍA';
+        menuBtn.addEventListener('click', () => {
+            showWeeklyModal();
+        });
+        navScroll.appendChild(menuBtn);
+
         const allBtn = document.createElement('button');
         allBtn.className = 'nav-btn active';
         allBtn.textContent = 'Todo';
@@ -228,6 +236,47 @@ function initNavShadow() {
         }
     });
 }
+
+// === Weekly Menu Modal Logic ===
+function showWeeklyModal() {
+    const modal = document.getElementById('weeklyModal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+    loadWeeklyModalData();
+}
+
+function closeWeeklyModal() {
+    const modal = document.getElementById('weeklyModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = ''; // Restore scroll
+}
+
+async function loadWeeklyModalData() {
+    try {
+        const doc = await db.collection('config').doc('weekly_menu').get();
+        if (doc.exists) {
+            const data = doc.data();
+            const primeros = data.primeros || [];
+            const segundos = data.segundos || [];
+
+            const listP = document.getElementById('list-primeros');
+            const listS = document.getElementById('list-segundos');
+
+            listP.innerHTML = primeros.map(p => `<li>${p}</li>`).join('');
+            listS.innerHTML = segundos.map(s => `<li>${s}</li>`).join('');
+        }
+    } catch (err) {
+        console.error('Error loading weekly menu:', err);
+    }
+}
+
+// Close modal when clicking outside content
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('weeklyModal');
+    if (e.target === modal) {
+        closeWeeklyModal();
+    }
+});
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {

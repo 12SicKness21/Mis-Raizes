@@ -46,6 +46,24 @@
   <!-- Scroll to Top -->
   <button class="scroll-top" id="scrollTopBtn" aria-label="Volver arriba">↑</button>
 
+  <!-- Weekly Menu Modal -->
+  <div class="weekly-modal" id="weeklyModal" style="display:none;">
+    <div class="weekly-modal-content">
+      <button class="weekly-modal-close" onclick="closeWeeklyModal()">✕</button>
+      <div class="weekly-menu-container">
+        <img src="/img/Menu.webp" alt="Menú del Día" class="menu-bg">
+        <div class="menu-overlay">
+          <div class="menu-column primeros">
+            <ul id="list-primeros"></ul>
+          </div>
+          <div class="menu-column segundos">
+            <ul id="list-segundos"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <img src="/img/logo.jpg" alt="Mis Raízes" class="footer-logo">

@@ -519,8 +519,6 @@ async function publishWeeklyMenu() {
 
         showStatus('✅ Menú del día publicado correctamente', 'success');
         closeWeeklyMenu();
-        // Abrir la página del menú en una nueva pestaña para verificar
-        window.open('/menu2', '_blank');
     } catch (err) {
         console.error('Error publishing weekly menu:', err);
         showStatus('❌ Error al publicar el menú', 'error');

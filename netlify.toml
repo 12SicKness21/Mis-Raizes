@@ -5,8 +5,3 @@
   from = "/admin"
   to = "/admin.html"
   status = 200
-
-[[redirects]]
-  from = "/menu2"
-  to = "/menu2.html"
-  status = 200
