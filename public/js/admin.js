@@ -19,6 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminPanel').style.display = 'block';
         loadMenuData();
+        loadWeeklyMenuData();
     } catch (err) {
         console.error('Auth error:', err);
         if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
@@ -37,6 +38,7 @@ auth.onAuthStateChanged(function (user) {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminPanel').style.display = 'block';
         loadMenuData();
+        loadWeeklyMenuData();
     }
 });
 
@@ -468,6 +470,61 @@ function closeQRModal() {
 
 function printQR() {
     window.print();
+}
+
+// === Weekly Menu ===
+function showWeeklyMenu() {
+    document.getElementById('weeklyMenuModal').style.display = '';
+}
+
+function closeWeeklyMenu() {
+    document.getElementById('weeklyMenuModal').style.display = 'none';
+}
+
+async function loadWeeklyMenuData() {
+    try {
+        var doc = await db.collection('config').doc('weekly_menu').get();
+        if (doc.exists) {
+            var data = doc.data();
+            var primeros = data.primeros || [];
+            var segundos = data.segundos || [];
+
+            for (var i = 1; i <= 4; i++) {
+                document.getElementById('p' + i).value = primeros[i - 1] || '';
+                document.getElementById('s' + i).value = segundos[i - 1] || '';
+            }
+        }
+    } catch (err) {
+        console.error('Error loading weekly menu:', err);
+    }
+}
+
+async function publishWeeklyMenu() {
+    try {
+        var primeros = [];
+        var segundos = [];
+
+        for (var i = 1; i <= 4; i++) {
+            var pVal = document.getElementById('p' + i).value.trim();
+            var sVal = document.getElementById('s' + i).value.trim();
+            if (pVal) primeros.push(pVal);
+            if (sVal) segundos.push(sVal);
+        }
+
+        await db.collection('config').doc('weekly_menu').set({
+            primeros: primeros,
+            segundos: segundos,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        showStatus('✅ Menú del día publicado correctamente', 'success');
+        closeWeeklyMenu();
+        // Abrir la página del menú en una nueva pestaña para verificar
+        window.open('/menu2', '_blank');
+    } catch (err) {
+        console.error('Error publishing weekly menu:', err);
+        showStatus('❌ Error al publicar el menú', 'error');
+    }
 }
 
 // === Status Bar ===

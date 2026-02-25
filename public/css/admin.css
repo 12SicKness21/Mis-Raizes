@@ -623,6 +623,32 @@ body {
     background: var(--gold-glow);
 }
 
+/* === Weekly Menu Modal === */
+.modal-wide {
+    max-width: 600px;
+}
+
+.weekly-menu-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.weekly-menu-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-section-title {
+    font-size: 0.9rem;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border-gold);
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
 /* === Animations === */
 @keyframes slideDown {
     from {

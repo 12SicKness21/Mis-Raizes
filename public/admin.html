@@ -49,6 +49,7 @@
             <div class="actions-left">
                 <button class="btn btn-outline" onclick="saveMenu()">💾 Guardar Cambios</button>
                 <button class="btn btn-outline" onclick="addCategory()">+ Nueva Categoría</button>
+                <button class="btn btn-outline" onclick="showWeeklyMenu()">📋 MENÚ</button>
             </div>
         </div>
 
@@ -78,6 +79,33 @@
 
             <div class="qr-container" id="qrContainer">
                 <img src="/img/QR-mis-raizes.png" alt="Código QR - Mis Raízes" class="qr-static-img">
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Menu Modal -->
+    <div class="modal-overlay" id="weeklyMenuModal" style="display:none;">
+        <div class="modal-card modal-wide">
+            <button class="modal-close" onclick="closeWeeklyMenu()">✕</button>
+            <h2 class="modal-title">Menú del Día</h2>
+            <p class="modal-subtitle">Configura los platos del menú</p>
+
+            <div class="weekly-menu-form">
+                <div class="form-group">
+                    <h3 class="form-section-title">PRIMEROS</h3>
+                    <input type="text" id="p1" class="cell-input" placeholder="Primer plato 1">
+                    <input type="text" id="p2" class="cell-input" placeholder="Primer plato 2">
+                    <input type="text" id="p3" class="cell-input" placeholder="Primer plato 3">
+                    <input type="text" id="p4" class="cell-input" placeholder="Primer plato 4">
+                </div>
+                <div class="form-group">
+                    <h3 class="form-section-title">SEGUNDOS</h3>
+                    <input type="text" id="s1" class="cell-input" placeholder="Segundo plato 1">
+                    <input type="text" id="s2" class="cell-input" placeholder="Segundo plato 2">
+                    <input type="text" id="s3" class="cell-input" placeholder="Segundo plato 3">
+                    <input type="text" id="s4" class="cell-input" placeholder="Segundo plato 4">
+                </div>
+                <button class="btn btn-gold btn-full" onclick="publishWeeklyMenu()">PUBLICAR MENÚ</button>
             </div>
         </div>
     </div>

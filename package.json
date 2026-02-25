@@ -2,5 +2,8 @@
   "name": "mis-raizes-menu",
   "version": "2.0.0",
   "description": "Carta digital - Mis Raízes Cocina Peruana (Netlify + Firebase)",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev": "npx serve public"
+  }
 }
