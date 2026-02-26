@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Galería de Mis Raízes - Un viaje visual por nuestra gastronomía peruana.">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9d406",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#0a0a08",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+      .bg-background-dark { background-color: #0a0a08; }
+      .gold-border { border: 1px solid rgba(249, 212, 6, 0.2); }
+      .masonry-grid {
+        column-count: 1;
+        column-gap: 1.5rem;
+      }
+      @media (min-width: 640px) {
+        .masonry-grid { column-count: 2; }
+      }
+      .masonry-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+      }
+    }
+  </style>
+    <title>Galería | Mis Raízes - Cocina Peruana</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+</head>
+
+<body class="bg-background-dark font-display text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <header
+        class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-6 py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-3 text-primary">
+            <h2 class="text-xl font-black uppercase tracking-[0.3em]">Mis Raízes</h2>
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="index.html"
+                class="hidden md:block text-primary font-bold tracking-[0.2em] uppercase hover:opacity-80 transition-opacity">Inicio</a>
+            <button id="menu-toggle" class="text-primary hover:opacity-80 transition-opacity focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation Drawer -->
+    <div id="nav-modal" class="fixed inset-0 z-[200] hidden">
+        <div id="modal-backdrop"
+            class="absolute inset-0 bg-background-dark/60 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        </div>
+        <div id="nav-drawer"
+            class="absolute right-0 top-0 h-full w-full max-w-xs bg-background-dark border-l border-primary/10 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col p-10">
+            <button id="menu-close"
+                class="self-end text-primary hover:opacity-80 transition-opacity mb-20 focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">close</span>
+            </button>
+            <nav class="flex flex-col gap-8">
+                <a href="index.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Inicio</span>
+                </a>
+                <a href="menu.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">restaurant_menu</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Menú del Día</span>
+                </a>
+                <a href="carta.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Carta</span>
+                </a>
+                <a href="https://wa.me/34635382559" target="_blank"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reserva</span>
+                </a>
+                <a href="ubicacion.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Ubicación</span>
+                </a>
+                <a href="horarios.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Horarios</span>
+                </a>
+                <a href="reseñas.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">rate_review</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reseñas</span>
+                </a>
+                <a href="galeria.html" class="group flex items-center gap-4 text-primary">
+                    <span class="material-symbols-outlined">gallery_thumbnail</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Galería</span>
+                </a>
+            </nav>
+            <div class="mt-auto pt-10 border-t border-primary/10 flex flex-col gap-2">
+                <h3 class="text-primary font-bold tracking-widest uppercase text-xs">Mis Raízes</h3>
+                <p class="text-slate-400 text-[10px] uppercase tracking-widest leading-loose">Auténtico sabor peruano en
+                    Madrid</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-1 flex flex-col items-center">
+        <!-- Hero Section -->
+        <section class="w-full max-w-6xl px-6 py-12 md:py-20 text-center">
+            <h1
+                class="text-primary text-5xl md:text-7xl font-black leading-none tracking-tighter uppercase italic mb-4">
+                GALERÍA</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium uppercase tracking-widest">Un viaje visual
+                por la esencia de nuestra gastronomía</p>
+        </section>
+
+        <!-- Gallery Grid -->
+        <div class="w-full max-w-6xl px-6 pb-20">
+            <div class="masonry-grid md:columns-2 lg:columns-2 gap-6">
+                <!-- Item 1 -->
+                <div
+                    class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                    <img src="img/platos/plato1.webp" alt="Sabor Peruano 1"
+                        class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-primary font-black uppercase tracking-widest italic">Laura Cs</span>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div
+                    class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                    <img src="img/platos/plato2.webp" alt="Sabor Peruano 2"
+                        class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-primary font-black uppercase tracking-widest italic">Rolando Dias</span>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div
+                    class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                    <img src="img/platos/plato3.webp" alt="Sabor Peruano 3"
+                        class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-primary font-black uppercase tracking-widest italic">Rolando Dias</span>
+                    </div>
+                </div>
+                <!-- Item 4 -->
+                <div
+                    class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                    <img src="img/platos/plato4.webp" alt="Sabor Peruano 4"
+                        class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-primary font-black uppercase tracking-widest italic">Rolando Dias</span>
+                    </div>
+                </div>
+                <!-- Item 5 -->
+                <div
+                    class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                    <img src="img/platos/plato5.webp" alt="Sabor Peruano 5"
+                        class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-primary font-black uppercase tracking-widest italic">Roando Dias</span>
+                    </div>
+                </div>
+                <!-- Item 6-->
+                <div
+                    class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                    <img src="img/platos/plato6.webp" alt="Sabor Peruano 6"
+                        class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <span class="text-primary font-black uppercase tracking-widest italic">Nelson Marín</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="mt-20 flex flex-col items-center gap-8">
+                <a href="https://wa.me/34635382559" target="_blank"
+                    class="w-full lg:w-auto min-w-[320px] h-16 flex items-center justify-center gap-4 rounded-xl bg-primary text-background-dark text-lg font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all italic">
+                    <span class="material-symbols-outlined font-black text-3xl">restaurant</span>
+                    <span>Reservar Mesa</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto bg-background-dark/50 border-t border-primary/5 py-10 text-center">
+        <div class="flex flex-col items-center gap-4">
+            <p class="text-xs text-slate-500 uppercase tracking-[0.5em]">© 2026 Mis Raízes · Madrid</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const navModal = document.getElementById('nav-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const navDrawer = document.getElementById('nav-drawer');
+
+        function openMenu() {
+            navModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalBackdrop.classList.add('opacity-100');
+                navDrawer.classList.remove('translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            modalBackdrop.classList.remove('opacity-100');
+            navDrawer.classList.add('translate-x-full');
+            setTimeout(() => {
+                navModal.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+        modalBackdrop.addEventListener('click', closeMenu);
+    </script>
+    <script src="js/audio-player.js" defer></script>
+</body>
+
+</html>

@@ -85,7 +85,7 @@ async function loadMenu() {
         menuBtn.className = 'nav-btn highlight-gold'; // Added a special class for visibility
         menuBtn.textContent = 'MENÚ DEL DÍA';
         menuBtn.addEventListener('click', () => {
-            showWeeklyModal();
+            window.location.href = 'menu.html';
         });
         navScroll.appendChild(menuBtn);
 
@@ -252,22 +252,7 @@ function closeWeeklyModal() {
 }
 
 async function loadWeeklyModalData() {
-    try {
-        const doc = await db.collection('config').doc('weekly_menu').get();
-        if (doc.exists) {
-            const data = doc.data();
-            const primeros = data.primeros || [];
-            const segundos = data.segundos || [];
-
-            const listP = document.getElementById('list-primeros');
-            const listS = document.getElementById('list-segundos');
-
-            listP.innerHTML = primeros.map(p => `<li>${p}</li>`).join('');
-            listS.innerHTML = segundos.map(s => `<li>${s}</li>`).join('');
-        }
-    } catch (err) {
-        console.error('Error loading weekly menu:', err);
-    }
+    // Dynamic loading removed, displaying static image only
 }
 
 // Close modal when clicking outside content

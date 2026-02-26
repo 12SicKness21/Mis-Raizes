@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description"
+        content="Reseñas de Mis Raízes - Cocina Peruana. Descubre lo que nuestros clientes dicen de nosotros.">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9d406",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#0a0a08",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+      .bg-background-dark { background-color: #0a0a08; }
+      .gold-border { border: 1px solid rgba(249, 212, 6, 0.2); }
+      .fill-1 { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    }
+  </style>
+    <title>Reseñas | Mis Raízes - Cocina Peruana</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+</head>
+
+<body class="bg-background-dark font-display text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <header
+        class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-6 py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-3 text-primary">
+            <h2 class="text-xl font-black uppercase tracking-[0.3em]">Mis Raízes</h2>
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="index.html"
+                class="hidden md:block text-primary font-bold tracking-[0.2em] uppercase hover:opacity-80 transition-opacity">Inicio</a>
+            <button id="menu-toggle" class="text-primary hover:opacity-80 transition-opacity focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation Drawer -->
+    <div id="nav-modal" class="fixed inset-0 z-[200] hidden">
+        <div id="modal-backdrop"
+            class="absolute inset-0 bg-background-dark/60 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        </div>
+        <div id="nav-drawer"
+            class="absolute right-0 top-0 h-full w-full max-w-xs bg-background-dark border-l border-primary/10 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col p-10">
+            <button id="menu-close"
+                class="self-end text-primary hover:opacity-80 transition-opacity mb-20 focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">close</span>
+            </button>
+            <nav class="flex flex-col gap-8">
+                <a href="index.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Inicio</span>
+                </a>
+                <a href="menu.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">restaurant_menu</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Menú del Día</span>
+                </a>
+                <a href="carta.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Carta</span>
+                </a>
+                <a href="https://wa.me/34635382559" target="_blank"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reserva</span>
+                </a>
+                <a href="ubicacion.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Ubicación</span>
+                </a>
+                <a href="horarios.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Horarios</span>
+                </a>
+                <a href="reseñas.html" class="group flex items-center gap-4 text-primary">
+                    <span class="material-symbols-outlined">rate_review</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reseñas</span>
+                </a>
+                <a href="galeria.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">gallery_thumbnail</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Galería</span>
+                </a>
+            </nav>
+            <div class="mt-auto pt-10 border-t border-primary/10 flex flex-col gap-2">
+                <h3 class="text-primary font-bold tracking-widest uppercase text-xs">Mis Raízes</h3>
+                <p class="text-slate-400 text-[10px] uppercase tracking-widest leading-loose">Auténtico sabor peruano en
+                    Madrid</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-1 flex justify-center py-8 px-4">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1 gap-8">
+            <!-- Header Section with Rating Summary -->
+            <div
+                class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-primary/5 p-8 rounded-2xl border border-primary/10">
+                <div class="flex flex-col gap-2">
+                    <h1
+                        class="text-primary text-5xl md:text-6xl font-black leading-none tracking-tighter uppercase italic italic-none">
+                        RESEÑAS</h1>
+                    <p class="text-slate-400 text-lg font-medium">Lo que nuestros comensales opinan de la experiencia
+                        Mis Raízes</p>
+                    <div class="flex items-center gap-4 mt-2">
+                        <div class="flex items-center gap-1 bg-white/5 px-3 py-1 rounded-full border border-primary/20">
+                            <span class="text-primary material-symbols-outlined text-sm fill-1">star</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Google (5.0)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center md:items-end gap-2 shrink-0">
+                    <div class="flex items-center gap-4">
+                        <p class="text-white text-7xl font-black leading-none tracking-tighter italic">5.0</p>
+                        <div class="flex flex-col">
+                            <div class="flex gap-0.5 text-primary">
+                                <span class="material-symbols-outlined fill-1">star</span>
+                                <span class="material-symbols-outlined fill-1">star</span>
+                                <span class="material-symbols-outlined fill-1">star</span>
+                                <span class="material-symbols-outlined fill-1">star</span>
+                                <span class="material-symbols-outlined">star_half</span>
+                            </div>
+                            <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest text-right">9
+                                RESEÑAS</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters and Rating Bars -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-4">
+                <div class="flex flex-col gap-2">
+                    <div class="grid grid-cols-[20px_1fr_40px] items-center gap-x-3 gap-y-2">
+                        <p class="text-[10px] font-black text-primary opacity-70">5</p>
+                        <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
+                            <div class="rounded-full bg-primary" style="width: 85%;"></div>
+                        </div>
+                        <p class="text-slate-500 text-[10px] font-black text-right">100%</p>
+                        <p class="text-[10px] font-black text-primary opacity-70">0</p>
+                        <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
+                            <div class="rounded-full bg-primary" style="width: 3%;"></div>
+                        </div>
+                        <p class="text-slate-500 text-[10px] font-black text-right">0%</p>
+                        <p class="text-[10px] font-black text-primary opacity-70">0</p>
+                        <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
+                            <div class="rounded-full bg-primary/40" style="width: 3%;"></div>
+                        </div>
+                        <p class="text-slate-500 text-[10px] font-black text-right">0%</p>
+                    </div>
+                </div>
+                <div class="flex gap-3 flex-wrap justify-start md:justify-end">
+                    <button
+                        class="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-white/5 px-4 border border-primary/10 hover:border-primary/50 transition-all">
+                        <span class="text-[10px] font-black uppercase tracking-widest">MÁS RECIENTES</span>
+                        <span class="material-symbols-outlined text-lg">expand_more</span>
+                    </button>
+                    <button
+                        class="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-white/5 px-4 border border-primary/10 hover:border-primary/50 transition-all">
+                        <span class="text-[10px] font-black uppercase tracking-widest">MEJOR PUNTUADAS</span>
+                        <span class="material-symbols-outlined text-lg">filter_list</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="flex flex-col gap-6 px-4 pb-32">
+                <!-- Review Card 1 -->
+                <div
+                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-3xl">person</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-white text-base font-black uppercase tracking-widest italic">Rosa
+                                    Carolina orellana diaz</p>
+                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 12
+                                    horas
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-0.5 text-primary">
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
+                        "Recomiendo mucho , pedí un lomo saltado y la verdad que es uno de los mejores que he comido ,
+                        la carne se aprecia que es de calidad y el sabor está muy rico , atención 10 de 10 , comida muy
+                        buena."
+                    </p>
+                    <div class="flex gap-6 text-slate-500 border-t border-primary/10 pt-4">
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">thumb_up</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">12</span>
+                        </button>
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Responder</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div
+                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-3xl">person</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-white text-base font-black uppercase tracking-widest italic">Anselmo
+                                    valeriano</p>
+                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 13
+                                    horas</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-0.5 text-primary">
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
+                        "Muy rico la comida y un servicio excelente
+                        Recomendable sin duda."
+                    </p>
+                    <div class="flex gap-6 text-slate-500 border-t border-primary/10 pt-4">
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">thumb_up</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">8</span>
+                        </button>
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Responder</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Review Card 3 -->
+                <div
+                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-3xl">person</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-white text-base font-black uppercase tracking-widest italic">Belén
+                                    Orellana</p>
+                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 13
+                                    horas
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-0.5 text-primary">
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
+                        "Comida muy rica, recomiendo los anticuchos."
+                    </p>
+                    <div class="flex gap-6 text-slate-500 border-t border-primary/10 pt-4">
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">thumb_up</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">12</span>
+                        </button>
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Responder</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Review Card 4 -->
+                <div
+                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-3xl">person</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-white text-base font-black uppercase tracking-widest italic">CARLOS R</p>
+                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 13
+                                    horas
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-0.5 text-primary">
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
+                        "Muy rica la comida , calidad 10 de 10."
+                    </p>
+                    <div class="flex gap-6 text-slate-500 border-t border-primary/10 pt-4">
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">thumb_up</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">12</span>
+                        </button>
+                        <button class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Responder</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Sticky CTA Button -->
+    <div
+        class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent flex justify-center z-40">
+        <a href="https://www.google.com/maps/place/Mis+Raizes/@40.3857625,-3.7122394,16z/data=!3m1!4b1!4m6!3m5!1s0xd4227c805cc6771:0x20162e18c5466443!8m2!3d40.3857584!4d-3.7096645!16s%2Fg%2F11yysx2kp9?entry=ttu&g_ep=EgoyMDI2MDIyMy4wIKXMDSoASAFQAw%3D%3D"
+            target="_blank"
+            class="flex min-w-[280px] max-w-[480px] cursor-pointer items-center justify-center gap-3 overflow-hidden rounded-xl h-14 px-8 bg-primary text-background-dark text-lg font-black tracking-widest shadow-[0_0_20px_rgba(249,212,6,0.3)] transition-all hover:scale-[1.02] active:scale-95 uppercase font-display italic">
+            <span class="material-symbols-outlined font-black">rate_review</span>
+            <span>Dejar una Reseña</span>
+        </a>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const navModal = document.getElementById('nav-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const navDrawer = document.getElementById('nav-drawer');
+
+        function openMenu() {
+            navModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalBackdrop.classList.add('opacity-100');
+                navDrawer.classList.remove('translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            modalBackdrop.classList.remove('opacity-100');
+            navDrawer.classList.add('translate-x-full');
+            setTimeout(() => {
+                navModal.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+        modalBackdrop.addEventListener('click', closeMenu);
+    </script>
+    <script src="js/audio-player.js" defer></script>
+</body>
+
+</html>

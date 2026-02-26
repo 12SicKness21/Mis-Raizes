@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Horarios de Mis Raízes - Cocina Peruana en Usera, Madrid.">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9d406",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#0a0a08",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+      .bg-background-dark { background-color: #0a0a08; }
+      .gold-border { border: 1px solid rgba(249, 212, 6, 0.2); }
+    }
+  </style>
+    <title>Horarios | Mis Raízes - Cocina Peruana</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+</head>
+
+<body class="bg-background-dark font-display text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <header
+        class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-6 py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-3 text-primary">
+            <h2 class="text-xl font-black uppercase tracking-[0.3em]">Mis Raízes</h2>
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="index.html"
+                class="hidden md:block text-primary font-bold tracking-[0.2em] uppercase hover:opacity-80 transition-opacity">Inicio</a>
+            <button id="menu-toggle" class="text-primary hover:opacity-80 transition-opacity focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation Drawer -->
+    <div id="nav-modal" class="fixed inset-0 z-[200] hidden">
+        <div id="modal-backdrop"
+            class="absolute inset-0 bg-background-dark/60 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        </div>
+        <div id="nav-drawer"
+            class="absolute right-0 top-0 h-full w-full max-w-xs bg-background-dark border-l border-primary/10 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col p-10">
+            <button id="menu-close"
+                class="self-end text-primary hover:opacity-80 transition-opacity mb-20 focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">close</span>
+            </button>
+            <nav class="flex flex-col gap-8">
+                <a href="index.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Inicio</span>
+                </a>
+                <a href="menu.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">restaurant_menu</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Menú del Día</span>
+                </a>
+                <a href="carta.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Carta</span>
+                </a>
+                <a href="https://wa.me/34635382559" target="_blank"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reserva</span>
+                </a>
+                <a href="ubicacion.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Ubicación</span>
+                </a>
+                <a href="horarios.html" class="group flex items-center gap-4 text-primary">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Horarios</span>
+                </a>
+                <a href="reseñas.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">rate_review</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reseñas</span>
+                </a>
+                <a href="galeria.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">gallery_thumbnail</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Galería</span>
+                </a>
+            </nav>
+            <div class="mt-auto pt-10 border-t border-primary/10 flex flex-col gap-2">
+                <h3 class="text-primary font-bold tracking-widest uppercase text-xs">Mis Raízes</h3>
+                <p class="text-slate-400 text-[10px] uppercase tracking-widest leading-loose">Auténtico sabor peruano en
+                    Madrid</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-1 flex flex-col items-center">
+        <!-- Hero Section with Background -->
+        <div class="w-full relative h-[300px] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-transparent z-10">
+                </div>
+                <div class="w-full h-full bg-center bg-cover scale-105"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAZo1qeYuPGlV9Sg_WFER3JDKQheTk-oA7aL59Dfan7vS8xftYhZyWz9cz_lcWj3_yVkDVuu5uIfxlGvGx1mBBaok6u6RuhxK_8J1SlogO6dQAOssMLqv8k8YzzjHOUAS7NJhQ3A1JhN6P4b2WaoqFS6wsMx0ixDvwlqxRlT2E0IIzNKMi9zEzYLMzEsdqP8tRRlRSb_-N7eeEdptWNR595TGN3heC9x6Q1I7Hr1DYHKzuuBo_uKVPM-RJCB8vDY3aBzICWpsnGynw');">
+                </div>
+            </div>
+            <div class="relative z-20 text-center px-4">
+                <h3 class="text-white text-5xl lg:text-7xl font-black tracking-tighter uppercase italic italic-none">
+                    HORARIOS</h3>
+            </div>
+        </div>
+        <!-- Content Container -->
+        <div class="max-w-4xl w-full px-4 -mt-16 relative z-30 pb-20">
+            <!-- Service Toggle -->
+            <div
+                class="bg-background-dark/60 backdrop-blur-md border border-primary/20 rounded-2xl p-1 mb-8 flex items-center shadow-2xl">
+                <button
+                    class="flex-1 py-4 text-[10px] font-black tracking-[0.2em] uppercase bg-primary text-background-dark rounded-xl transition-all">
+                    ALMUERZO / CENA
+                </button>
+            </div>
+            <!-- Hours List Section -->
+            <div
+                class="bg-background-dark/40 border border-primary/10 rounded-2xl overflow-hidden backdrop-blur-sm gold-border">
+                <div class="p-8 border-b border-primary/10 flex justify-between items-center bg-primary/5">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-3xl">schedule</span>
+                        <h4 class="text-xl font-black text-white uppercase tracking-widest italic">Horario General</h4>
+                    </div>
+                    <span
+                        class="px-4 py-1 bg-primary text-background-dark text-[10px] font-black rounded-full border border-primary/30 uppercase tracking-widest italic animate-pulse">
+                        ABIERTO
+                    </span>
+                </div>
+                <div class="divide-y divide-primary/5">
+                    <div class="flex items-center justify-between px-8 py-6 hover:bg-white/5 transition-colors">
+                        <span class="text-slate-400 font-bold uppercase tracking-widest">Lunes a Domingo</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-white font-black text-xl italic">08:00 — 23:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Call to Action -->
+            <div class="mt-12 flex flex-col items-center gap-8">
+                <a href="https://wa.me/34635382559" target="_blank"
+                    class="w-full lg:w-auto min-w-[320px] flex items-center justify-center gap-4 rounded-xl h-16 px-10 bg-primary text-background-dark text-lg font-black uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-2xl shadow-primary/20 italic">
+                    <span class="material-symbols-outlined font-black text-3xl">restaurant</span>
+                    <span>Reservar Mesa</span>
+                </a>
+                <div
+                    class="flex flex-wrap justify-center gap-x-12 gap-y-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">
+                    <a class="flex items-center gap-3 hover:text-primary transition-colors" href="tel:+34635382559">
+                        <span class="material-symbols-outlined text-xl">call</span>
+                        +34 635 382 559
+                    </a>
+                    <a class="flex items-center gap-3 hover:text-primary transition-colors" href="ubicacion.html">
+                        <span class="material-symbols-outlined text-xl">location_on</span>
+                        Usera, Madrid
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="footer mt-auto bg-background-dark/50 border-t border-primary/5 py-10 text-center">
+        <div class="flex flex-col items-center gap-4">
+            <p class="text-xs text-slate-500 uppercase tracking-[0.5em]">© 2024 Mis Raízes · Madrid</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const navModal = document.getElementById('nav-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const navDrawer = document.getElementById('nav-drawer');
+
+        function openMenu() {
+            navModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalBackdrop.classList.add('opacity-100');
+                navDrawer.classList.remove('translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            modalBackdrop.classList.remove('opacity-100');
+            navDrawer.classList.add('translate-x-full');
+            setTimeout(() => {
+                navModal.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+        modalBackdrop.addEventListener('click', closeMenu);
+    </script>
+    <script src="js/audio-player.js" defer></script>
+</body>
+
+</html>

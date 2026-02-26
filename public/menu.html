@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description"
+        content="Menú del Día de Mis Raízes - Cocina Peruana. Disfruta de nuestra selección diaria de platos auténticos.">
+    <meta name="theme-color" content="#0a0a0a">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9d406",
+                        "background-dark": "#0a0a08",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+      .bg-background-dark { background-color: #0a0a08; }
+      .gold-border { border: 1px solid rgba(249, 212, 6, 0.2); }
+      .menu-card {
+        background: linear-gradient(180deg, rgba(249, 212, 6, 0.05) 0%, transparent 100%);
+      }
+    }
+  </style>
+    <title>Menú del Día | Mis Raízes - Cocina Peruana</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+</head>
+
+<body class="bg-background-dark font-display text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <header
+        class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-6 py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-3 text-primary">
+            <h2 class="text-xl font-black uppercase tracking-[0.3em]">Mis Raízes</h2>
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="index.html"
+                class="hidden md:block text-primary font-bold tracking-[0.2em] uppercase hover:opacity-80 transition-opacity">Inicio</a>
+            <button id="menu-toggle" class="text-primary hover:opacity-80 transition-opacity focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation Drawer -->
+    <div id="nav-modal" class="fixed inset-0 z-[200] hidden">
+        <div id="modal-backdrop"
+            class="absolute inset-0 bg-background-dark/60 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        </div>
+        <div id="nav-drawer"
+            class="absolute right-0 top-0 h-full w-full max-w-xs bg-background-dark border-l border-primary/10 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col p-10">
+            <button id="menu-close"
+                class="self-end text-primary hover:opacity-80 transition-opacity mb-20 focus:outline-none">
+                <span class="material-symbols-outlined text-4xl">close</span>
+            </button>
+            <nav class="flex flex-col gap-8">
+                <a href="index.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Inicio</span>
+                </a>
+                <a href="menu.html" class="group flex items-center gap-4 text-primary">
+                    <span class="material-symbols-outlined">restaurant_menu</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Menú del Día</span>
+                </a>
+                <a href="carta.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Carta</span>
+                </a>
+                <a href="https://wa.me/34635382559" target="_blank"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reserva</span>
+                </a>
+                <a href="ubicacion.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Ubicación</span>
+                </a>
+                <a href="horarios.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Horarios</span>
+                </a>
+                <a href="reseñas.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">rate_review</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Reseñas</span>
+                </a>
+                <a href="galeria.html"
+                    class="group flex items-center gap-4 text-slate-100 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">gallery_thumbnail</span>
+                    <span class="text-xl font-bold uppercase tracking-widest">Galería</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <main class="flex-1 flex flex-col items-center py-12 px-6">
+        <div class="w-full max-w-2xl">
+            <div class="text-center mb-12">
+                <h1
+                    class="text-primary text-5xl md:text-7xl font-black leading-none tracking-tighter uppercase italic mb-4">
+                    MENÚ DEL DÍA</h1>
+                <p class="text-slate-400 text-lg font-medium uppercase tracking-widest">La mejor selección de nuestra
+                    cocina para hoy</p>
+            </div>
+
+            <div id="menu-container" class="space-y-12">
+                <div class="flex justify-center p-20">
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                </div>
+            </div>
+
+            <div class="mt-16 bg-white/5 gold-border rounded-2xl p-8 text-center">
+                <p class="text-primary font-bold tracking-widest uppercase text-sm mb-4 italic">Incluye: Primero +
+                    Segundo + Bebida + Postre o Café</p>
+                <div class="text-3xl font-black text-primary italic">13,90€</div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="https://wa.me/34635382559" target="_blank"
+                    class="inline-flex items-center gap-4 px-10 py-5 rounded-full bg-primary text-background-dark font-black uppercase tracking-widest hover:scale-105 transition-all italic">
+                    <span class="material-symbols-outlined">restaurant</span>
+                    <span>Reservar ahora</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto border-t border-primary/10 py-10 px-6 bg-background-dark text-center">
+        <p class="text-slate-500 text-xs uppercase tracking-[0.4em]">© 2026 Mis Raízes · Madrid</p>
+    </footer>
+
+    <!-- Firebase SDK (CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/menu-diario.js"></script>
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const navModal = document.getElementById('nav-modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const navDrawer = document.getElementById('nav-drawer');
+
+        function openMenu() {
+            navModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalBackdrop.classList.add('opacity-100');
+                navDrawer.classList.remove('translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            modalBackdrop.classList.remove('opacity-100');
+            navDrawer.classList.add('translate-x-full');
+            setTimeout(() => {
+                navModal.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+        modalBackdrop.addEventListener('click', closeMenu);
+    </script>
+    <script src="js/audio-player.js" defer></script>
+</body>
+
+</html>
