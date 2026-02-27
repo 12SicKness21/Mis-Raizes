@@ -18,15 +18,15 @@
     controlContainer.style.cssText = `
         position: fixed;
         bottom: 20px;
-        right: 20px;
+        left: 20px;
         z-index: 1000;
         display: flex;
         align-items: center;
         gap: 10px;
         background: rgba(10, 10, 8, 0.8);
         backdrop-filter: blur(8px);
-        padding: 8px 16px;
-        border-radius: 50px;
+        padding: 12px;
+        border-radius: 50%;
         border: 1px solid rgba(249, 212, 6, 0.3);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         transition: all 0.3s ease;
@@ -40,18 +40,7 @@
     icon.style.color = '#f9d406';
     icon.style.fontSize = '24px';
 
-    const label = document.createElement('span');
-    label.innerText = 'MÚSICA';
-    label.style.cssText = `
-        color: #f9d406;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-    `;
-
     controlContainer.appendChild(icon);
-    controlContainer.appendChild(label);
     document.body.appendChild(controlContainer);
 
     // Initial state from localStorage

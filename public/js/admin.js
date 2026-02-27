@@ -3,7 +3,7 @@
 // ============================================
 
 // Fixed admin email for Firebase Auth (user only sees password field)
-var ADMIN_EMAIL = 'admin@misraizes.com';
+var ADMIN_EMAIL = 'admin_1@misraizes.com';
 var menuItems = [];
 var categoryDocs = []; // Track Firestore category documents
 var categoryOrder = []; // Track manual category order for drag-and-drop
@@ -552,4 +552,85 @@ function escapeHtml(str) {
 
 function escapeAttr(str) {
     return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+// === Download Menu as Image ===
+function downloadMenuImage() {
+    var p1 = document.getElementById('p1').value.trim();
+    var p2 = document.getElementById('p2').value.trim();
+    var p3 = document.getElementById('p3').value.trim();
+    var p4 = document.getElementById('p4').value.trim();
+    var s1 = document.getElementById('s1').value.trim();
+    var s2 = document.getElementById('s2').value.trim();
+    var s3 = document.getElementById('s3').value.trim();
+    var s4 = document.getElementById('s4').value.trim();
+
+    // Create an off-screen canvas
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    var img = new Image();
+
+    // Crucial for tainted canvases if images are served cross-origin (though local here)
+    img.crossOrigin = 'Anonymous';
+    img.src = 'img/Menu.webp';
+
+    img.onload = function () {
+        // Set canvas to match image dimensions
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        // Draw the background image
+        ctx.drawImage(img, 0, 0);
+
+        // Configure text styles to match the website's CSS design 
+        // Based on style.css: font-family: 'Raleway', sans-serif; font-size: ~0.95rem; font-weight: 700; color: #fff; text-transform: uppercase; text-shadow
+        // We will scale the font size down slightly depending on canvas size, but assuming a standard 1080x1920 or similar vertical layout.
+
+        // Let's dynamically calculate font size based on image width to keep it responsive-ish to the original image
+        var baseFontSize = Math.floor(canvas.width * 0.04);
+        ctx.font = 'bold ' + baseFontSize + 'px Arial, sans-serif'; // Fallback to Arial if Web fonts aren't loaded in canvas
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+
+        // Add text shadow for legibility
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+
+        // Position coordinates (These are percentages based on style.css .menu-column.primeros: top: 40%, .segundos: top: 58%)
+        var centerX = canvas.width / 2;
+
+        var startYPrimeros = canvas.height * 0.40;
+        var startYSegundos = canvas.height * 0.60;
+
+        // Line height
+        var lineHeight = baseFontSize * 1.5;
+
+        // Draw Primeros
+        if (p1) ctx.fillText(p1.toUpperCase(), centerX, startYPrimeros);
+        if (p2) ctx.fillText(p2.toUpperCase(), centerX, startYPrimeros + lineHeight);
+        if (p3) ctx.fillText(p3.toUpperCase(), centerX, startYPrimeros + (lineHeight * 2));
+        if (p4) ctx.fillText(p4.toUpperCase(), centerX, startYPrimeros + (lineHeight * 3));
+
+        // Draw Segundos
+        if (s1) ctx.fillText(s1.toUpperCase(), centerX, startYSegundos);
+        if (s2) ctx.fillText(s2.toUpperCase(), centerX, startYSegundos + lineHeight);
+        if (s3) ctx.fillText(s3.toUpperCase(), centerX, startYSegundos + (lineHeight * 2));
+        if (s4) ctx.fillText(s4.toUpperCase(), centerX, startYSegundos + (lineHeight * 3));
+
+        // Trigger download
+        var dataURL = canvas.toDataURL('image/png');
+        var link = document.createElement('a');
+        link.download = 'Menu_Mis_Raizes_Hoy.png';
+        link.href = dataURL;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showStatus('✅ Imagen descargada', 'success');
+    };
+
+    img.onerror = function () {
+        showStatus('❌ Error al cargar la imagen base', 'error');
+    };
 }

@@ -47,14 +47,14 @@
 
     <header
         class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-6 py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
-        <div class="flex items-center gap-3 text-primary">
-            <h2 class="text-xl font-black uppercase tracking-[0.3em]">Mis Raízes</h2>
-        </div>
-        <div class="flex items-center gap-6">
+        <a href="index.html" class="flex items-center -ml-2 lg:ml-0">
+            <img src="img/Logo.webp" alt="Mis Raízes" class="h-10 md:h-14 w-auto object-contain">
+        </a>
+        <div class="flex items-center gap-4 lg:gap-6">
             <a href="index.html"
-                class="hidden md:block text-primary font-bold tracking-[0.2em] uppercase hover:opacity-80 transition-opacity">Inicio</a>
+                class="text-primary font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase hover:opacity-80 transition-opacity text-sm md:text-base">Inicio</a>
             <button id="menu-toggle" class="text-primary hover:opacity-80 transition-opacity focus:outline-none">
-                <span class="material-symbols-outlined text-4xl">menu</span>
+                <span class="material-symbols-outlined text-3xl md:text-4xl">menu</span>
             </button>
         </div>
     </header>
@@ -116,15 +116,15 @@
 
     <main class="flex-1 flex flex-col items-center py-12 px-6">
         <div class="w-full max-w-2xl">
-            <div class="text-center mb-12">
+            <div class="text-center mb-5">
                 <h1
-                    class="text-primary text-5xl md:text-7xl font-black leading-none tracking-tighter uppercase italic mb-4">
+                    class="text-primary text-5xl md:text-7xl font-black leading-none tracking-tighter uppercase italic mb-2">
                     MENÚ DEL DÍA</h1>
                 <p class="text-slate-400 text-lg font-medium uppercase tracking-widest">La mejor selección de nuestra
                     cocina para hoy</p>
             </div>
 
-            <div id="menu-container" class="space-y-12">
+            <div id="menu-container" class="space-y-5">
                 <div class="flex justify-center p-20">
                     <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
                 </div>
@@ -132,13 +132,13 @@
 
             <div class="mt-16 bg-white/5 gold-border rounded-2xl p-8 text-center">
                 <p class="text-primary font-bold tracking-widest uppercase text-sm mb-4 italic">Incluye: Primero +
-                    Segundo + Bebida + Postre o Café</p>
+                    Segundo + Bebida + Postre</p>
                 <div class="text-3xl font-black text-primary italic">13,90€</div>
             </div>
 
             <div class="mt-12 text-center">
                 <a href="https://wa.me/34635382559" target="_blank"
-                    class="inline-flex items-center gap-4 px-10 py-5 rounded-full bg-primary text-background-dark font-black uppercase tracking-widest hover:scale-105 transition-all italic">
+                    class="inline-flex items-center gap-2 px-10 py-5 rounded-full bg-primary text-background-dark font-black uppercase tracking-widest hover:scale-105 transition-all italic">
                     <span class="material-symbols-outlined">restaurant</span>
                     <span>Reservar ahora</span>
                 </a>

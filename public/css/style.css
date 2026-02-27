@@ -96,6 +96,8 @@ body::after {
   max-width: 280px;
   width: 80%;
   height: auto;
+  display: block;
+  margin: 0 auto;
   filter: drop-shadow(0 0 20px rgba(212, 168, 83, 0.2));
   transition: var(--transition);
 }
@@ -514,7 +516,7 @@ body::after {
 /* === Scroll to top button === */
 .scroll-top {
   position: fixed;
-  bottom: 25px;
+  bottom: 85px;
   right: 25px;
   z-index: 200;
   width: 45px;
