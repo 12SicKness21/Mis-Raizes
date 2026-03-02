@@ -39,16 +39,12 @@
         .gold-gradient-bg {
             background: linear-gradient(135deg, #0a0a08 0%, #1a180a 100%);
         }
-        .masonry-grid {
-            column-count: 1;
-            column-gap: 1.5rem;
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
         }
-        @media (min-width: 640px) {
-            .masonry-grid { column-count: 2; }
-        }
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -56,9 +52,9 @@
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
     <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden gold-gradient-bg">
         <header
-            class="sticky top-0 z-50 flex items-center justify-between border-b border-primary/10 px-6 py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
+            class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-4 py-4 md:px-6 md:py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
             <a href="index.html" class="flex items-center -ml-2 lg:ml-0">
-                <img src="img/Logo.webp" alt="Mis Raízes" class="h-10 md:h-14 w-auto object-contain">
+                <img src="img/Logo.webp" alt="Mis Raízes" class="h-16 md:h-20 w-auto object-contain">
             </a>
             <div class="flex items-center gap-4 lg:gap-6">
                 <a href="index.html"
@@ -122,97 +118,114 @@
                     </a>
                 </nav>
                 <div class="mt-auto pt-10 border-t border-primary/10 flex flex-col gap-2">
-                    <h3 class="text-primary font-bold tracking-widest uppercase text-xs">Mis Raízes</h3>
+                    <div class="text-primary font-bold tracking-widest uppercase text-xs">Mis Raízes</div>
                     <p class="text-slate-400 text-[10px] uppercase tracking-widest leading-loose">Auténtico sabor
                         peruano en Madrid</p>
                 </div>
             </div>
         </div>
-        <main class="flex-1 flex flex-col items-center justify-start py-12 px-4 max-w-5xl mx-auto w-full">
-            <div class="relative w-full mb-12 rounded-xl overflow-hidden aspect-[16/9] lg:aspect-[21/9]">
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/40 to-transparent z-10">
+        <main class="flex-1 flex flex-col items-center justify-start py-12 max-w-5xl mx-auto w-full">
+            <h1 class="sr-only">Mis Raízes - Restaurante Peruano en Madrid</h1>
+
+            <!-- Hero Image -->
+            <div class="relative w-full mb-12 overflow-hidden aspect-[16/9] lg:aspect-[21/9]">
+                <!-- Base Image with reduced opacity for less contrast against the dark background -->
+                <img alt="Perfil" class="w-full h-full object-cover opacity-60" src="img/perfil.webp" />
+
+                <!-- Gradients for fading edges into background-dark -->
+                <div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background-dark to-transparent z-10">
                 </div>
-                <img alt="Logo" class="w-full h-full object-cover" src="img/Logo.webp" />
+                <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background-dark to-transparent z-10">
+                </div>
+                <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background-dark to-transparent z-10">
+                </div>
+                <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background-dark to-transparent z-10">
+                </div>
+
                 <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-6">
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
-                <a class="group flex items-center justify-between p-6 rounded-xl bg-primary text-background-dark font-black tracking-widest transition-all hover:scale-[1.02]"
-                    href="https://wa.me/34635382559" target="_blank">
-                    <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined">calendar_month</span>
-                        <span class="uppercase">Reservas</span>
-                    </div>
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </a>
-                <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
-                    href="menu.html">
-                    <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined text-primary">restaurant_menu</span>
-                        <span class="uppercase">Menú del Día</span>
-                    </div>
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </a>
-                <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
-                    href="carta.html">
-                    <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined text-primary">menu_book</span>
-                        <span class="uppercase">Carta</span>
-                    </div>
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </a>
-                <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
-                    href="ubicacion.html">
-                    <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined text-primary">location_on</span>
-                        <span class="uppercase">Cómo Llegar</span>
-                    </div>
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </a>
-                <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
-                    href="horarios.html">
-                    <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined text-primary">schedule</span>
-                        <span class="uppercase">Horarios</span>
-                    </div>
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </a>
-                <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
-                    href="reseñas.html">
-                    <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined text-primary">rate_review</span>
-                        <span class="uppercase">Reseñas</span>
-                    </div>
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </a>
-                <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
-                    href="#galeria">
-                    <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined text-primary">gallery_thumbnail</span>
-                        <span class="uppercase">Galería</span>
-                    </div>
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </a>
+
+            <!-- Links Grid -->
+            <div class="px-4 w-full flex justify-center">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
+                    <a class="group flex items-center justify-between p-6 rounded-xl bg-primary text-background-dark font-black tracking-widest transition-all hover:scale-[1.02]"
+                        href="https://wa.me/34635382559" target="_blank">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined">calendar_month</span>
+                            <span class="uppercase">Reservas</span>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                    <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
+                        href="menu.html">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-primary">restaurant_menu</span>
+                            <span class="uppercase">Menú del Día</span>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                    <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
+                        href="carta.html">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-primary">menu_book</span>
+                            <span class="uppercase">Carta</span>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                    <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
+                        href="ubicacion.html">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-primary">location_on</span>
+                            <span class="uppercase">Cómo Llegar</span>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                    <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
+                        href="horarios.html">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-primary">schedule</span>
+                            <span class="uppercase">Horarios</span>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                    <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
+                        href="reseñas.html">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-primary">rate_review</span>
+                            <span class="uppercase">Reseñas</span>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                    <a class="group flex items-center justify-between p-6 rounded-xl bg-background-dark gold-border text-slate-100 font-bold tracking-widest transition-all hover:bg-primary/10"
+                        href="#galeria">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-primary">gallery_thumbnail</span>
+                            <span class="uppercase">Galería</span>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                </div>
             </div>
 
             <!-- Embedded Gallery Section -->
             <section id="galeria" class="w-full pt-20 pb-10">
                 <div class="text-center mb-12">
-                    <h1
+                    <h2
                         class="text-primary text-5xl md:text-7xl font-black leading-none tracking-tighter uppercase italic mb-4">
-                        GALERÍA</h1>
+                        GALERÍA</h2>
                     <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium uppercase tracking-widest">"Cada foto
                         que
                         compartes nos inspira. ¡Son los mejores embajadores de nuestra cocina!"</p>
                 </div>
 
-                <div class="masonry-grid gap-6">
+                <div id="gallery-container"
+                    class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide px-4 md:px-0 relative">
                     <!-- Item 1 -->
                     <div
-                        class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                        class="flex-none w-[80vw] md:w-96 snap-center group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
                         <img src="img/platos/plato1.webp" alt="Sabor Peruano 1"
-                            class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                            class="w-full h-[400px] md:h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                             <span class="text-primary font-black uppercase tracking-widest italic">Laura Cs</span>
@@ -220,9 +233,9 @@
                     </div>
                     <!-- Item 2 -->
                     <div
-                        class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                        class="flex-none w-[80vw] md:w-96 snap-center group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
                         <img src="img/platos/plato2.webp" alt="Sabor Peruano 2"
-                            class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                            class="w-full h-[400px] md:h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                             <span class="text-primary font-black uppercase tracking-widest italic">Rolando Dias</span>
@@ -230,9 +243,9 @@
                     </div>
                     <!-- Item 3 -->
                     <div
-                        class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                        class="flex-none w-[80vw] md:w-96 snap-center group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
                         <img src="img/platos/plato3.webp" alt="Sabor Peruano 3"
-                            class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                            class="w-full h-[400px] md:h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                             <span class="text-primary font-black uppercase tracking-widest italic">Rolando Dias</span>
@@ -240,9 +253,9 @@
                     </div>
                     <!-- Item 4 -->
                     <div
-                        class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                        class="flex-none w-[80vw] md:w-96 snap-center group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
                         <img src="img/platos/plato4.webp" alt="Sabor Peruano 4"
-                            class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                            class="w-full h-[400px] md:h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                             <span class="text-primary font-black uppercase tracking-widest italic">Rolando Dias</span>
@@ -250,9 +263,9 @@
                     </div>
                     <!-- Item 5 -->
                     <div
-                        class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                        class="flex-none w-[80vw] md:w-96 snap-center group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
                         <img src="img/platos/plato5.webp" alt="Sabor Peruano 5"
-                            class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                            class="w-full h-[400px] md:h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                             <span class="text-primary font-black uppercase tracking-widest italic">Rolando Dias</span>
@@ -260,14 +273,36 @@
                     </div>
                     <!-- Item 6 -->
                     <div
-                        class="masonry-item group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
+                        class="flex-none w-[80vw] md:w-96 snap-center group relative overflow-hidden rounded-2xl border border-primary/10 transition-all duration-500 hover:border-primary/40">
                         <img src="img/platos/plato6.webp" alt="Sabor Peruano 6"
-                            class="w-full transform group-hover:scale-105 transition-transform duration-700">
+                            class="w-full h-[400px] md:h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-700">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-background-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                             <span class="text-primary font-black uppercase tracking-widest italic">Nelson Marín</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Gallery Dots -->
+                <div class="flex justify-center flex-wrap gap-3 mt-4" id="gallery-dots">
+                    <button
+                        class="gallery-dot w-3 h-3 rounded-full bg-primary transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        data-index="0" aria-label="Ir a foto 1"></button>
+                    <button
+                        class="gallery-dot w-3 h-3 rounded-full bg-primary/20 hover:bg-primary/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        data-index="1" aria-label="Ir a foto 2"></button>
+                    <button
+                        class="gallery-dot w-3 h-3 rounded-full bg-primary/20 hover:bg-primary/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        data-index="2" aria-label="Ir a foto 3"></button>
+                    <button
+                        class="gallery-dot w-3 h-3 rounded-full bg-primary/20 hover:bg-primary/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        data-index="3" aria-label="Ir a foto 4"></button>
+                    <button
+                        class="gallery-dot w-3 h-3 rounded-full bg-primary/20 hover:bg-primary/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        data-index="4" aria-label="Ir a foto 5"></button>
+                    <button
+                        class="gallery-dot w-3 h-3 rounded-full bg-primary/20 hover:bg-primary/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        data-index="5" aria-label="Ir a foto 6"></button>
                 </div>
             </section>
             <div class="mt-16 text-center">
@@ -278,31 +313,35 @@
         </main>
         <footer class="mt-auto border-t border-primary/10 py-10 px-6 bg-background-dark">
             <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="flex flex-col items-center md:items-start gap-2">
-                    <h3 class="text-primary font-bold tracking-widest uppercase text-sm">Mis Raízes</h3>
-                    <p class="text-slate-400 text-xs">Madrid - España • © 2026</p>
+                <div class="flex flex-col items-center md:items-start gap-4">
+                    <div class="text-center md:text-left">
+                        <div class="text-primary font-bold tracking-widest uppercase text-sm">Mis Raízes</div>
+                        <p class="text-slate-400 text-xs mt-2">Madrid - España • © 2026</p>
+                    </div>
                 </div>
-                <!--< BOTONES DE LAS REDES SOCIALES
-                div class="flex gap-6">
-                    <a class="text-slate-400 hover:text-primary transition-colors" href="#">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <!-- Redes Sociales -->
+                <div class="flex gap-4">
+                    <a href="https://www.instagram.com/mis_raizes_restaurante/" target="_blank"
+                        class="text-primary hover:text-white transition-colors flex items-center justify-center border border-primary/20 rounded-xl p-2 bg-white/5 hover:bg-primary/20"
+                        aria-label="Instagram">
+                        <svg class="w-6 h-6 fill-current" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                             <path
-                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z">
+                                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z">
                             </path>
                         </svg>
                     </a>
-                    <a class="text-slate-400 hover:text-primary transition-colors" href="#">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <a href="https://wa.me/34635382559" target="_blank"
+                        class="text-primary hover:text-white transition-colors flex items-center justify-center border border-primary/20 rounded-xl p-2 bg-white/5 hover:bg-primary/20"
+                        aria-label="WhatsApp">
+                        <svg class="w-6 h-6 fill-current" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                             <path
-                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
+                                d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z">
                             </path>
                         </svg>
                     </a>
-                    <a class="text-slate-400 hover:text-primary transition-colors" href="#">
-                        <span class="material-symbols-outlined text-2xl">chat</span>
-                    </a>
-                </div>-->
-                <div class="text-xs uppercase tracking-widest text-primary/80">PLATOS QUE ACERCAN AL PERÚ</div>
+                </div>
+                <div class="text-xs uppercase tracking-widest text-primary/80 mt-4 md:mt-0 text-center md:text-right">
+                    PLATOS QUE ACERCAN AL PERÚ</div>
             </div>
         </footer>
     </div>
@@ -335,6 +374,54 @@
         menuToggle.addEventListener('click', openMenu);
         menuClose.addEventListener('click', closeMenu);
         modalBackdrop.addEventListener('click', closeMenu);
+
+        // Gallery scroll logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('gallery-container');
+            const dots = document.querySelectorAll('.gallery-dot');
+
+            if (container && dots.length > 0) {
+                const items = container.querySelectorAll('.snap-center');
+
+                // Set up IntersectionObserver
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const index = Array.from(items).indexOf(entry.target);
+                            updateDots(index);
+                        }
+                    });
+                }, {
+                    root: container,
+                    threshold: 0.5 // trigger when item is at least 50% visible
+                });
+
+                items.forEach(item => observer.observe(item));
+
+                // Dot click handlers
+                dots.forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        const index = parseInt(dot.getAttribute('data-index'));
+                        const item = items[index];
+                        if (item) {
+                            item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                        }
+                    });
+                });
+
+                function updateDots(activeIndex) {
+                    dots.forEach((dot, index) => {
+                        if (index === activeIndex) {
+                            dot.classList.remove('bg-primary/20', 'hover:bg-primary/50');
+                            dot.classList.add('bg-primary');
+                        } else {
+                            dot.classList.remove('bg-primary');
+                            dot.classList.add('bg-primary/20', 'hover:bg-primary/50');
+                        }
+                    });
+                }
+            }
+        });
     </script>
     <script src="js/audio-player.js" defer></script>
 </body>

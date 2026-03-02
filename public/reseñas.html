@@ -47,9 +47,9 @@
 <body class="bg-background-dark font-display text-slate-100 min-h-screen flex flex-col antialiased">
 
     <header
-        class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-6 py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
+        class="sticky top-0 z-[110] flex items-center justify-between border-b border-primary/10 px-4 py-4 md:px-6 md:py-6 lg:px-40 bg-background-dark/80 backdrop-blur-md">
         <a href="index.html" class="flex items-center -ml-2 lg:ml-0">
-            <img src="img/Logo.webp" alt="Mis Raízes" class="h-10 md:h-14 w-auto object-contain">
+            <img src="img/Logo.webp" alt="Mis Raízes" class="h-16 md:h-20 w-auto object-contain">
         </a>
         <div class="flex items-center gap-4 lg:gap-6">
             <a href="index.html"
@@ -113,7 +113,7 @@
                 </a>
             </nav>
             <div class="mt-auto pt-10 border-t border-primary/10 flex flex-col gap-2">
-                <h3 class="text-primary font-bold tracking-widest uppercase text-xs">Mis Raízes</h3>
+                <div class="text-primary font-bold tracking-widest uppercase text-xs">Mis Raízes</div>
                 <p class="text-slate-400 text-[10px] uppercase tracking-widest leading-loose">Auténtico sabor peruano en
                     Madrid</p>
             </div>
@@ -134,13 +134,13 @@
                     <div class="flex items-center gap-4 mt-2">
                         <div class="flex items-center gap-1 bg-white/5 px-3 py-1 rounded-full border border-primary/20">
                             <span class="text-primary material-symbols-outlined text-sm fill-1">star</span>
-                            <span class="text-[10px] font-black uppercase tracking-widest">Google (5.0)</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Google (4.9)</span>
                         </div>
                     </div>
                 </div>
                 <div class="flex flex-col items-center md:items-end gap-2 shrink-0">
                     <div class="flex items-center gap-4">
-                        <p class="text-white text-7xl font-black leading-none tracking-tighter italic">5.0</p>
+                        <p class="text-white text-7xl font-black leading-none tracking-tighter italic">4.9</p>
                         <div class="flex flex-col">
                             <div class="flex gap-0.5 text-primary">
                                 <span class="material-symbols-outlined fill-1">star</span>
@@ -164,12 +164,12 @@
                         <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
                             <div class="rounded-full bg-primary" style="width: 85%;"></div>
                         </div>
-                        <p class="text-slate-500 text-[10px] font-black text-right">100%</p>
-                        <p class="text-[10px] font-black text-primary opacity-70">0</p>
+                        <p class="text-slate-500 text-[10px] font-black text-right">90%</p>
+                        <p class="text-[10px] font-black text-primary opacity-70">1</p>
                         <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
                             <div class="rounded-full bg-primary" style="width: 3%;"></div>
                         </div>
-                        <p class="text-slate-500 text-[10px] font-black text-right">0%</p>
+                        <p class="text-slate-500 text-[10px] font-black text-right">10%</p>
                         <p class="text-[10px] font-black text-primary opacity-70">0</p>
                         <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
                             <div class="rounded-full bg-primary/40" style="width: 3%;"></div>
@@ -180,9 +180,62 @@
                 <div class="flex gap-3 flex-wrap justify-start md:justify-end">
                 </div>
             </div>
-
             <!-- Reviews List -->
             <div class="flex flex-col gap-6 px-4 pb-32">
+                <!-- Review Card 5 -->
+                <div
+                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-3xl">person</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-white text-base font-black uppercase tracking-widest italic">Isabel
+                                    Serrano</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-0.5 text-primary">
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
+                        "La comida muy rica y sabrosa, el restaurante es nuevo y está muy limpio y ordenado, en cuanto a
+                        los trabajadores muy amables, atentos a los clientes, discretos y serviciales. Aunque el
+                        restaurante estuvo lleno el ambiente fue tranquilo y poco ruidoso, podía hablarse normalmente
+                        sin chillar.
+                        Hemos comido muy bien y hemos estado muy a gusto, repetiremos sin duda."
+                    </p>
+                </div>
+                <!-- Review Card 1 -->
+                <div
+                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-3xl">person</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-white text-base font-black uppercase tracking-widest italic">Nancy vb</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-0.5 text-primary">
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                            <span class="material-symbols-outlined text-lg fill-1">star</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
+                        "Muy bueno todo , el dueño súper encantador …volveremos !!!."
+                    </p>
+                </div>
                 <!-- Review Card 1 -->
                 <div
                     class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
@@ -195,9 +248,6 @@
                             <div class="flex flex-col">
                                 <p class="text-white text-base font-black uppercase tracking-widest italic">Rosa
                                     Carolina orellana diaz</p>
-                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 12
-                                    horas
-                                </p>
                             </div>
                         </div>
                         <div class="flex gap-0.5 text-primary">
@@ -227,8 +277,6 @@
                             <div class="flex flex-col">
                                 <p class="text-white text-base font-black uppercase tracking-widest italic">Anselmo
                                     valeriano</p>
-                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 13
-                                    horas</p>
                             </div>
                         </div>
                         <div class="flex gap-0.5 text-primary">
@@ -256,9 +304,6 @@
                             <div class="flex flex-col">
                                 <p class="text-white text-base font-black uppercase tracking-widest italic">Belén
                                     Orellana</p>
-                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 13
-                                    horas
-                                </p>
                             </div>
                         </div>
                         <div class="flex gap-0.5 text-primary">
@@ -284,9 +329,6 @@
                             </div>
                             <div class="flex flex-col">
                                 <p class="text-white text-base font-black uppercase tracking-widest italic">CARLOS R</p>
-                                <p class="text-slate-500 text-[10px] font-medium uppercase tracking-widest">Hace 13
-                                    horas
-                                </p>
                             </div>
                         </div>
                         <div class="flex gap-0.5 text-primary">

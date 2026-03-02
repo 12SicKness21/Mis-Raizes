@@ -17,6 +17,33 @@ async function loadDailyMenu() {
         const primeros = data.primeros || [];
         const segundos = data.segundos || [];
 
+        // Helper function to format dish names as filenames
+        const formatDishName = (name) => {
+            return name
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+                .toLowerCase() // Convert to lowercase
+                .trim()
+                .replace(/\s+/g, '_'); // Replace spaces with underscores
+        };
+
+        const generateDishHTML = (plato) => {
+            const fileName = formatDishName(plato);
+            return `
+                <div class="group relative overflow-hidden rounded-2xl bg-white/5 gold-border transition-all h-32 flex items-center justify-center">
+                    <img 
+                        src="img/menu/${fileName}.webp" 
+                        alt="${plato}" 
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        onerror="if(this.src.endsWith('.webp')) this.src='img/menu/${fileName}.avif'; else this.style.display='none';"
+                    >
+                    <div class="absolute inset-0 bg-background-dark/60 group-hover:bg-background-dark/40 transition-colors"></div>
+                    <p class="relative z-10 text-slate-100 font-bold uppercase tracking-widest text-center px-4 drop-shadow-md">
+                        ${plato}
+                    </p>
+                </div>
+            `;
+        };
+
         let html = '';
 
         // Section: Primeros
@@ -29,11 +56,7 @@ async function loadDailyMenu() {
                         <div class="h-px flex-1 bg-gradient-to-l from-transparent to-primary/30"></div>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
-                        ${primeros.map(plato => `
-                            <div class="group p-6 rounded-2xl bg-white/5 gold-border hover:bg-white/[0.08] transition-all">
-                                <p class="text-slate-100 font-bold uppercase tracking-widest text-center">${plato}</p>
-                            </div>
-                        `).join('')}
+                        ${primeros.map(generateDishHTML).join('')}
                     </div>
                 </div>
             `;
@@ -49,11 +72,7 @@ async function loadDailyMenu() {
                         <div class="h-px flex-1 bg-gradient-to-l from-transparent to-primary/30"></div>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
-                        ${segundos.map(plato => `
-                            <div class="group p-6 rounded-2xl bg-white/5 gold-border hover:bg-white/[0.08] transition-all">
-                                <p class="text-slate-100 font-bold uppercase tracking-widest text-center">${plato}</p>
-                            </div>
-                        `).join('')}
+                        ${segundos.map(generateDishHTML).join('')}
                     </div>
                 </div>
             `;
