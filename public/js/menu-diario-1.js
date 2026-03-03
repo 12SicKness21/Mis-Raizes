@@ -46,48 +46,40 @@ async function loadDailyMenu() {
 
         const generateDishHTML = (plato) => {
             const fileName = formatDishName(plato);
+            const desc = menuDescMap[plato.trim().toLowerCase()] || '';
 
             return `
-                <div class="group relative flex-none w-[170px] h-[240px] sm:w-[220px] sm:h-[300px] rounded-3xl overflow-hidden snap-start shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-white/5 cursor-pointer bg-[#14120c]">
-                    <img 
-                        src="img/menu/${fileName}.webp" 
-                        alt="${plato}" 
-                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        onerror="if(this.src.endsWith('.webp')) this.src='img/menu/${fileName}.avif'; else this.style.display='none';"
-                    >
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                    <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-                        <h3 class="text-white text-base sm:text-lg font-bold leading-tight font-serif drop-shadow-lg group-hover:text-primary transition-colors">
+                <div class="group flex items-center gap-4 sm:gap-6 rounded-full border border-[#3d3a2b] bg-[#29271c] p-2 pr-6 hover:border-primary/40 transition-all shadow-md mb-4 w-full cursor-default">
+                    <div class="rounded-full size-20 sm:size-24 shrink-0 overflow-hidden relative shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] ml-1 border border-[#1a1811]">
+                        <img 
+                            src="img/menu/${fileName}.webp" 
+                            alt="${plato}" 
+                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            onerror="if(this.src.endsWith('.webp')) this.src='img/menu/${fileName}.avif'; else this.style.display='none';"
+                        >
+                    </div>
+                    <div class="flex flex-col justify-center py-2 flex-1">
+                        <h3 class="text-white text-[1.3rem] sm:text-2xl font-black tracking-wide leading-tight group-hover:text-primary transition-colors font-serif" style="text-shadow: 0 1px 3px rgba(0,0,0,0.9);">
                             ${plato}
                         </h3>
+                        ${desc ? `<p class="text-[#8fa3b0] text-xs sm:text-[0.95rem] leading-snug mt-1 font-serif group-hover:text-[#a5b9c7] transition-colors">${desc}</p>` : ''}
                     </div>
                 </div>
             `;
         };
-
-        // Inject custom hide-scrollbar CSS
-        if (!document.getElementById('scrollbar-style')) {
-            const style = document.createElement('style');
-            style.id = 'scrollbar-style';
-            style.innerHTML = `
-                .hide-scrollbar::-webkit-scrollbar { display: none; }
-                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-            `;
-            document.head.appendChild(style);
-        }
 
         let html = '';
 
         // Section: Primeros
         if (primeros.length > 0) {
             html += `
-                <div class="animate-slideInUp mb-10 w-full overflow-hidden">
-                    <div class="flex items-center gap-3 mb-6 px-1">
-                        <span class="material-symbols-outlined text-primary text-2xl">soup_kitchen</span>
-                        <h2 class="text-white font-black uppercase tracking-widest font-serif text-lg sm:text-xl shrink-0">Primeros</h2>
-                        <div class="h-[1px] w-full max-w-[200px] bg-gradient-to-r from-[#3d3a2b] to-transparent ml-2"></div>
+                <div class="animate-slideInUp">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-primary/30"></div>
+                        <h2 class="text-primary font-black uppercase tracking-[0.3em] italic text-xl">Primeros</h2>
+                        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-primary/30"></div>
                     </div>
-                    <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory px-1 hide-scrollbar" style="scroll-padding-left: 4px;">
+                    <div class="grid grid-cols-1 gap-4">
                         ${primeros.map(generateDishHTML).join('')}
                     </div>
                 </div>
@@ -97,13 +89,13 @@ async function loadDailyMenu() {
         // Section: Segundos
         if (segundos.length > 0) {
             html += `
-                <div class="animate-slideInUp mb-10 w-full overflow-hidden" style="animation-delay: 0.2s">
-                    <div class="flex items-center gap-3 mb-6 px-1">
-                        <span class="material-symbols-outlined text-primary text-2xl">restaurant</span>
-                        <h2 class="text-white font-black uppercase tracking-widest font-serif text-lg sm:text-xl shrink-0">Segundos</h2>
-                        <div class="h-[1px] w-full max-w-[200px] bg-gradient-to-r from-[#3d3a2b] to-transparent ml-2"></div>
+                <div class="animate-slideInUp" style="animation-delay: 0.2s">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-primary/30"></div>
+                        <h2 class="text-primary font-black uppercase tracking-[0.3em] italic text-xl">Segundos</h2>
+                        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-primary/30"></div>
                     </div>
-                    <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory px-1 hide-scrollbar" style="scroll-padding-left: 4px;">
+                    <div class="grid grid-cols-1 gap-4">
                         ${segundos.map(generateDishHTML).join('')}
                     </div>
                 </div>
