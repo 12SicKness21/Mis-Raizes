@@ -113,6 +113,10 @@ async function loadDailyMenu() {
         if (!html) {
             container.innerHTML = '<p class="text-center text-slate-400 py-10">Consúltanos por el menú del día.</p>';
         } else {
+            html += `
+                <!-- Nota para editar el color/brillo: cambia "text-white/20" por "text-white/40", "text-white/60", o clases como "text-slate-500", "text-slate-400" -->
+                <p class="text-center text-white/40 text-[11px] italic mt-2 -mb-2 font-display">* Imágenes referenciales</p>
+            `;
             container.innerHTML = html;
         }
 
