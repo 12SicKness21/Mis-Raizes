@@ -94,9 +94,21 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer">
-    <p class="footer-text">Mis Raízes · Cocina Peruana</p>
-    <p class="footer-iva">IVA incluido en todos los precios</p>
+  <footer class="footer flex flex-col items-center gap-4">
+    <div>
+      <p class="footer-text">Mis Raízes · Cocina Peruana</p>
+      <p class="footer-iva">IVA incluido en todos los precios</p>
+    </div>
+    <p
+      class="text-primary/60 text-[10px] sm:text-xs lowercase tracking-wider flex flex-wrap justify-center gap-x-2 gap-y-1 mt-4">
+      <a href="aviso-legal.html" class="hover:underline hover:text-primary transition-colors whitespace-nowrap">aviso
+        legal</a> <span class="text-slate-600">|</span>
+      <a href="politica-privacidad.html"
+        class="hover:underline hover:text-primary transition-colors whitespace-nowrap">privacidad</a> <span
+        class="text-slate-600">|</span>
+      <a href="politica-cookies.html"
+        class="hover:underline hover:text-primary transition-colors whitespace-nowrap">cookies</a>
+    </p>
   </footer>
 
   <!-- Firebase SDK (CDN) -->
@@ -105,8 +117,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
   <script src="js/firebase-config.js"></script>
   <script src="js/menu.js"></script>
-
   <script src="js/audio-player.js" defer></script>
+  <script src="js/cookie-consent.js" defer></script>
 </body>
 
 </html>
