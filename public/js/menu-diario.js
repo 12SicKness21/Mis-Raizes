@@ -48,7 +48,7 @@ async function loadDailyMenu() {
             const fileName = formatDishName(plato);
 
             return `
-                <div class="group relative flex-none w-[170px] h-[240px] sm:w-[220px] sm:h-[300px] rounded-3xl overflow-hidden snap-start shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-white/5 cursor-pointer bg-[#14120c]">
+                <div class="group relative flex-none w-[220px] h-[240px] sm:w-[270px] sm:h-[300px] rounded-3xl overflow-hidden snap-start shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-white/5 cursor-pointer bg-[#14120c]">
                     <img 
                         src="img/menu/${fileName}.webp" 
                         alt="${plato}" 
@@ -78,7 +78,7 @@ async function loadDailyMenu() {
 
         let html = '';
 
-        // Section: Primeros
+        // Seccion: Primeros
         if (primeros.length > 0) {
             html += `
                 <div class="animate-slideInUp mb-10 w-full overflow-hidden">
@@ -94,7 +94,7 @@ async function loadDailyMenu() {
             `;
         }
 
-        // Section: Segundos
+        // Seccion: Segundos
         if (segundos.length > 0) {
             html += `
                 <div class="animate-slideInUp mb-10 w-full overflow-hidden" style="animation-delay: 0.2s">

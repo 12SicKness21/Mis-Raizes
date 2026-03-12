@@ -493,6 +493,9 @@ async function loadWeeklyMenuData() {
                 document.getElementById('p' + i).value = primeros[i - 1] || '';
                 document.getElementById('s' + i).value = segundos[i - 1] || '';
             }
+            if (data.fecha) {
+                document.getElementById('menuFecha').value = data.fecha;
+            }
         }
     } catch (err) {
         console.error('Error loading weekly menu:', err);
@@ -511,9 +514,12 @@ async function publishWeeklyMenu() {
             if (sVal) segundos.push(sVal);
         }
 
+        var pFecha = document.getElementById('menuFecha').value.trim();
+
         await db.collection('config').doc('weekly_menu').set({
             primeros: primeros,
             segundos: segundos,
+            fecha: pFecha,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -553,72 +559,154 @@ function escapeHtml(str) {
 function escapeAttr(str) {
     return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
+// === Helper to check image existence ===
+async function checkImageExists(url) {
+    return new Promise(function(resolve) {
+        var img = new Image();
+        img.onload = function() { resolve(true); };
+        img.onerror = function() { resolve(false); };
+        img.src = url;
+    });
+}
+
+// === Helper to convert dish name to file path ===
+function getDishImagePaths(dishName) {
+    if (!dishName) return [];
+    var baseName = dishName.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove accents
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+    
+    return [
+        'img/menu/' + baseName + '.webp',
+        'img/menu/' + baseName + '.avif'
+    ];
+}
+
+// === Find First Valid Image for a list of Dishes ===
+async function getFirstValidImage(dishes) {
+    for (var i = 0; i < dishes.length; i++) {
+        var dish = dishes[i].trim();
+        if (dish) {
+            var paths = getDishImagePaths(dish);
+            for (var j = 0; j < paths.length; j++) {
+                if (await checkImageExists(paths[j])) {
+                    return paths[j];
+                }
+            }
+        }
+    }
+    return ''; // No image found
+}
+
+// === Find All Valid Images for a list of Dishes, return as array ===
+async function getAllValidImages(dishes) {
+    var result = [];
+    for (var i = 0; i < dishes.length; i++) {
+        var dish = dishes[i].trim();
+        if (dish) {
+            var paths = getDishImagePaths(dish);
+            var found = false;
+            for (var j = 0; j < paths.length; j++) {
+                if (await checkImageExists(paths[j])) {
+                    result.push(paths[j]);
+                    found = true;
+                    break;
+                }
+            }
+            if(!found) result.push('');
+        }
+    }
+    return result;
+}
+
+
 // === Download Menu as Image ===
-function downloadMenuImage() {
-    var p1 = document.getElementById('p1').value.trim();
-    var p2 = document.getElementById('p2').value.trim();
-    var p3 = document.getElementById('p3').value.trim();
-    var p4 = document.getElementById('p4').value.trim();
-    var s1 = document.getElementById('s1').value.trim();
-    var s2 = document.getElementById('s2').value.trim();
-    var s3 = document.getElementById('s3').value.trim();
-    var s4 = document.getElementById('s4').value.trim();
+async function downloadMenuImage() {
+    showStatus('Generando imagen, por favor espera...', 'info');
+    
+    var fecha = document.getElementById('menuFecha').value.trim();
+    if (fecha) fecha = "Menú - " + fecha;
 
-    // Create an off-screen canvas
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
-    var img = new Image();
+    var primeros = [];
+    var segundos = [];
+    
+    for (var i = 1; i <= 4; i++) {
+        var pVal = document.getElementById('p' + i).value.trim();
+        var sVal = document.getElementById('s' + i).value.trim();
+        if (pVal) primeros.push(pVal);
+        if (sVal) segundos.push(sVal);
+    }
 
-    // Crucial for tainted canvases if images are served cross-origin (though local here)
-    img.crossOrigin = 'Anonymous';
-    img.src = 'img/Menu.webp';
+    // Process Texts
+    var previewPrimeros = document.getElementById('previewPrimeros');
+    var previewSegundos = document.getElementById('previewSegundos');
+    var previewDate = document.getElementById('previewDate');
+    
+    previewDate.textContent = fecha;
 
-    img.onload = function () {
-        // Set canvas to match image dimensions
-        canvas.width = img.width;
-        canvas.height = img.height;
+    previewPrimeros.innerHTML = primeros.map(function(item) {
+        return '<div style="display: flex; align-items: flex-start;"><span style="color: #f9d406; margin-right: 15px; font-size: 30px;">•</span><span style="color: #ffffff;">' + item + '</span></div>';
+    }).join('');
 
-        // Draw the background image
-        ctx.drawImage(img, 0, 0);
+    previewSegundos.innerHTML = segundos.map(function(item) {
+        return '<div style="display: flex; align-items: flex-start; margin-bottom: 5px;"><span style="color: #f9d406; margin-right: 15px; font-size: 30px;">•</span><span style="color: #ffffff;">' + item + '</span></div>';
+    }).join('');
 
-        // Configure text styles to match the website's CSS design 
-        // Based on style.css: font-family: 'Raleway', sans-serif; font-size: ~0.95rem; font-weight: 700; color: #fff; text-transform: uppercase; text-shadow
-        // We will scale the font size down slightly depending on canvas size, but assuming a standard 1080x1920 or similar vertical layout.
+    // Fetch matching images for slots (1 from primeros, 2 from segundos usually, or just whatever fits)
+    var img1Src = await getFirstValidImage(primeros);
+    var img2Src = await getFirstValidImage(segundos);
+    
+    // Attempt to get a different image for the third slot
+    var allSegundosImgs = await getAllValidImages(segundos);
+    var img3Src = '';
+    for(var k = 0; k < allSegundosImgs.length; k++) {
+        if(allSegundosImgs[k] && allSegundosImgs[k] !== img2Src) {
+            img3Src = allSegundosImgs[k];
+            break;
+        }
+    }
+    // Fallback if not enough matching images
+    if (!img1Src) img1Src = 'img/perfil.webp';
+    if (!img2Src) img2Src = 'img/perfil.webp';
+    if (!img3Src) img3Src = img1Src !== 'img/perfil.webp' ? img1Src : 'img/perfil.webp';
 
-        // Let's dynamically calculate font size based on image width to keep it responsive-ish to the original image
-        var baseFontSize = Math.floor(canvas.width * 0.04);
-        ctx.font = 'bold ' + baseFontSize + 'px Arial, sans-serif'; // Fallback to Arial if Web fonts aren't loaded in canvas
-        ctx.fillStyle = '#FFFFFF';
-        ctx.textAlign = 'center';
+    var img1 = document.getElementById('previewImg1');
+    var img2 = document.getElementById('previewImg2');
+    var img3 = document.getElementById('previewImg3');
+    
+    img1.src = img1Src;
+    img2.src = img2Src;
+    img3.src = img3Src;
+    
+    // Wait for images to load before rendering
+    await Promise.all([
+        new Promise(function(r) { img1.onload = img1.onerror = r; }),
+        new Promise(function(r) { img2.onload = img2.onerror = r; }),
+        new Promise(function(r) { img3.onload = img3.onerror = r; })
+    ]);
 
-        // Add text shadow for legibility
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
+    var container = document.getElementById('menuImagePreviewBox');
+    // Temporarily bring it offscreen but visible strictly to html2canvas
+    container.style.position = 'absolute';
+    container.style.left = '0';
+    container.style.top = '0';
+    container.style.opacity = '1';
+    container.style.zIndex = '-9999';
 
-        // Position coordinates (These are percentages based on style.css .menu-column.primeros: top: 40%, .segundos: top: 58%)
-        var centerX = canvas.width / 2;
+    try {
+        var canvas = await html2canvas(document.getElementById('menuImagePreview'), {
+            scale: 2, // High resolution
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null
+        });
 
-        var startYPrimeros = canvas.height * 0.40;
-        var startYSegundos = canvas.height * 0.60;
+        // Re-hide container
+        container.style.position = 'absolute';
+        container.style.left = '-9999px';
+        container.style.top = '0';
 
-        // Line height
-        var lineHeight = baseFontSize * 1.5;
-
-        // Draw Primeros
-        if (p1) ctx.fillText(p1.toUpperCase(), centerX, startYPrimeros);
-        if (p2) ctx.fillText(p2.toUpperCase(), centerX, startYPrimeros + lineHeight);
-        if (p3) ctx.fillText(p3.toUpperCase(), centerX, startYPrimeros + (lineHeight * 2));
-        if (p4) ctx.fillText(p4.toUpperCase(), centerX, startYPrimeros + (lineHeight * 3));
-
-        // Draw Segundos
-        if (s1) ctx.fillText(s1.toUpperCase(), centerX, startYSegundos);
-        if (s2) ctx.fillText(s2.toUpperCase(), centerX, startYSegundos + lineHeight);
-        if (s3) ctx.fillText(s3.toUpperCase(), centerX, startYSegundos + (lineHeight * 2));
-        if (s4) ctx.fillText(s4.toUpperCase(), centerX, startYSegundos + (lineHeight * 3));
-
-        // Trigger download
         var dataURL = canvas.toDataURL('image/png');
         var link = document.createElement('a');
         link.download = 'Menu_Mis_Raizes_Hoy.png';
@@ -627,10 +715,11 @@ function downloadMenuImage() {
         link.click();
         document.body.removeChild(link);
 
-        showStatus('✅ Imagen descargada', 'success');
-    };
-
-    img.onerror = function () {
-        showStatus('❌ Error al cargar la imagen base', 'error');
-    };
+        showStatus('✅ Imagen generada y descargada', 'success');
+    } catch(err) {
+        console.error('Error html2canvas:', err);
+        showStatus('❌ Error al generar la imagen', 'error');
+        container.style.left = '-9999px';
+    }
 }
+
