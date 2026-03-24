@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta name="description"
+    content="Haz tu pedido online en Mis Raízes - Cocina Peruana. Selecciona del Menú del Día o de la Carta y envíanos tu pedido por WhatsApp." />
+  <meta name="theme-color" content="#131313" />
+  <title>Hacer Pedido | Mis Raízes - Cocina Peruana</title>
+  <link rel="icon" type="image/x-icon" href="img/logo.jpg" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#f2ca50",
+            "primary-dim": "#e9c349",
+            "primary-container": "#d4af37",
+            "on-primary": "#3c2f00",
+            "background": "#131313",
+            "surface": "#131313",
+            "surface-container": "#201f1f",
+            "surface-container-low": "#1c1b1b",
+            "surface-container-lowest": "#0e0e0e",
+            "surface-container-high": "#2a2a2a",
+            "surface-container-highest": "#353534",
+            "surface-variant": "#353534",
+            "on-surface": "#e5e2e1",
+            "on-surface-variant": "#d0c5af",
+            "outline": "#99907c",
+            "outline-variant": "#4d4635",
+          },
+          fontFamily: {
+            "headline": ["Noto Serif", "serif"],
+            "body": ["Manrope", "sans-serif"],
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "2xl": "0.75rem",
+            "3xl": "1rem",
+            "full": "9999px",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #131313;
+      color: #e5e2e1;
+      font-family: 'Manrope', sans-serif;
+      min-height: 100dvh;
+      overscroll-behavior: none;
+    }
+
+    /* ── Hide scrollbar ── */
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* ── Dish card - Menú del Día ── */
+    .menu-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+    }
+
+    .menu-card.selected {
+      outline: 2.5px solid #f2ca50;
+      box-shadow: 0 0 20px rgba(242, 202, 80, 0.35);
+    }
+
+    .menu-card:active {
+      transform: scale(0.97);
+    }
+
+    .menu-card .check-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #f2ca50;
+      color: #3c2f00;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .menu-card.selected .check-badge {
+      display: flex;
+    }
+
+    /* ── Carta item card ── */
+    .carta-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #1c1b1b;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .carta-item:active {
+      transform: scale(0.99);
+    }
+
+    .carta-item.selected {
+      border-color: #f2ca50;
+      background: #201f0a;
+      box-shadow: 0 0 14px rgba(242, 202, 80, 0.2);
+    }
+
+    .carta-item .item-qty {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f2ca50;
+      color: #3c2f00;
+      font-size: 12px;
+      font-weight: 800;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carta-item.selected .item-qty {
+      display: flex;
+    }
+
+    /* ── Cart Panel ── */
+    #cart-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: #131313;
+      border-top: 1px solid rgba(77, 70, 53, 0.4);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-height: 92dvh;
+      display: flex;
+      flex-direction: column;
+      border-radius: 20px 20px 0 0;
+    }
+
+    #cart-panel.open {
+      transform: translateY(0);
+    }
+
+    #cart-panel-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+      z-index: 199;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    #cart-panel-backdrop.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Float cart button ── */
+    #cart-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      z-index: 100;
+      background: linear-gradient(135deg, #d4af37, #f2ca50);
+      color: #3c2f00;
+      border-radius: 50px;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 4px 24px rgba(242, 202, 80, 0.4);
+      cursor: pointer;
+      border: none;
+      transform: scale(0);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+    }
+
+    #cart-fab.visible {
+      transform: scale(1);
+    }
+
+    #cart-fab:active {
+      transform: scale(0.95);
+    }
+
+    #cart-fab .fab-count {
+      background: #3c2f00;
+      color: #f2ca50;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    /* ── Pulsate animation ── */
+    .pulsate-gold {
+      animation: pulse-gold 2s infinite;
+    }
+
+    @keyframes pulse-gold {
+      0% {
+        box-shadow: 0 0 0 0 rgba(242, 202, 80, 0.5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 14px rgba(242, 202, 80, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(242, 202, 80, 0);
+      }
+    }
+
+    /* ── Qty stepper ── */
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(242, 202, 80, 0.4);
+      background: transparent;
+      color: #f2ca50;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .qty-btn:hover {
+      background: rgba(242, 202, 80, 0.12);
+    }
+
+    .qty-num {
+      font-family: 'Noto Serif', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #f2ca50;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    /* ── Section tabs ── */
+    #tabs-container {
+      position: sticky;
+      top: 64px;
+      /* below header */
+      z-index: 40;
+      background: #131313;
+      padding: 10px 20px;
+      margin: 0 -20px 20px -20px;
+      border-bottom: 1px solid rgba(77, 70, 53, 0.2);
+    }
+
+    .tab-btn {
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1.5px solid rgba(242, 202, 80, 0.25);
+      background: transparent;
+      color: rgba(229, 226, 225, 0.5);
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: #f2ca50;
+      color: #3c2f00;
+      border-color: #f2ca50;
+    }
+
+    /* ── Category pill nav (Carta) ── */
+    .cat-pill {
+      flex-shrink: 0;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1.5px solid rgba(242, 202, 80, 0.2);
+      background: transparent;
+      color: rgba(229, 226, 225, 0.5);
+      transition: all 0.2s;
+    }
+
+    .cat-pill.active {
+      background: rgba(242, 202, 80, 0.15);
+      border-color: rgba(242, 202, 80, 0.5);
+      color: #f2ca50;
+    }
+
+    /* ── Sticky carta pill nav ── */
+    #carta-pills-nav {
+      position: sticky;
+      top: 118px;
+      /* below header + tabs */
+      z-index: 30;
+      background: rgba(19, 19, 19, 0.96);
+      backdrop-filter: blur(10px);
+      padding: 10px 0 10px;
+      margin: 0 -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    /* ── Tipo pedido toggle ── */
+    .tipo-btn {
+      flex: 1;
+      padding: 10px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border: 1.5px solid rgba(242, 202, 80, 0.25);
+      background: transparent;
+      color: rgba(229, 226, 225, 0.5);
+      transition: all 0.2s;
+      line-height: 1.3;
+    }
+
+    .tipo-btn.active {
+      background: rgba(242, 202, 80, 0.15);
+      border-color: #f2ca50;
+      color: #f2ca50;
+    }
+
+    /* ── Bebida pill ── */
+    .bebida-pill {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid rgba(242, 202, 80, 0.2);
+      background: transparent;
+      color: rgba(229, 226, 225, 0.55);
+      transition: all 0.2s;
+    }
+
+    .bebida-pill.active {
+      background: rgba(242, 202, 80, 0.18);
+      border-color: #f2ca50;
+      color: #f2ca50;
+    }
+
+    /* ── Slide animations ── */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-slide-up {
+      animation: slideUp 0.4s ease forwards;
+    }
+
+    /* ── Required asterisk ── */
+    .required {
+      color: #f2ca50;
+    }
+
+    /* ── Selection required warning ── */
+    .selection-warning {
+      font-size: 11px;
+      color: #ff9f43;
+      display: none;
+      margin-top: 4px;
+    }
+
+    .selection-warning.visible {
+      display: block;
+    }
+
+    /* Input styling */
+    input[type="text"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      background: #1c1b1b;
+      border: 1.5px solid rgba(77, 70, 53, 0.4);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #e5e2e1;
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2399907c'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 20px;
+      padding-right: 40px;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(242, 202, 80, 0.6);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(153, 144, 124, 0.7);
+    }
+
+    select option {
+      background: #1c1b1b;
+      color: #e5e2e1;
+    }
+
+    label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #99907c;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* Section heading */
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #f2ca50;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #e5e2e1;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: #99907c;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <header class="sticky top-0 z-50 flex items-center justify-between px-5 py-4"
+    style="background: rgba(19,19,19,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(77,70,53,0.2);">
+    <a href="index.html"
+      class="flex items-center justify-center w-10 h-10 rounded-full text-primary hover:bg-primary/10 transition-colors"
+      aria-label="Volver">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    <img src="img/Logo.webp" alt="Mis Raízes" class="h-10 w-auto object-contain" />
+    <div class="w-10"></div>
+  </header>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="max-w-2xl mx-auto px-5 pt-8 pb-40">
+
+    <!-- Intro -->
+    <div class="mb-10">
+      <span class="section-eyebrow">Tu pedido</span>
+      <h2 class="section-title mt-1">¿Qué te apetece hoy?</h2>
+      <p class="section-sub">Elige del menú del día o de nuestra carta.</p>
+    </div>
+
+    <!-- ─── TABS ─── -->
+    <div id="tabs-container" class="flex gap-3">
+      <button class="tab-btn active" id="tab-menu" onclick="switchTab('menu')">
+        <span class="material-symbols-outlined align-middle text-base mr-1" style="font-size:16px;">event_note</span>
+        Menú del Día
+      </button>
+      <button class="tab-btn" id="tab-carta" onclick="switchTab('carta')">
+        <span class="material-symbols-outlined align-middle text-base mr-1" style="font-size:16px;">menu_book</span>
+        Carta
+      </button>
+    </div>
+
+    <!-- ══════ SECTION: MENÚ DEL DÍA ══════ -->
+    <section id="section-menu" class="animate-slide-up">
+
+      <!-- price badge -->
+      <div class="flex items-center justify-between mb-6 px-1">
+        <div>
+          <p class="text-on-surface-variant text-sm">Primero + Segundo + Bebida + Postre</p>
+          <p class="text-on-surface-variant text-xs mt-1">Selecciona <span class="text-primary font-bold">1
+              primero</span> y <span class="text-primary font-bold">1 segundo</span></p>
+        </div>
+        <div class="text-right">
+          <span class="font-headline text-2xl text-primary">13,90€</span>
+          <p class="text-on-surface-variant text-xs">por persona</p>
+        </div>
+      </div>
+
+      <!-- PRIMEROS -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary" style="font-size:20px;">soup_kitchen</span>
+          <h3 class="font-headline text-lg text-on-surface uppercase tracking-wider">Primeros</h3>
+          <span class="text-on-surface-variant text-xs">(elige 1)</span>
+        </div>
+        <p class="selection-warning" id="warn-primer">⚠ Selecciona un primer plato</p>
+        <div id="primeros-row" class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar"
+          style="scroll-padding-left:4px;">
+          <!-- Spinner -->
+          <div id="primeros-spinner" class="flex items-center justify-center w-full py-10">
+            <div class="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEGUNDOS -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary" style="font-size:20px;">restaurant</span>
+          <h3 class="font-headline text-lg text-on-surface uppercase tracking-wider">Segundos</h3>
+          <span class="text-on-surface-variant text-xs">(elige 1)</span>
+        </div>
+        <p class="selection-warning" id="warn-segundo">⚠ Selecciona un segundo plato</p>
+        <div id="segundos-row" class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar"
+          style="scroll-padding-left:4px;">
+          <div id="segundos-spinner" class="flex items-center justify-center w-full py-10">
+            <div class="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEBIDA -->
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="material-symbols-outlined text-primary" style="font-size:20px;">local_drink</span>
+          <h3 class="font-headline text-lg text-on-surface uppercase tracking-wider">Bebida</h3>
+          <span class="text-on-surface-variant text-xs">(incluida)</span>
+        </div>
+        <p class="selection-warning" id="warn-bebida">⚠ Selecciona una bebida</p>
+        <div class="flex overflow-x-auto gap-3 pb-2 hide-scrollbar">
+          <button class="bebida-pill" data-bebida="Coca Cola" onclick="selectBebida(this)">Coca Cola</button>
+          <button class="bebida-pill" data-bebida="Fanta Naranja" onclick="selectBebida(this)">Fanta Naranja</button>
+          <button class="bebida-pill" data-bebida="Aquarius" onclick="selectBebida(this)">Aquarius</button>
+          <button class="bebida-pill" data-bebida="Nestea" onclick="selectBebida(this)">Nestea</button>
+        </div>
+      </div>
+
+      <!-- Qty Menú -->
+      <div class="flex items-center justify-between bg-surface-container rounded-2xl px-5 py-4 mb-4">
+        <div>
+          <p class="font-body text-sm font-semibold text-on-surface">Cantidad de menús</p>
+          <p class="text-on-surface-variant text-xs mt-0.5">13,90€ × cantidad</p>
+        </div>
+        <div class="qty-stepper">
+          <button class="qty-btn" onclick="changeMenuQty(-1)">−</button>
+          <span class="qty-num" id="menu-qty-display">1</span>
+          <button class="qty-btn" onclick="changeMenuQty(1)">+</button>
+        </div>
+      </div>
+
+      <button onclick="addMenuToCart()"
+        class="w-full mt-2 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-widest transition-all active:scale-95"
+        style="background: linear-gradient(135deg, #d4af37, #f2ca50); color: #3c2f00;">
+        <span class="material-symbols-outlined align-middle mr-1" style="font-size:18px;">add_shopping_cart</span>
+        Añadir al pedido
+      </button>
+    </section>
+
+    <!-- ══════ SECTION: CARTA ══════ -->
+    <section id="section-carta" class="hidden animate-slide-up">
+
+      <!-- Category pills — sticky -->
+      <div id="carta-pills-nav" class="flex overflow-x-auto gap-3 hide-scrollbar">
+        <button class="cat-pill active" data-cat="all" id="pill-all" onclick="filterCarta('all', this)">Todos</button>
+        <button class="cat-pill" data-cat="PLATOS CRIOLLOS" onclick="filterCarta('PLATOS CRIOLLOS', this)">🍽
+          Criollos</button>
+        <button class="cat-pill" data-cat="ARROCES" onclick="filterCarta('ARROCES', this)">🍚 Arroces</button>
+        <button class="cat-pill" data-cat="PLATOS MARINOS" onclick="filterCarta('PLATOS MARINOS', this)">🦐
+          Marinos</button>
+        <button class="cat-pill" data-cat="COMBOS" onclick="filterCarta('COMBOS', this)">⭐ Combos</button>
+        <button class="cat-pill" data-cat="ENTRADAS" onclick="filterCarta('ENTRADAS', this)">🥑 Entradas</button>
+        <button class="cat-pill" data-cat="POSTRES" onclick="filterCarta('POSTRES', this)">🍰 Postres</button>
+        <button class="cat-pill" data-cat="BEBIDAS" onclick="filterCarta('BEBIDAS', this)">🥛 Bebidas</button>
+        <button class="cat-pill" data-cat="DESAYUNOS" onclick="filterCarta('DESAYUNOS', this)">☀️ Desayunos</button>
+      </div>
+
+      <!-- Items container (vertical, sectioned for scroll-spy) -->
+      <div id="carta-container" class="space-y-3 pt-2">
+        <div class="flex justify-center py-10">
+          <div class="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- ═══════════ FLOATING CART BUTTON ═══════════ -->
+  <button id="cart-fab" onclick="openCart()" aria-label="Ver pedido">
+    <span class="material-symbols-outlined" style="font-size:22px;">shopping_bag</span>
+    <span id="fab-label">Ver pedido</span>
+    <span class="fab-count" id="fab-count">0</span>
+  </button>
+
+  <!-- ═══════════ CART PANEL BACKDROP ═══════════ -->
+  <div id="cart-panel-backdrop" onclick="closeCart()"></div>
+
+  <!-- ═══════════ CART PANEL ═══════════ -->
+  <div id="cart-panel" role="dialog" aria-modal="true" aria-label="Tu pedido">
+    <!-- Drag handle -->
+    <div class="flex justify-center pt-3 pb-1 flex-shrink-0">
+      <div class="w-10 h-1 rounded-full bg-outline-variant"></div>
+    </div>
+
+    <!-- Cart header -->
+    <div class="flex items-center justify-between px-5 py-4 flex-shrink-0 border-b border-outline-variant/30">
+      <h2 class="font-headline text-xl text-on-surface">Tu Pedido</h2>
+      <button onclick="closeCart()"
+        class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-colors">
+        <span class="material-symbols-outlined" style="font-size:20px;">close</span>
+      </button>
+    </div>
+
+    <!-- Scrollable content list -->
+    <div class="flex-1 overflow-y-auto pb-4">
+      <!-- Cart items -->
+      <div id="cart-items-list" class="px-5 py-4 space-y-3">
+        <p class="text-center text-on-surface-variant py-8 text-sm">Tu carrito está vacío</p>
+      </div>
+
+      <!-- Tipo de pedido + totals + contact (scrollable inner section) -->
+      <div class="px-5 py-4 space-y-5" id="cart-checkout-area">
+
+        <!-- Tipo pedido toggle -->
+        <div>
+          <label style="margin-bottom:10px;">Tipo de pedido <span class="required">*</span></label>
+          <div class="flex gap-3" id="tipo-btns">
+            <button class="tipo-btn active" data-tipo="ENVIAR" data-fee="4" onclick="selectTipo(this)">
+              Enviar<br><span style="font-size:10px; opacity:0.8;">+ 4,00€</span>
+            </button>
+            <button class="tipo-btn" data-tipo="RECOGER" data-fee="1" onclick="selectTipo(this)">
+              Recoger<br><span style="font-size:10px; opacity:0.8;">+ 1,00€</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Subtotal rows -->
+        <div class="space-y-2 pt-2 border-t border-outline-variant/30">
+          <div class="flex justify-between text-on-surface-variant text-sm">
+            <span>Platos</span>
+            <span id="cart-subtotal">0,00€</span>
+          </div>
+          <div class="flex justify-between text-on-surface-variant text-sm">
+            <span id="tipo-label">🛵 Enviar</span>
+            <span id="tipo-fee-display">4,00€</span>
+          </div>
+          <div
+            class="flex justify-between font-headline text-xl text-on-surface pt-2 border-t border-outline-variant/30">
+            <span>Total</span>
+            <span class="text-primary text-2xl" id="cart-total">4,00€</span>
+          </div>
+        </div>
+
+        <!-- Notas especiales -->
+        <div>
+          <label for="order-notes">📝 Notas especiales</label>
+          <div class="relative">
+            <textarea id="order-notes" rows="2" placeholder="Sin cebolla · Sin picante · Alérgico al marisco…"
+              style="resize:none; color: black;"></textarea>
+          </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="space-y-3">
+          <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Tu información</p>
+          <div>
+            <label for="contact-name">Nombre <span class="required">*</span></label>
+            <input type="text" id="contact-name" placeholder="Tu nombre completo" autocomplete="name" />
+          </div>
+          <div id="direccion-container">
+            <label for="contact-location">Dirección<span class="required">*</span></label>
+            <input type="text" id="contact-location" placeholder="Calle, número, piso…" autocomplete="street-address" />
+          </div>
+          <div>
+            <label for="contact-payment">Método de pago <span class="required">*</span></label>
+            <select id="contact-payment" style="width: max-content; color: rgba(255, 255, 255, 0.7);"
+              onchange="this.style.color = this.value ? '#000000' : 'rgba(153, 144, 124, 0.7)';">
+              <option value="">— Selecciona —</option>
+              <option value="Efectivo">💶 Efectivo</option>
+              <option value="Tarjeta">💳 Tarjeta (en local)</option>
+              <option value="Bizum">📱 Bizum</option>
+              <option value="Transferencia">🏦 Transferencia</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- WhatsApp CTA (at the bottom of scrollable area) -->
+        <div class="px-5 pb-8 pt-6 space-y-2 mt-4 border-t border-outline-variant/20">
+          <button onclick="sendWhatsApp()"
+            class="pulsate-gold w-full py-4 rounded-full font-body font-extrabold text-base flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg"
+            style="background: linear-gradient(135deg, #d4af37, #f2ca50); color: #3c2f00;">
+            <svg class="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.005c.109.004.253-.041.397.303.145.346.491 1.197.534 1.284.044.087.073.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.101-.177.211-.077.382.1.171.444.732.952 1.185.655.584 1.207.765 1.381.852.173.087.275.072.376-.044.101-.116.433-.505.548-.678.115-.173.231-.144.39-.087.159.058 1.012.477 1.184.563s.289.13.332.202c.045.072.045.419-.1.824z" />
+              <path
+                d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 21.844c-5.428 0-9.844-4.417-9.844-9.844S6.572 2.156 12 2.156s9.844 4.417 9.844 9.844-4.417 9.844-9.844 9.844z" />
+            </svg>
+            ENVIAR POR WHATSAPP
+          </button>
+          <p class="text-center text-on-surface-variant text-xs">Se abrirá WhatsApp con tu pedido listo</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════ FIREBASE ═══════════ -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <!-- ═══════════ APP SCRIPT ═══════════ -->
+  <script>
+    // ─────────────────────────────────────────
+    // STATE
+    // ─────────────────────────────────────────
+    const state = {
+      selectedPrimer: null,
+      selectedSegundo: null,
+      selectedBebida: null,
+      menuQty: 1,
+      cartItems: [],
+      menuPrice: 13.90,
+      tipoCosto: 4,      // default: ENVIAR
+      tipoNombre: 'ENVIAR',
+    };
+
+    // ─────────────────────────────────────────
+    // TABS
+    // ─────────────────────────────────────────
+    function switchTab(tab) {
+      document.getElementById('section-menu').classList.toggle('hidden', tab !== 'menu');
+      document.getElementById('section-carta').classList.toggle('hidden', tab !== 'carta');
+      document.getElementById('tab-menu').classList.toggle('active', tab === 'menu');
+      document.getElementById('tab-carta').classList.toggle('active', tab === 'carta');
+    }
+
+    // ─────────────────────────────────────────
+    // MENU DEL DÍA — Load from Firestore
+    // ─────────────────────────────────────────
+    const formatFileName = n => n
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().trim().replace(/\s+/g, '_');
+
+    function buildMenuCard(plato, tipo) {
+      const file = formatFileName(plato);
+      const imgSrc = `img/menu/${file}.avif`;
+      const id = `${tipo}-${file}`;
+
+      return `
+        <div class="menu-card flex-none w-[190px] h-[220px] rounded-3xl overflow-hidden snap-start cursor-pointer bg-[#14120c]"
+          id="${id}"
+          onclick="selectDish('${tipo}', '${plato.replace(/'/g, "\\'")}', '${file}', '${id}')">
+          <div class="check-badge">✓</div>
+          <img
+            src="${imgSrc}"
+            alt="${plato}"
+            class="w-full h-full object-cover transition-transform duration-500"
+            onerror="this.src='img/peru.avif'; this.onerror=null;"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></div>
+          <div class="absolute inset-x-0 bottom-0 p-3">
+            <p class="text-white text-sm font-bold leading-tight font-headline">${plato}</p>
+          </div>
+        </div>`;
+    }
+
+    async function loadDailyMenu() {
+      try {
+        const doc = await db.collection('config').doc('weekly_menu').get();
+        if (!doc.exists) { showMenuFallback(); return; }
+        const data = doc.data();
+        const primeros = data.primeros || [];
+        const segundos = data.segundos || [];
+
+        const pRow = document.getElementById('primeros-row');
+        const sRow = document.getElementById('segundos-row');
+
+        if (primeros.length) {
+          pRow.innerHTML = primeros.map(p => buildMenuCard(p, 'primer')).join('');
+        } else {
+          pRow.innerHTML = '<p class="text-on-surface-variant text-sm py-4">El menú se está preparando...</p>';
+        }
+        if (segundos.length) {
+          sRow.innerHTML = segundos.map(s => buildMenuCard(s, 'segundo')).join('');
+        } else {
+          sRow.innerHTML = '<p class="text-on-surface-variant text-sm py-4">El menú se está preparando...</p>';
+        }
+      } catch (e) {
+        console.error(e);
+        showMenuFallback();
+      }
+    }
+
+    function showMenuFallback() {
+      document.getElementById('primeros-row').innerHTML =
+        '<p class="text-on-surface-variant text-sm py-4">Consulta el menú por WhatsApp.</p>';
+      document.getElementById('segundos-row').innerHTML = '';
+    }
+
+    function selectDish(tipo, nombre, file, cardId) {
+      const prefix = tipo === 'primer' ? 'primer' : 'segundo';
+      const isSelected = document.getElementById(cardId)?.classList.contains('selected');
+
+      // Deselect all of this type
+      document.querySelectorAll(`[id^="${prefix}-"]`).forEach(el => el.classList.remove('selected'));
+
+      if (isSelected) {
+        // Toggle OFF
+        if (tipo === 'primer') { state.selectedPrimer = null; }
+        else { state.selectedSegundo = null; }
+      } else {
+        // Toggle ON
+        document.getElementById(cardId)?.classList.add('selected');
+        if (tipo === 'primer') {
+          state.selectedPrimer = { nombre, img: `img/menu/${file}.avif` };
+          document.getElementById('warn-primer').classList.remove('visible');
+        } else {
+          state.selectedSegundo = { nombre, img: `img/menu/${file}.avif` };
+          document.getElementById('warn-segundo').classList.remove('visible');
+        }
+      }
+    }
+
+    function selectBebida(btn) {
+      document.querySelectorAll('.bebida-pill').forEach(p => p.classList.remove('active'));
+      const bebida = btn.dataset.bebida;
+      if (state.selectedBebida === bebida) {
+        state.selectedBebida = null; // toggle off
+      } else {
+        btn.classList.add('active');
+        state.selectedBebida = bebida;
+        document.getElementById('warn-bebida').classList.remove('visible');
+      }
+    }
+
+    function selectTipo(btn) {
+      document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.tipoCosto = parseFloat(btn.dataset.fee);
+      state.tipoNombre = btn.dataset.tipo; // "ENVIAR" or "RECOGER"
+
+      const label = state.tipoNombre === 'ENVIAR' ? 'Enviar' : 'Recoger';
+      document.getElementById('tipo-label').textContent = label;
+      document.getElementById('tipo-fee-display').textContent = state.tipoCosto.toFixed(2).replace('.', ',') + '€';
+
+      // Toggle Address field visibility
+      if (state.tipoNombre === 'ENVIAR') {
+        document.getElementById('direccion-container').classList.remove('hidden');
+      } else {
+        document.getElementById('direccion-container').classList.add('hidden');
+      }
+
+      renderCart();
+    }
+
+    // ─────────────────────────────────────────
+    // MENU QTY
+    // ─────────────────────────────────────────
+    function changeMenuQty(delta) {
+      state.menuQty = Math.max(1, state.menuQty + delta);
+      document.getElementById('menu-qty-display').textContent = state.menuQty;
+    }
+
+    // ─────────────────────────────────────────
+    // ADD MENU TO CART
+    // ─────────────────────────────────────────
+    function addMenuToCart() {
+      let valid = true;
+      if (!state.selectedPrimer) { document.getElementById('warn-primer').classList.add('visible'); valid = false; }
+      if (!state.selectedSegundo) { document.getElementById('warn-segundo').classList.add('visible'); valid = false; }
+      if (!state.selectedBebida) { document.getElementById('warn-bebida').classList.add('visible'); valid = false; }
+      if (!valid) return;
+
+      const id = `menu-${Date.now()}`;
+      state.cartItems.push({
+        id,
+        nombre: `Menú del Día ×${state.menuQty}`,
+        precio: state.menuPrice * state.menuQty,
+        qty: state.menuQty,
+        tipo: 'menu',
+        detail: `Primero: ${state.selectedPrimer.nombre} · Segundo: ${state.selectedSegundo.nombre} · Bebida: ${state.selectedBebida}`,
+      });
+
+      renderCart();
+      updateFab();
+      // NO auto-open cart
+
+      // Reset
+      state.selectedPrimer = null;
+      state.selectedSegundo = null;
+      state.selectedBebida = null;
+      state.menuQty = 1;
+      document.getElementById('menu-qty-display').textContent = 1;
+      document.querySelectorAll('.menu-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('.bebida-pill').forEach(p => p.classList.remove('active'));
+    }
+
+    // ─────────────────────────────────────────
+    // CARTA — Load from Firestore
+    // ─────────────────────────────────────────
+    let cartaData = []; // [{ category, items:[{nombre,precio,descripcion,img}] }]
+    let activeCatFilter = 'all';
+
+    const CAT_ICONS = {
+      'PLATOS CRIOLLOS': '🍽', 'CRIOLLOS': '🍽',
+      'ARROCES': '🍚',
+      'PLATOS MARINOS': '🦐', 'MARINOS': '🦐',
+      'COMBOS': '⭐',
+      'ENTRADAS': '🥑',
+      'POSTRES': '🍰',
+      'BEBIDAS': '🥛',
+      'LICORES': '🍺',
+      'DESAYUNOS': '☀️',
+      'RACIONES': '🍲',
+    };
+
+    function getCatIcon(cat) {
+      const u = cat.toUpperCase();
+      for (const [k, v] of Object.entries(CAT_ICONS)) {
+        if (u.includes(k)) return v;
+      }
+      return '🍴';
+    }
+
+    async function loadCarta() {
+      try {
+        const snap = await db.collection('menu').orderBy('orden').get();
+        if (snap.empty) {
+          document.getElementById('carta-container').innerHTML =
+            '<p class="text-center text-on-surface-variant py-8 text-sm">La carta se está preparando...</p>';
+          return;
+        }
+        cartaData = [];
+        snap.forEach(doc => {
+          const data = doc.data();
+          const items = (data.items || [])
+            .filter(i => i.disponible !== 'no')
+            .map(i => ({
+              nombre: i.nombre,
+              precio: parseFloat(i.precio) || 0,
+              descripcion: i.descripcion || '',
+            }));
+          if (items.length) cartaData.push({ category: data.nombre, items });
+        });
+        renderCarta('all');
+      } catch (e) {
+        console.error(e);
+        document.getElementById('carta-container').innerHTML =
+          '<p class="text-center text-on-surface-variant py-8">No se pudo cargar la carta.</p>';
+      }
+    }
+
+    function filterCarta(cat, btn) {
+      activeCatFilter = cat;
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      if (cat === 'all') {
+        renderCarta('all');
+      } else {
+        // scroll to section
+        const section = document.getElementById('cat-sec-' + cat.replace(/\s+/g, '_'));
+        if (section) {
+          const offset = 64 + 56; // header + sticky pills
+          const top = section.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }
+    }
+
+    function renderCarta(catFilter) {
+      const container = document.getElementById('carta-container');
+      let html = '';
+
+      const filtered = catFilter === 'all'
+        ? cartaData
+        : cartaData.filter(g => g.category.toUpperCase().includes(catFilter.toUpperCase()));
+
+      if (!filtered.length) {
+        container.innerHTML = '<p class="text-center text-on-surface-variant py-8 text-sm">No hay platos en esta categoría.</p>';
+        return;
+      }
+
+      filtered.forEach(group => {
+        const icon = getCatIcon(group.category);
+        const secId = 'cat-sec-' + group.category.replace(/\s+/g, '_');
+        html += `
+          <section class="mb-6" id="${secId}" data-cat-key="${group.category}">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-lg">${icon}</span>
+              <h4 class="font-headline text-base text-on-surface uppercase tracking-widest">${group.category}</h4>
+            </div>
+            <div class="space-y-2">
+        `;
+
+        group.items.forEach(item => {
+          const cartaId = `carta-${formatFileName(item.nombre)}`;
+          const price = item.precio.toFixed(2).replace('.', ',');
+          const file = formatFileName(item.nombre);
+          const imgSrc = `img/menu/${file}.avif`;
+          const existingItem = state.cartItems.find(c => c._cartaId === cartaId);
+          const qty = existingItem ? existingItem.qty : 0;
+          const isSelected = existingItem ? 'selected' : '';
+
+          html += `
+            <div class="carta-item ${isSelected}" id="${cartaId}" onclick="toggleCartaItem('${cartaId}', '${item.nombre.replace(/'/g, "\\'")}',${item.precio})">
+              <div class="item-qty" id="qty-${cartaId}">${qty}</div>
+              <div class="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-surface-container-highest">
+                <img
+                  src="${imgSrc}"
+                  alt="${item.nombre}"
+                  class="w-full h-full object-cover"
+                  onerror="this.src='img/peru.avif'; this.onerror=null;"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-on-surface font-semibold text-sm leading-tight truncate">${item.nombre}</p>
+                ${item.descripcion ? `<p class="text-on-surface-variant text-xs mt-0.5 line-clamp-1">${item.descripcion}</p>` : ''}
+              </div>
+              <div class="flex-shrink-0 text-right ml-2">
+                <span class="font-headline text-primary text-base">${price}€</span>
+                <div class="flex items-center gap-1 mt-1">
+                  <button class="qty-btn w-6 h-6 text-sm" onclick="event.stopPropagation(); changeCártaQty('${cartaId}','${item.nombre.replace(/'/g, "\\'")}',${item.precio},-1)">−</button>
+                  <span class="qty-num text-sm" id="qnum-${cartaId}" style="min-width:14px;">${qty || 0}</span>
+                  <button class="qty-btn w-6 h-6 text-sm" onclick="event.stopPropagation(); changeCártaQty('${cartaId}','${item.nombre.replace(/'/g, "\\'")}',${item.precio},1)">+</button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `</div></section>`;
+      });
+
+      container.innerHTML = html;
+
+      // Setup scroll-spy IntersectionObserver (only when showing all)
+      if (catFilter === 'all') {
+        setupCartaScrollSpy();
+      }
+    }
+
+    let cartaScrollObserver = null;
+    function setupCartaScrollSpy() {
+      if (cartaScrollObserver) cartaScrollObserver.disconnect();
+      const sections = document.querySelectorAll('#carta-container section[data-cat-key]');
+      cartaScrollObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const cat = entry.target.dataset.catKey;
+            document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+            // find matching pill
+            const matchPill = [...document.querySelectorAll('.cat-pill')].find(p => {
+              const dc = p.dataset.cat;
+              return dc && cat.toUpperCase().includes(dc.toUpperCase());
+            });
+            if (matchPill) {
+              matchPill.classList.add('active');
+              matchPill.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+            }
+          }
+        });
+      }, { threshold: 0.3, rootMargin: '-64px 0px -60% 0px' });
+      sections.forEach(s => cartaScrollObserver.observe(s));
+    }
+
+    function toggleCartaItem(cartaId, nombre, precio) {
+      if (typeof window.event !== 'undefined') window.event.stopPropagation();
+      const existingIdx = state.cartItems.findIndex(ci => ci._cartaId === cartaId);
+      const cardEl = document.getElementById(cartaId);
+      const qtyEl = document.getElementById(`qty-${cartaId}`);
+      const qnumEl = document.getElementById(`qnum-${cartaId}`);
+
+      if (existingIdx >= 0) {
+        // Remove completely
+        state.cartItems.splice(existingIdx, 1);
+        if (cardEl) cardEl.classList.remove('selected');
+        if (qtyEl) qtyEl.textContent = 0;
+        if (qnumEl) qnumEl.textContent = 0; // reset inner stepper visual
+      } else {
+        // Add 1
+        const id = `carta-${Date.now()}`;
+        state.cartItems.push({ id, _cartaId: cartaId, nombre, precio, qty: 1, tipo: 'carta' });
+        if (cardEl) cardEl.classList.add('selected');
+        if (qtyEl) qtyEl.textContent = 1;
+        if (qnumEl) qnumEl.textContent = 1;
+      }
+      renderCart();
+      updateFab();
+    }
+
+    function changeCártaQty(cartaId, nombre, precio, delta) {
+      if (typeof window.event !== 'undefined') window.event.stopPropagation();
+      const existing = state.cartItems.find(ci => ci._cartaId === cartaId);
+      const cardEl = document.getElementById(cartaId);
+      const qtyEl = document.getElementById(`qty-${cartaId}`);
+      const qnumEl = document.getElementById(`qnum-${cartaId}`);
+
+      if (!existing && delta > 0) {
+        // Add 1
+        const id = `carta-${Date.now()}`;
+        state.cartItems.push({ id, _cartaId: cartaId, nombre, precio, qty: 1, tipo: 'carta' });
+        if (cardEl) cardEl.classList.add('selected');
+        if (qtyEl) qtyEl.textContent = 1;
+        if (qnumEl) qnumEl.textContent = 1;
+      } else if (existing) {
+        const newQty = existing.qty + delta;
+        if (newQty <= 0) {
+          // Remove
+          state.cartItems = state.cartItems.filter(ci => ci._cartaId !== cartaId);
+          if (cardEl) cardEl.classList.remove('selected');
+          if (qtyEl) qtyEl.textContent = 0;
+          if (qnumEl) qnumEl.textContent = 0; // reset inner visual
+        } else {
+          // Update
+          existing.qty = newQty;
+          if (qtyEl) qtyEl.textContent = newQty;
+          if (qnumEl) qnumEl.textContent = newQty;
+        }
+      }
+      renderCart();
+      updateFab();
+    }
+
+    // ─────────────────────────────────────────
+    // CART RENDER
+    // ─────────────────────────────────────────
+    function renderCart() {
+      const list = document.getElementById('cart-items-list');
+      const dishTotal = state.cartItems.reduce((s, i) => s + (i.tipo === 'menu' ? i.precio : i.precio * i.qty), 0);
+      const grandTotal = dishTotal + state.tipoCosto;
+
+      if (!state.cartItems.length) {
+        list.innerHTML = '<p class="text-center text-on-surface-variant py-8 text-sm">Tu carrito está vacío<br><span class="text-xs">Añade platos del menú o la carta</span></p>';
+        document.getElementById('cart-subtotal').textContent = '0,00€';
+        document.getElementById('cart-total').textContent = state.tipoCosto.toFixed(2).replace('.', ',') + '€';
+        return;
+      }
+
+      let html = '';
+      state.cartItems.forEach(item => {
+        const lineTotal = item.tipo === 'menu' ? item.precio : item.precio * item.qty;
+        html += `
+          <div class="flex items-start gap-3 bg-surface-container rounded-xl p-3">
+            <div class="flex-1 min-w-0">
+              <p class="text-on-surface text-sm font-semibold leading-snug">${item.nombre}</p>
+              ${item.detail ? `<p class="text-on-surface-variant text-xs mt-0.5">${item.detail}</p>` : ''}
+              <div class="flex items-center gap-2 mt-2">
+                ${item.tipo === 'carta' ? `
+                  <button class="qty-btn w-6 h-6 text-xs" onclick="cartChangeQty('${item.id}', -1)">−</button>
+                  <span class="text-sm text-primary font-bold">${item.qty}</span>
+                  <button class="qty-btn w-6 h-6 text-xs" onclick="cartChangeQty('${item.id}', 1)">+</button>
+                ` : `<span class="text-xs text-on-surface-variant">×${item.qty}</span>`}
+              </div>
+            </div>
+            <div class="text-right ml-2 flex-shrink-0">
+              <span class="font-headline text-primary">${lineTotal.toFixed(2).replace('.', ',')} €</span>
+              <button onclick="removeCartItem('${item.id}')" class="block text-on-surface-variant hover:text-red-400 transition-colors mt-1 ml-auto">
+                <span class="material-symbols-outlined" style="font-size:16px;">delete</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+      document.getElementById('cart-subtotal').textContent = dishTotal.toFixed(2).replace('.', ',') + '€';
+      document.getElementById('cart-total').textContent = grandTotal.toFixed(2).replace('.', ',') + '€';
+    }
+
+    function cartChangeQty(itemId, delta) {
+      const item = state.cartItems.find(i => i.id === itemId);
+      if (!item) return;
+      item.qty = Math.max(1, item.qty + delta);
+      item.precio = item._basePrice || item.precio;
+
+      // Sync carta display
+      if (item._cartaId) {
+        const qtyEl = document.getElementById(`qty-${item._cartaId}`);
+        const qnumEl = document.getElementById(`qnum-${item._cartaId}`);
+        if (qtyEl) qtyEl.textContent = item.qty;
+        if (qnumEl) qnumEl.textContent = item.qty;
+      }
+      renderCart();
+      updateFab();
+    }
+
+    function removeCartItem(itemId) {
+      const item = state.cartItems.find(i => i.id === itemId);
+      if (item?._cartaId) {
+        document.getElementById(item._cartaId)?.classList.remove('selected');
+      }
+      state.cartItems = state.cartItems.filter(i => i.id !== itemId);
+      renderCart();
+      updateFab();
+      if (!state.cartItems.length) closeCart();
+    }
+
+    // store base price when adding carta items
+    const _origPush = Array.prototype.push;
+
+    // ─────────────────────────────────────────
+    // FAB
+    // ─────────────────────────────────────────
+    function updateFab() {
+      const fab = document.getElementById('cart-fab');
+      const count = state.cartItems.reduce((s, i) => s + i.qty, 0);
+      const total = state.cartItems.reduce((s, i) => s + (i.tipo === 'menu' ? i.precio : i.precio * i.qty), 0);
+      document.getElementById('fab-count').textContent = count;
+      document.getElementById('fab-label').textContent = count > 0
+        ? `${total.toFixed(2).replace('.', ',')}€`
+        : 'Ver pedido';
+      if (count > 0) fab.classList.add('visible');
+      else fab.classList.remove('visible');
+    }
+
+    // ─────────────────────────────────────────
+    // CART PANEL
+    // ─────────────────────────────────────────
+    function openCart() {
+      renderCart();
+      document.getElementById('cart-panel').classList.add('open');
+      document.getElementById('cart-panel-backdrop').classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart() {
+      document.getElementById('cart-panel').classList.remove('open');
+      document.getElementById('cart-panel-backdrop').classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+
+    // ─────────────────────────────────────────
+    // WHATSAPP
+    // ─────────────────────────────────────────
+    function sendWhatsApp() {
+      const name = document.getElementById('contact-name').value.trim();
+      const locationField = document.getElementById('contact-location');
+      const location = locationField ? locationField.value.trim() : '';
+      const phoneField = document.getElementById('contact-phone');
+      const phone = phoneField ? phoneField.value.trim() : '';
+      const payment = document.getElementById('contact-payment').value;
+      const notes = document.getElementById('order-notes').value.trim();
+
+      const errors = [];
+      if (!state.cartItems.length) errors.push('🛒 Tu pedido está vacío. Añade al menos un plato.');
+      if (!name) errors.push('📝 Indica tu nombre.');
+      if (state.tipoNombre === 'ENVIAR' && !location) errors.push('📍 Indica tu dirección de envío.');
+      if (!payment) errors.push('💳 Selecciona un método de pago.');
+
+      if (errors.length) { alert(errors.join('\n')); return; }
+
+      const dishTotal = state.cartItems.reduce((s, i) => s + (i.tipo === 'menu' ? i.precio : i.precio * i.qty), 0);
+      const grandTotal = dishTotal + state.tipoCosto;
+
+      let msg = `🛎️ *PEDIDO — Mis Raízes*\n`;
+      msg += `━━━━━━━━━━━━━━━━━━━\n\n`;
+      msg += `👤 *Cliente:* ${name}\n`;
+      if (state.tipoNombre === 'ENVIAR') {
+        msg += `📍 *Dirección de envío:* ${location}\n`;
+      } else {
+        msg += `📍 *Recoge en local*\n`;
+      }
+      if (phone) msg += `📞 *Teléfono:* ${phone}\n`;
+      msg += `💳 *Pago:* ${payment}\n\n`;
+
+      msg += `🍽 *PLATOS:*\n`;
+      state.cartItems.forEach(item => {
+        const lineTotal = item.tipo === 'menu' ? item.precio : item.precio * item.qty;
+        msg += `• ${item.nombre}`;
+        if (item.qty > 1 && item.tipo !== 'menu') msg += ` ×${item.qty}`;
+        msg += ` → ${lineTotal.toFixed(2).replace('.', ',')}€\n`;
+        if (item.detail) msg += `  _ (${item.detail})\n`;
+      });
+
+      msg += `\n━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `💰 *TOTAL: ${grandTotal.toFixed(2).replace('.', ',')}€* (incl. ${state.tipoNombre.toLowerCase()} ${state.tipoCosto.toFixed(2).replace('.', ',')}€)\n`;
+      if (notes) msg += `\n📝 *Notas:* ${notes}`;
+
+      window.open(`https://wa.me/34635382559?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // ─────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      loadDailyMenu();
+      loadCarta();
+
+      // Swipe to close cart
+      let startY = 0;
+      const panel = document.getElementById('cart-panel');
+      panel.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+      panel.addEventListener('touchend', e => {
+        if (e.changedTouches[0].clientY - startY > 80) closeCart();
+      });
+    });
+  </script>
+
+  <!-- Cookie consent -->
+  <script src="js/cookie-consent.js" defer></script>
+
+</body>
+
+</html>
