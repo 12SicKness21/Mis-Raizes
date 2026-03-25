@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin | Mis Raízes - Cocina Peruana</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <img src="img/logo.jpg" alt="Mis Raízes" class="login-logo">
+            <h1 class="login-title">Super Admin</h1>
+            <p class="login-subtitle">Panel de Reseñas</p>
+            <form id="loginForm" class="login-form">
+                <input type="email" id="loginEmail" class="login-input" placeholder="Correo electrónico" required autocomplete="username">
+                <input type="password" id="loginPassword" class="login-input" placeholder="Contraseña" required autocomplete="current-password">
+                <button type="submit" class="login-btn">Acceder</button>
+                <p class="login-error" id="loginError"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel" style="display:none;">
+        <!-- Top Bar -->
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <img src="img/logo.jpg" alt="Mis Raízes" class="admin-logo">
+                <div>
+                    <h1 class="admin-title">Panel de Super Admin</h1>
+                    <p class="admin-subtitle">Gestión de Reseñas</p>
+                </div>
+            </div>
+            <div class="admin-header-right">
+                <a href="reseñas.html" class="btn btn-gold" target="_blank">VER RESEÑAS</a>
+                <button class="btn btn-danger" onclick="logout()">Salir</button>
+            </div>
+        </header>
+
+        <!-- Status Message -->
+        <div class="status-bar" id="statusBar" style="display:none;">
+            <span id="statusMessage"></span>
+            <button class="status-close" onclick="hideStatus()">✕</button>
+        </div>
+
+        <div style="max-width: 600px; margin: 2rem auto; padding: 2rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(249,212,6,0.2); border-radius: 1rem;">
+            <h2 style="color: #f9d406; font-size: 1.5rem; margin-bottom: 1.5rem; text-transform: uppercase; text-align: center;">Añadir Nueva Reseña</h2>
+            <form id="addReviewForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <label style="color: #ccc; display: block; margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">Nombre del Cliente</label>
+                    <input type="text" id="reviewName" class="cell-input" style="width: 100%; box-sizing: border-box; padding: 1rem; border-radius: 0.5rem; background: rgba(0,0,0,0.5); color: white; border: 1px solid rgba(255,255,255,0.1);" required placeholder="Ej. Juan Pérez">
+                </div>
+                <div>
+                    <label style="color: #ccc; display: block; margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">Puntuación (Estrellas)</label>
+                    <select id="reviewRating" class="cell-input" style="width: 100%; box-sizing: border-box; padding: 1rem; border-radius: 0.5rem; background: #1a1a1a; color: white; border: 1px solid rgba(255,255,255,0.1);" required>
+                        <option value="5">5 Estrellas - Excelente</option>
+                        <option value="4">4 Estrellas - Muy Bueno</option>
+                        <option value="3">3 Estrellas - Bueno</option>
+                        <option value="2">2 Estrellas - Regular</option>
+                        <option value="1">1 Estrella - Malo</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="color: #ccc; display: block; margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">Comentario</label>
+                    <textarea id="reviewComment" class="cell-input" style="width: 100%; box-sizing: border-box; padding: 1rem; border-radius: 0.5rem; background: rgba(0,0,0,0.5); color: white; border: 1px solid rgba(255,255,255,0.1); resize: vertical; min-height: 120px;" required placeholder="Ej. La comida estuvo deliciosa..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold" style="margin-top: 1rem; padding: 1rem; font-size: 1.1rem;">Guardar Reseña</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Firebase SDK (CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/super-admin.js"></script>
+</body>
+
+</html>

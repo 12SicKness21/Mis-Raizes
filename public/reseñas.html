@@ -123,14 +123,10 @@
     <main class="flex-1 flex justify-center py-8 px-4">
         <div class="layout-content-container flex flex-col max-w-[960px] flex-1 gap-8">
             <!-- Header Section with Rating Summary -->
-            <div
-                class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-primary/5 p-8 rounded-2xl border border-primary/10">
+            <div id="reviews-header" class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 bg-primary/5 p-8 rounded-2xl border border-primary/10">
                 <div class="flex flex-col gap-2">
-                    <h1
-                        class="text-primary text-5xl md:text-6xl font-black leading-none tracking-tighter uppercase italic italic-none">
-                        RESEÑAS</h1>
-                    <p class="text-slate-400 text-lg font-medium">Lo que nuestros comensales opinan de la experiencia
-                        Mis Raízes</p>
+                    <h1 class="text-primary text-5xl md:text-6xl font-black leading-none tracking-tighter uppercase italic italic-none">RESEÑAS</h1>
+                    <p class="text-slate-400 text-lg font-medium">Lo que nuestros comensales opinan de la experiencia Mis Raízes</p>
                     <div class="flex items-center gap-4 mt-2">
                         <div class="flex items-center gap-1 bg-white/5 px-3 py-1 rounded-full border border-primary/20">
                             <span class="text-primary material-symbols-outlined text-sm fill-1">star</span>
@@ -140,17 +136,16 @@
                 </div>
                 <div class="flex flex-col items-center md:items-end gap-2 shrink-0">
                     <div class="flex items-center gap-4">
-                        <p class="text-white text-7xl font-black leading-none tracking-tighter italic">4.9</p>
+                        <p id="avg-rating-text" class="text-white text-7xl font-black leading-none tracking-tighter italic">-.-</p>
                         <div class="flex flex-col">
-                            <div class="flex gap-0.5 text-primary">
+                            <div id="avg-rating-stars" class="flex gap-0.5 text-primary">
                                 <span class="material-symbols-outlined fill-1">star</span>
                                 <span class="material-symbols-outlined fill-1">star</span>
                                 <span class="material-symbols-outlined fill-1">star</span>
                                 <span class="material-symbols-outlined fill-1">star</span>
                                 <span class="material-symbols-outlined">star_half</span>
                             </div>
-                            <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest text-right">9
-                                RESEÑAS</p>
+                            <p id="total-reviews-text" class="text-slate-500 text-[10px] font-black uppercase tracking-widest text-right">0 RESEÑAS</p>
                         </div>
                     </div>
                 </div>
@@ -159,377 +154,16 @@
             <!-- Filters and Rating Bars -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-4">
                 <div class="flex flex-col gap-2">
-                    <div class="grid grid-cols-[20px_1fr_40px] items-center gap-x-3 gap-y-2">
-                        <p class="text-[10px] font-black text-primary opacity-70">10</p>
-                        <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
-                            <div class="rounded-full bg-primary" style="width: 85%;"></div>
-                        </div>
-                        <p class="text-slate-500 text-[10px] font-black text-right">90%</p>
-                        <p class="text-[10px] font-black text-primary opacity-70">1</p>
-                        <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
-                            <div class="rounded-full bg-primary" style="width: 3%;"></div>
-                        </div>
-                        <p class="text-slate-500 text-[10px] font-black text-right">10%</p>
-                        <p class="text-[10px] font-black text-primary opacity-70">0</p>
-                        <div class="flex h-1.5 flex-1 overflow-hidden rounded-full bg-white/5">
-                            <div class="rounded-full bg-primary/40" style="width: 3%;"></div>
-                        </div>
-                        <p class="text-slate-500 text-[10px] font-black text-right">0%</p>
+                    <div id="reviews-distribution" class="grid grid-cols-[20px_1fr_40px] items-center gap-x-3 gap-y-2">
+                        <!-- Barras dinámicas -->
                     </div>
                 </div>
                 <div class="flex gap-3 flex-wrap justify-start md:justify-end">
                 </div>
             </div>
             <!-- Reviews List -->
-            <div class="flex flex-col gap-6 px-4 pb-32">
-                <!-- Review Card -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Naomi
-                                    Quiroga</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Excelente lugar , con una comida súper rica."
-                    </p>
-                </div>
-                <!-- Review Card -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Angelo
-                                    Rodriguez</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Ese PAN CON CHICHARRÓN como si estuviera en Perú, su crema de ají que siempre cae bien con esto
-                        complementa muy bien. Ambiente limpio, ordenado, educada atención, en general buen servicio.
-                        Recomendable y seguro que será una visita recurrente."
-                    </p>
-                </div>
-                <!-- Review Card -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Laura Cs</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Muy atentos y la comida muy buena, recomendable!!."
-                    </p>
-                </div>
-                <!-- Review Card -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Roosvetl
-                                    mendoza
-                                    ramirez</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "La comida muy buena, servicio rápido y recomendable."
-                    </p>
-                </div>
-                <!-- Review Card -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Raul
-                                    Orellana
-                                    diaz</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Buena comida."
-                    </p>
-                </div>
-                <!-- Review Card 5 -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Isabel
-                                    Serrano</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "La comida muy rica y sabrosa, el restaurante es nuevo y está muy limpio y ordenado, en cuanto a
-                        los trabajadores muy amables, atentos a los clientes, discretos y serviciales. Aunque el
-                        restaurante estuvo lleno el ambiente fue tranquilo y poco ruidoso, podía hablarse normalmente
-                        sin chillar.
-                        Hemos comido muy bien y hemos estado muy a gusto, repetiremos sin duda."
-                    </p>
-                </div>
-                <!-- Review Card 1 -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Nancy vb</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Muy bueno todo , el dueño súper encantador …volveremos !!!."
-                    </p>
-                </div>
-                <!-- Review Card -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Christian
-                                    Montoya</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Comida muy rica buena sazón. El sitio bastante agradable y tema precio bastante bien 🙏🏽."
-                    </p>
-                </div>
-                <!-- Review Card -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Rolando Dias
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Muy rico. Ayer fuimos a comer y coincidía que lo inauguraban.
-                        Recomendable y bien de precio.
-                        Volveremos."
-                    </p>
-                </div>
-                <!-- Review Card 1 -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Rosa
-                                    Carolina orellana diaz</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Recomiendo mucho , pedí un lomo saltado y la verdad que es uno de los mejores que he comido ,
-                        la carne se aprecia que es de calidad y el sabor está muy rico , atención 10 de 10 , comida muy
-                        buena."
-                    </p>
-                </div>
-
-                <!-- Review Card 2 -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Anselmo
-                                    valeriano</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Muy rico la comida y un servicio excelente
-                        Recomendable sin duda."
-                    </p>
-                </div>
-                <!-- Review Card 3 -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">Belén
-                                    Orellana</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Comida muy rica, recomiendo los anticuchos."
-                    </p>
-                </div>
-                <!-- Review Card 4 -->
-                <div
-                    class="flex flex-col gap-4 bg-white/5 p-8 rounded-2xl gold-border hover:bg-white/[0.08] transition-all group">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="flex items-center justify-center aspect-square rounded-full size-12 border-2 border-primary/30 bg-primary/10 text-primary">
-                                <span class="material-symbols-outlined text-3xl">person</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <p class="text-white text-base font-black uppercase tracking-widest italic">CARLOS R</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-0.5 text-primary">
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                            <span class="material-symbols-outlined text-lg fill-1">star</span>
-                        </div>
-                    </div>
-                    <p class="text-slate-300 text-base leading-relaxed italic opacity-80">
-                        "Muy rica la comida , calidad 10 de 10."
-                    </p>
-                </div>
+            <div id="reviews-list" class="flex flex-col gap-6 px-4 pb-32">
+                <p class="text-center text-slate-400 italic py-10">Cargando reseñas...</p>
             </div>
         </div>
     </main>
@@ -595,8 +229,10 @@
     </script>
     <!-- Firebase SDK (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <script src="js/reseñas-public.js"></script>
     <script src="js/cookie-consent.js" defer></script>
 </body>
 

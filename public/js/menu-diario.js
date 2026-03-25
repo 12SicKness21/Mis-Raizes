@@ -5,6 +5,28 @@
 async function loadDailyMenu() {
     const container = document.getElementById('menu-container');
 
+    // Comprobar si es fin de semana (0 = Domingo, 6 = Sábado)
+    const day = new Date().getDay();
+    if (day === 0 || day === 6) {
+        container.innerHTML = `
+            <div class="text-center py-10 bg-white/5 gold-border rounded-2xl p-8 mt-4 animate-slideInUp">
+                <span class="material-symbols-outlined text-primary text-5xl mb-4">event_busy</span>
+                <h2 class="text-primary text-2xl font-black uppercase tracking-widest italic mb-2">Solo Lunes a Viernes</h2>
+                <p class="text-slate-300 text-base mb-8">El menú del día no está disponible durante el fin de semana.</p>
+                <a href="carta.html" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-background-dark font-black uppercase tracking-widest hover:scale-105 transition-all italic">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span>Ver Nuestra Carta</span>
+                </a>
+            </div>
+        `;
+        
+        const priceBanner = document.getElementById('price-banner');
+        if (priceBanner) {
+            priceBanner.style.display = 'none';
+        }
+        return;
+    }
+
     try {
         const doc = await db.collection('config').doc('weekly_menu').get();
 
@@ -87,7 +109,7 @@ async function loadDailyMenu() {
                         <h2 class="text-white font-black uppercase tracking-widest font-serif text-lg sm:text-xl shrink-0">Primeros</h2>
                         <div class="h-[1px] w-full max-w-[200px] bg-gradient-to-r from-[#3d3a2b] to-transparent ml-2"></div>
                     </div>
-                    <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory px-1 hide-scrollbar" style="scroll-padding-left: 4px;">
+                    <div class="flex overflow-x-auto lg:overflow-x-visible lg:flex-wrap lg:justify-center gap-4 sm:gap-6 pb-6 snap-x snap-mandatory px-1 hide-scrollbar" style="scroll-padding-left: 4px;">
                         ${primeros.map(generateDishHTML).join('')}
                     </div>
                 </div>
@@ -103,7 +125,7 @@ async function loadDailyMenu() {
                         <h2 class="text-white font-black uppercase tracking-widest font-serif text-lg sm:text-xl shrink-0">Segundos</h2>
                         <div class="h-[1px] w-full max-w-[200px] bg-gradient-to-r from-[#3d3a2b] to-transparent ml-2"></div>
                     </div>
-                    <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory px-1 hide-scrollbar" style="scroll-padding-left: 4px;">
+                    <div class="flex overflow-x-auto lg:overflow-x-visible lg:flex-wrap lg:justify-center gap-4 sm:gap-6 pb-6 snap-x snap-mandatory px-1 hide-scrollbar" style="scroll-padding-left: 4px;">
                         ${segundos.map(generateDishHTML).join('')}
                     </div>
                 </div>

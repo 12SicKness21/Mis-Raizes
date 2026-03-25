@@ -535,10 +535,24 @@
   <main class="max-w-2xl mx-auto px-5 pt-8 pb-40">
 
     <!-- Intro -->
-    <div class="mb-10">
+    <div class="mb-6">
       <span class="section-eyebrow">Tu pedido</span>
       <h2 class="section-title mt-1">¿Qué te apetece hoy?</h2>
       <p class="section-sub">Elige del menú del día o de nuestra carta.</p>
+    </div>
+
+    <!-- Delivery Notice -->
+    <div
+      class="mb-10 bg-primary/10 border border-primary/30 rounded-xl p-4 flex items-start gap-3 shadow-[0_0_15px_rgba(242,202,80,0.15)]">
+      <span class="material-symbols-outlined text-primary shrink-0 mt-0.5">info</span>
+      <div>
+        <p class="text-sm text-primary font-bold mb-1">Zonas de Envío Disponibles</p>
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Actualmente realizamos envíos exclusivamente a los códigos postales:
+          <span class="text-on-surface font-semibold text-primary">28026, 28019, 28045, 28041 y 28025</span>.
+          Si tu código postal no está en la lista, puedes usar la opción de "Recoger".
+        </p>
+      </div>
     </div>
 
     <!-- ─── TABS ─── -->
@@ -754,16 +768,23 @@
             <label for="contact-location">Dirección<span class="required">*</span></label>
             <input type="text" id="contact-location" placeholder="Calle, número, piso…" autocomplete="street-address" />
           </div>
-          <div>
-            <label for="contact-payment">Método de pago <span class="required">*</span></label>
-            <select id="contact-payment" style="width: max-content; color: rgba(255, 255, 255, 0.7);"
-              onchange="this.style.color = this.value ? '#000000' : 'rgba(153, 144, 124, 0.7)';">
-              <option value="">— Selecciona —</option>
-              <option value="Efectivo">💶 Efectivo</option>
-              <option value="Tarjeta">💳 Tarjeta (en local)</option>
-              <option value="Bizum">📱 Bizum</option>
-              <option value="Transferencia">🏦 Transferencia</option>
-            </select>
+          <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+            <div class="w-full sm:w-auto">
+              <label for="contact-payment">Método de pago <span class="required">*</span></label>
+              <select id="contact-payment" class="w-full sm:w-auto"
+                style="min-width:180px; color: rgba(255, 255, 255, 0.7);"
+                onchange="this.style.color = this.value ? '#e5e2e1' : 'rgba(153, 144, 124, 0.7)'; document.getElementById('cash-amount-container').style.display = this.value === 'Efectivo' ? 'block' : 'none';">
+                <option value="">— Selecciona —</option>
+                <option value="Efectivo">💶 Efectivo</option>
+                <option value="Tarjeta">💳 Tarjeta</option>
+              </select>
+            </div>
+
+            <div id="cash-amount-container" class="w-full sm:w-1/2" style="display: none;">
+              <label for="contact-cash-amount" class="text-primary">¿Con cuánto pagas? (€)</label>
+              <input type="number" id="contact-cash-amount" placeholder="Ej. 50" min="0" step="0.50"
+                autocomplete="off" />
+            </div>
           </div>
         </div>
 
@@ -1323,6 +1344,13 @@
       const phoneField = document.getElementById('contact-phone');
       const phone = phoneField ? phoneField.value.trim() : '';
       const payment = document.getElementById('contact-payment').value;
+      let paymentMsg = payment;
+      if (payment === 'Efectivo') {
+        const cashValue = document.getElementById('contact-cash-amount').value.trim();
+        if (cashValue) {
+          paymentMsg += ` (Abonará con: ${cashValue}€)`;
+        }
+      }
       const notes = document.getElementById('order-notes').value.trim();
 
       const errors = [];
@@ -1345,7 +1373,7 @@
         msg += `📍 *Recoge en local*\n`;
       }
       if (phone) msg += `📞 *Teléfono:* ${phone}\n`;
-      msg += `💳 *Pago:* ${payment}\n\n`;
+      msg += `💳 *Pago:* ${paymentMsg}\n\n`;
 
       msg += `🍽 *PLATOS:*\n`;
       state.cartItems.forEach(item => {
