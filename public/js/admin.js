@@ -561,10 +561,10 @@ function escapeAttr(str) {
 }
 // === Helper to check image existence ===
 async function checkImageExists(url) {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         var img = new Image();
-        img.onload = function() { resolve(true); };
-        img.onerror = function() { resolve(false); };
+        img.onload = function () { resolve(true); };
+        img.onerror = function () { resolve(false); };
         img.src = url;
     });
 }
@@ -576,7 +576,7 @@ function getDishImagePaths(dishName) {
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove accents
         .replace(/[^a-z0-9]+/g, '_')
         .replace(/^_+|_+$/g, '');
-    
+
     return [
         'img/menu/' + baseName + '.webp',
         'img/menu/' + baseName + '.avif'
@@ -614,7 +614,7 @@ async function getAllValidImages(dishes) {
                     break;
                 }
             }
-            if(!found) result.push('');
+            if (!found) result.push('');
         }
     }
     return result;
@@ -624,13 +624,13 @@ async function getAllValidImages(dishes) {
 // === Download Menu as Image ===
 async function downloadMenuImage() {
     showStatus('Generando imagen, por favor espera...', 'info');
-    
+
     var fecha = document.getElementById('menuFecha').value.trim();
     if (fecha) fecha = "Menú - " + fecha;
 
     var primeros = [];
     var segundos = [];
-    
+
     for (var i = 1; i <= 4; i++) {
         var pVal = document.getElementById('p' + i).value.trim();
         var sVal = document.getElementById('s' + i).value.trim();
@@ -642,26 +642,26 @@ async function downloadMenuImage() {
     var previewPrimeros = document.getElementById('previewPrimeros');
     var previewSegundos = document.getElementById('previewSegundos');
     var previewDate = document.getElementById('previewDate');
-    
+
     previewDate.textContent = fecha;
 
-    previewPrimeros.innerHTML = primeros.map(function(item) {
+    previewPrimeros.innerHTML = primeros.map(function (item) {
         return '<div style="display: flex; align-items: flex-start;"><span style="color: #f9d406; margin-right: 15px; font-size: 30px;">•</span><span style="color: #ffffff;">' + item + '</span></div>';
     }).join('');
 
-    previewSegundos.innerHTML = segundos.map(function(item) {
+    previewSegundos.innerHTML = segundos.map(function (item) {
         return '<div style="display: flex; align-items: flex-start; margin-bottom: 5px;"><span style="color: #f9d406; margin-right: 15px; font-size: 30px;">•</span><span style="color: #ffffff;">' + item + '</span></div>';
     }).join('');
 
     // Fetch matching images for slots (1 from primeros, 2 from segundos usually, or just whatever fits)
     var img1Src = await getFirstValidImage(primeros);
     var img2Src = await getFirstValidImage(segundos);
-    
+
     // Attempt to get a different image for the third slot
     var allSegundosImgs = await getAllValidImages(segundos);
     var img3Src = '';
-    for(var k = 0; k < allSegundosImgs.length; k++) {
-        if(allSegundosImgs[k] && allSegundosImgs[k] !== img2Src) {
+    for (var k = 0; k < allSegundosImgs.length; k++) {
+        if (allSegundosImgs[k] && allSegundosImgs[k] !== img2Src) {
             img3Src = allSegundosImgs[k];
             break;
         }
@@ -674,16 +674,16 @@ async function downloadMenuImage() {
     var img1 = document.getElementById('previewImg1');
     var img2 = document.getElementById('previewImg2');
     var img3 = document.getElementById('previewImg3');
-    
+
     img1.src = img1Src;
     img2.src = img2Src;
     img3.src = img3Src;
-    
+
     // Wait for images to load before rendering
     await Promise.all([
-        new Promise(function(r) { img1.onload = img1.onerror = r; }),
-        new Promise(function(r) { img2.onload = img2.onerror = r; }),
-        new Promise(function(r) { img3.onload = img3.onerror = r; })
+        new Promise(function (r) { img1.onload = img1.onerror = r; }),
+        new Promise(function (r) { img2.onload = img2.onerror = r; }),
+        new Promise(function (r) { img3.onload = img3.onerror = r; })
     ]);
 
     var container = document.getElementById('menuImagePreviewBox');
@@ -716,7 +716,7 @@ async function downloadMenuImage() {
         document.body.removeChild(link);
 
         showStatus('✅ Imagen generada y descargada', 'success');
-    } catch(err) {
+    } catch (err) {
         console.error('Error html2canvas:', err);
         showStatus('❌ Error al generar la imagen', 'error');
         container.style.left = '-9999px';

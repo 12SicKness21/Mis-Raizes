@@ -101,6 +101,7 @@ async function loadMenu() {
         categories.forEach(cat => {
             const btn = document.createElement('button');
             btn.className = 'nav-btn';
+            btn.dataset.category = cat; // Add data attribute for scroll-spy
             btn.textContent = cat.replace(/\(.*\)/, '').trim();
             btn.addEventListener('click', () => {
                 filterCategory(cat);
@@ -192,9 +193,12 @@ function setActiveNav(activeBtn) {
     activeBtn.classList.add('active');
 }
 
-// Intersection Observer for reveal animations
+// Intersection Observer for reveal animations & Scroll-Spy
 function observeSections() {
-    const observer = new IntersectionObserver(
+    const navHeight = document.getElementById('categoryNav')?.offsetHeight || 70;
+
+    // Observer for "visible" fade-in animation
+    const revealObserver = new IntersectionObserver(
         (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -205,8 +209,35 @@ function observeSections() {
         { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
+    // Observer for Scroll-Spy (highlighting active nav)
+    const spyObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                // If the user is at the very top of the page, highlight 'Todo'
+                if (window.scrollY < 100) {
+                    const allBtn = document.querySelector('.nav-btn:nth-child(2)'); // 'Todo' is the 2nd button
+                    if (allBtn) setActiveNav(allBtn);
+                    return;
+                }
+
+                if (entry.isIntersecting) {
+                    const cat = entry.target.dataset.category;
+                    const btn = document.querySelector(`.nav-btn[data-category="${cat}"]`);
+                    if (btn) {
+                        setActiveNav(btn);
+                        // Auto-scroll the nav bar to center the active button
+                        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }
+                }
+            });
+        },
+        // Trigger when the section reaches the sticky nav bottom
+        { threshold: 0, rootMargin: `-${navHeight + 20}px 0px -70% 0px` }
+    );
+
     document.querySelectorAll('.category-section').forEach(section => {
-        observer.observe(section);
+        revealObserver.observe(section);
+        spyObserver.observe(section);
     });
 }
 

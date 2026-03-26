@@ -441,18 +441,19 @@
     /* Input styling */
     input[type="text"],
     input[type="tel"],
+    input[type="number"],
     select,
     textarea {
       width: 100%;
-      background: #1c1b1b;
-      border: 1.5px solid rgba(77, 70, 53, 0.4);
+      background: #1c1b1b !important;
+      border: 1.5px solid rgba(242, 202, 80, 0.3) !important;
       border-radius: 12px;
       padding: 12px 14px;
-      color: #e5e2e1;
+      color: #ffffff !important;
       font-family: 'Manrope', sans-serif;
       font-size: 15px;
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
       -webkit-appearance: none;
       appearance: none;
     }
@@ -467,6 +468,7 @@
 
     input[type="text"]:focus,
     input[type="tel"]:focus,
+    input[type="number"]:focus,
     select:focus,
     textarea:focus {
       border-color: rgba(242, 202, 80, 0.6);
@@ -527,7 +529,9 @@
       aria-label="Volver">
       <span class="material-symbols-outlined">arrow_back</span>
     </a>
-    <img src="img/Logo.webp" alt="Mis Raízes" class="h-10 w-auto object-contain" />
+    <a href="index.html" class="flex items-center">
+      <img src="img/Logo.webp" alt="Mis Raízes" class="h-10 w-auto object-contain" />
+    </a>
     <div class="w-10"></div>
   </header>
 
@@ -593,9 +597,10 @@
         <p class="selection-warning" id="warn-primer">⚠ Selecciona un primer plato</p>
         <div id="primeros-row" class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar"
           style="scroll-padding-left:4px;">
-          <!-- Spinner -->
-          <div id="primeros-spinner" class="flex items-center justify-center w-full py-10">
-            <div class="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+          <!-- Creative Loading State -->
+          <div id="primeros-spinner" class="flex flex-col items-center justify-center w-full py-10 gap-3 animate-pulse">
+            <span class="material-symbols-outlined text-primary text-4xl">cooking</span>
+            <p class="text-primary font-bold uppercase tracking-widest text-[10px] italic text-center">Preparando el menú...</p>
           </div>
         </div>
       </div>
@@ -610,8 +615,9 @@
         <p class="selection-warning" id="warn-segundo">⚠ Selecciona un segundo plato</p>
         <div id="segundos-row" class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar"
           style="scroll-padding-left:4px;">
-          <div id="segundos-spinner" class="flex items-center justify-center w-full py-10">
-            <div class="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+          <div id="segundos-spinner" class="flex flex-col items-center justify-center w-full py-10 gap-3 animate-pulse">
+            <span class="material-symbols-outlined text-primary text-4xl">cooking</span>
+            <p class="text-primary font-bold uppercase tracking-widest text-[10px] italic text-center">Preparando el menú...</p>
           </div>
         </div>
       </div>
@@ -673,8 +679,9 @@
 
       <!-- Items container (vertical, sectioned for scroll-spy) -->
       <div id="carta-container" class="space-y-3 pt-2">
-        <div class="flex justify-center py-10">
-          <div class="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin"></div>
+        <div class="flex flex-col items-center justify-center py-12 gap-3 animate-pulse">
+          <span class="material-symbols-outlined text-primary text-4xl">cooking</span>
+          <p class="text-primary font-bold uppercase tracking-widest text-[10px] italic text-center">Preparando el menú...</p>
         </div>
       </div>
     </section>
@@ -768,12 +775,23 @@
             <label for="contact-location">Dirección<span class="required">*</span></label>
             <input type="text" id="contact-location" placeholder="Calle, número, piso…" autocomplete="street-address" />
           </div>
+          <div id="recogida-container" class="hidden">
+            <label for="contact-pickup-time">¿Cuándo pasarás a recoger? <span class="required">*</span></label>
+            <select id="contact-pickup-time">
+              <option value="">— Selecciona —</option>
+              <option value="20 minutos">En 20 minutos</option>
+              <option value="30 minutos">En 30 minutos</option>
+              <option value="45 minutos">En 45 minutos</option>
+              <option value="1 hora">En 1 hora</option>
+              <option value="1 hora y media">En 1 hora y media</option>
+              <option value="2 horas">En 2 horas</option>
+            </select>
+          </div>
           <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
             <div class="w-full sm:w-auto">
               <label for="contact-payment">Método de pago <span class="required">*</span></label>
-              <select id="contact-payment" class="w-full sm:w-auto"
-                style="min-width:180px; color: rgba(255, 255, 255, 0.7);"
-                onchange="this.style.color = this.value ? '#e5e2e1' : 'rgba(153, 144, 124, 0.7)'; document.getElementById('cash-amount-container').style.display = this.value === 'Efectivo' ? 'block' : 'none';">
+              <select id="contact-payment" class="w-full sm:w-auto" style="min-width:180px;"
+                onchange="document.getElementById('cash-amount-container').style.display = this.value === 'Efectivo' ? 'block' : 'none';">
                 <option value="">— Selecciona —</option>
                 <option value="Efectivo">💶 Efectivo</option>
                 <option value="Tarjeta">💳 Tarjeta</option>
@@ -948,13 +966,18 @@
       document.getElementById('tipo-label').textContent = label;
       document.getElementById('tipo-fee-display').textContent = state.tipoCosto.toFixed(2).replace('.', ',') + '€';
 
-      // Toggle Address field visibility
+      // Toggle fields visibility
+      const dirCont = document.getElementById('direccion-container');
+      const recCont = document.getElementById('recogida-container');
+      
       if (state.tipoNombre === 'ENVIAR') {
-        document.getElementById('direccion-container').classList.remove('hidden');
+        dirCont?.classList.remove('hidden');
+        recCont?.classList.add('hidden');
       } else {
-        document.getElementById('direccion-container').classList.add('hidden');
+        dirCont?.classList.add('hidden');
+        recCont?.classList.remove('hidden');
       }
-
+      
       renderCart();
     }
 
@@ -1353,10 +1376,13 @@
       }
       const notes = document.getElementById('order-notes').value.trim();
 
+      const pickupTime = document.getElementById('contact-pickup-time').value;
+      
       const errors = [];
       if (!state.cartItems.length) errors.push('🛒 Tu pedido está vacío. Añade al menos un plato.');
       if (!name) errors.push('📝 Indica tu nombre.');
       if (state.tipoNombre === 'ENVIAR' && !location) errors.push('📍 Indica tu dirección de envío.');
+      if (state.tipoNombre === 'RECOGER' && !pickupTime) errors.push('🕘 Selecciona la hora de recogida.');
       if (!payment) errors.push('💳 Selecciona un método de pago.');
 
       if (errors.length) { alert(errors.join('\n')); return; }
@@ -1370,7 +1396,7 @@
       if (state.tipoNombre === 'ENVIAR') {
         msg += `📍 *Dirección de envío:* ${location}\n`;
       } else {
-        msg += `📍 *Recoge en local*\n`;
+        msg += `📍 *Recoge en local* (en ${pickupTime})\n`;
       }
       if (phone) msg += `📞 *Teléfono:* ${phone}\n`;
       msg += `💳 *Pago:* ${paymentMsg}\n\n`;

@@ -31,31 +31,18 @@ async function loadDailyMenu() {
         const doc = await db.collection('config').doc('weekly_menu').get();
 
         if (!doc.exists) {
-            container.innerHTML = '<p class="text-center text-slate-400 py-10">El menú se está preparando...</p>';
+            container.innerHTML = `
+                <div class="flex flex-col items-center justify-center p-12 text-center">
+                    <span class="material-symbols-outlined text-primary/40 text-5xl mb-4">restaurant_menu</span>
+                    <p class="text-slate-400 uppercase tracking-widest text-sm italic">Sazonando el día...<br>El menú se está preparando.</p>
+                </div>
+            `;
             return;
         }
 
         const data = doc.data();
         const primeros = data.primeros || [];
         const segundos = data.segundos || [];
-
-        // Fetch descriptions from main menu to match the design mock-up
-        let menuDescMap = {};
-        try {
-            const menuSnap = await db.collection('menu').get();
-            menuSnap.forEach(mDoc => {
-                const mData = mDoc.data();
-                if (mData.items) {
-                    mData.items.forEach(item => {
-                        if (item.nombre && item.descripcion) {
-                            menuDescMap[item.nombre.trim().toLowerCase()] = item.descripcion;
-                        }
-                    });
-                }
-            });
-        } catch (e) {
-            console.warn("Could not fetch descriptions for daily menu", e);
-        }
 
         // Helper function to format dish names as filenames
         const formatDishName = (name) => {
@@ -133,7 +120,12 @@ async function loadDailyMenu() {
         }
 
         if (!html) {
-            container.innerHTML = '<p class="text-center text-slate-400 py-10">Consúltanos por el menú del día.</p>';
+            container.innerHTML = `
+                <div class="flex flex-col items-center justify-center p-12 text-center">
+                    <span class="material-symbols-outlined text-primary/40 text-5xl mb-4">info</span>
+                    <p class="text-slate-400 uppercase tracking-widest text-sm italic">Consúltanos por el menú del día.</p>
+                </div>
+            `;
         } else {
             html += `
                 <!-- Nota para editar el color/brillo: cambia "text-white/20" por "text-white/40", "text-white/60", o clases como "text-slate-500", "text-slate-400" -->
