@@ -9,8 +9,8 @@
   'use strict';
 
   // ── 1. Comprobar si es miércoles (día 3 en JS: 0=Dom, 1=Lun... 3=Mié) ──
-  // const hoy = new Date().getDay();
-  // if (hoy !== 3) return; // MODO VISTA PREVIA: Comentado para que se vea siempre
+  const hoy = new Date().getDay();
+  if (hoy !== 3) return; 
 
   // ── 2. Estilos del overlay ──
   const style = document.createElement('style');
