@@ -24,6 +24,12 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth ? firebase.auth() : null;
 
+// Inicializa Analytics solo si el SDK está cargado en esta página
+// (no todas las páginas cargan firebase-analytics-compat.js)
+if (typeof firebase.analytics === 'function') {
+    firebase.analytics();
+}
+
 // Shared utility: escapa HTML usando el mecanismo nativo del navegador
 function escapeHtml(str) {
     var div = document.createElement('div');
