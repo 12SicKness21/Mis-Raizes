@@ -76,14 +76,17 @@ function hideStatus() {
 addReviewForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const name = document.getElementById('reviewName').value.trim();
+    const name = document.getElementById('reviewName').value.trim().slice(0, 100);
     const rating = parseInt(document.getElementById('reviewRating').value, 10);
-    const comment = document.getElementById('reviewComment').value.trim();
-    
+    const comment = document.getElementById('reviewComment').value.trim().slice(0, 1000);
+
+    if (!name) { showError('El nombre no puede estar vacío.'); return; }
+    if (isNaN(rating) || rating < 1 || rating > 5) { showError('La puntuación debe estar entre 1 y 5.'); return; }
+
     const btn = addReviewForm.querySelector('button');
     btn.disabled = true;
     btn.textContent = 'Guardando...';
-    
+
     try {
         await db.collection(REVIEWS_COLLECTION).add({
             name: name,

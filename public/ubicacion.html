@@ -8,6 +8,8 @@
     <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap"
         rel="stylesheet" />
     <link
@@ -135,7 +137,7 @@
         <!-- Map Section -->
         <div class="w-full relative group overflow-hidden rounded-2xl gold-border shadow-2xl mb-7">
             <img src="img/Mapa.webp" alt="Mapa Mis Raízes en Usera, Madrid"
-                class="w-full aspect-video md:aspect-[21/9] object-cover transition-transform duration-700 group-hover:scale-110">
+                loading="lazy" class="w-full aspect-video md:aspect-[21/9] object-cover transition-transform duration-700 group-hover:scale-110">
 
             <!-- Interactive Map Pin Simulation -->
             <div
@@ -251,10 +253,6 @@
         menuClose.addEventListener('click', closeMenu);
         modalBackdrop.addEventListener('click', closeMenu);
     </script>
-    <!-- Firebase SDK (CDN) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-    <script src="js/firebase-config.js"></script>
     <script src="js/cookie-consent.js" defer></script>
     <script src="js/miercoles.js" defer></script>
 </body>

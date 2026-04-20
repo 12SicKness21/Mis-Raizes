@@ -1,8 +1,11 @@
 // ============================================
 // Firebase Configuration - Mis Raízes
 // ============================================
-// INSTRUCCIONES: Reemplaza los valores de abajo con tu configuración real de Firebase.
-// Encuéntralos en: Firebase Console > Configuración del proyecto > Tu app web
+// NOTA DE SEGURIDAD: Para Firebase en aplicaciones web, el apiKey es público por diseño
+// — identifica el proyecto pero NO autoriza acceso por sí solo.
+// La seguridad real está en las Firebase Security Rules (Firestore Rules).
+// ASEGÚRATE de que las reglas de Firestore estén configuradas correctamente en la consola.
+// Ver: https://firebase.google.com/docs/firestore/security/get-started
 
 const firebaseConfig = {
     apiKey: "AIzaSyCVbSPjMjV7wVdIBjzMhC9tZ2G-eRn-f_E",
@@ -17,9 +20,13 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Initialize Analytics
-const analytics = firebase.analytics ? firebase.analytics() : null;
-
 // Exports
 const db = firebase.firestore();
 const auth = firebase.auth ? firebase.auth() : null;
+
+// Shared utility: escapa HTML usando el mecanismo nativo del navegador
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+}

@@ -133,12 +133,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000); // Avanza cada 3s
     }
 
-    function escapeHtml(unsafe) {
-        return (unsafe || '')
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
+    // escapeHtml está disponible globalmente desde firebase-config.js
 });

@@ -58,11 +58,12 @@ async function loadDailyMenu() {
 
             return `
                 <div class="group relative flex-none w-[220px] h-[240px] sm:w-[270px] sm:h-[300px] rounded-3xl overflow-hidden snap-start shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-white/5 cursor-pointer bg-[#14120c]">
-                    <img 
-                        src="img/menu/${fileName}.webp" 
-                        alt="${plato}" 
+                    <img
+                        src="img/menu/${fileName}.webp"
+                        alt="${plato}"
+                        data-fallback="img/menu/${fileName}.avif"
                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        onerror="if(this.src.endsWith('.webp')) this.src='img/menu/${fileName}.avif'; else this.style.display='none';"
+                        onerror="handleDishImageError(this)"
                     >
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5">
@@ -141,3 +142,13 @@ async function loadDailyMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', loadDailyMenu);
+
+// Gestiona el error de carga de imagen: intenta el fallback .avif, luego oculta
+function handleDishImageError(img) {
+    const fallback = img.dataset.fallback;
+    if (fallback && img.src.indexOf(fallback) === -1) {
+        img.src = fallback;
+    } else {
+        img.style.display = 'none';
+    }
+}

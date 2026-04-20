@@ -52,10 +52,20 @@ function logout() {
     document.getElementById('loginError').textContent = '';
 }
 
+// === Timeout helper para operaciones Firestore ===
+function withTimeout(promise, ms) {
+    var timeout = new Promise(function (_, reject) {
+        setTimeout(function () {
+            reject(new Error('Tiempo de espera agotado. Comprueba tu conexión.'));
+        }, ms || 10000);
+    });
+    return Promise.race([promise, timeout]);
+}
+
 // === Load Menu Data from Firestore ===
 async function loadMenuData() {
     try {
-        var snapshot = await db.collection('menu').orderBy('orden').get();
+        var snapshot = await withTimeout(db.collection('menu').orderBy('orden').get());
         menuItems = [];
         categoryDocs = [];
 
@@ -318,8 +328,33 @@ function reorderCategories() {
 }
 
 // === CRUD Operations ===
+var ALLOWED_ITEM_FIELDS = ['nombre', 'precio', 'descripcion', 'disponible'];
+
 function updateItem(index, field, value) {
-    menuItems[index][field] = value;
+    if (!ALLOWED_ITEM_FIELDS.includes(field)) return;
+
+    if (field === 'disponible') {
+        if (value !== 'si' && value !== 'no') return;
+        menuItems[index][field] = value;
+        return;
+    }
+
+    if (field === 'precio') {
+        // Permite entrada parcial durante tipeo (ej. "1.", "1.5")
+        // Solo almacena el string; validación definitiva ocurre al guardar
+        menuItems[index][field] = String(value).slice(0, 20);
+        return;
+    }
+
+    if (field === 'nombre') {
+        menuItems[index][field] = String(value).slice(0, 150);
+        return;
+    }
+
+    if (field === 'descripcion') {
+        menuItems[index][field] = String(value).slice(0, 500);
+        return;
+    }
 }
 
 function deleteItem(index) {
@@ -421,11 +456,16 @@ async function saveMenu() {
         for (var i = 0; i < menuItems.length; i++) {
             var cat = menuItems[i].categoria || '';
             if (!catMap[cat]) catMap[cat] = [];
+            var rawPrecio = parseFloat(menuItems[i].precio);
+            var safePrecio = (!isNaN(rawPrecio) && rawPrecio >= 0)
+                ? rawPrecio.toFixed(2)
+                : '0.00';
+
             catMap[cat].push({
-                nombre: menuItems[i].nombre,
-                precio: menuItems[i].precio,
-                descripcion: menuItems[i].descripcion,
-                disponible: menuItems[i].disponible
+                nombre: (menuItems[i].nombre || '').trim().slice(0, 150),
+                precio: safePrecio,
+                descripcion: (menuItems[i].descripcion || '').trim().slice(0, 500),
+                disponible: menuItems[i].disponible === 'no' ? 'no' : 'si'
             });
         }
 
@@ -550,14 +590,15 @@ function hideStatus() {
 }
 
 // === Helpers ===
-function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
+// escapeHtml está disponible globalmente desde firebase-config.js
 
 function escapeAttr(str) {
-    return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    return (str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/'/g, '&#039;');
 }
 // === Helper to check image existence ===
 async function checkImageExists(url) {
