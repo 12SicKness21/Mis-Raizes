@@ -2,8 +2,6 @@
 // Mis Raízes - Admin Panel Logic (Firebase)
 // ============================================
 
-// Fixed admin email for Firebase Auth (user only sees password field)
-var ADMIN_EMAIL = 'admin_1@misraizes.com';
 var menuItems = [];
 var categoryDocs = []; // Track Firestore category documents
 var categoryOrder = []; // Track manual category order for drag-and-drop
@@ -11,11 +9,12 @@ var categoryOrder = []; // Track manual category order for drag-and-drop
 // === Auth with Firebase ===
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
+    var email = document.getElementById('loginEmail').value.trim();
     var pw = document.getElementById('loginPassword').value;
     var errEl = document.getElementById('loginError');
 
     try {
-        await auth.signInWithEmailAndPassword(ADMIN_EMAIL, pw);
+        await auth.signInWithEmailAndPassword(email, pw);
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminPanel').style.display = 'block';
         loadMenuData();
@@ -48,6 +47,7 @@ function logout() {
     categoryDocs = [];
     document.getElementById('adminPanel').style.display = 'none';
     document.getElementById('loginScreen').style.display = '';
+    document.getElementById('loginEmail').value = '';
     document.getElementById('loginPassword').value = '';
     document.getElementById('loginError').textContent = '';
 }

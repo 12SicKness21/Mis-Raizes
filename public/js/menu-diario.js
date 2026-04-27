@@ -59,16 +59,16 @@ async function loadDailyMenu() {
             return `
                 <div class="group relative flex-none w-[220px] h-[240px] sm:w-[270px] sm:h-[300px] rounded-3xl overflow-hidden snap-start shadow-[0_8px_30px_rgb(0,0,0,0.4)] border border-white/5 cursor-pointer bg-[#14120c]">
                     <img
-                        src="img/menu/${fileName}.webp"
-                        alt="${plato}"
-                        data-fallback="img/menu/${fileName}.avif"
+                        src="img/menu/${escapeAttr(fileName)}.webp"
+                        alt="${escapeAttr(plato)}"
+                        data-fallback="img/menu/${escapeAttr(fileName)}.avif"
                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onerror="handleDishImageError(this)"
                     >
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                     <div class="absolute inset-x-0 bottom-0 p-4 sm:p-5">
                         <h3 class="text-white text-base sm:text-lg font-bold leading-tight font-serif drop-shadow-lg group-hover:text-primary transition-colors">
-                            ${plato}
+                            ${escapeHtml(plato)}
                         </h3>
                     </div>
                 </div>

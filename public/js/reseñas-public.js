@@ -8,9 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalReviewsText = document.getElementById('total-reviews-text');
     const reviewsDistribution = document.getElementById('reviews-distribution');
 
-    // Load static preset if DB fails or empty
-    let reviewCount = 0;
-    
     function renderStars(rating) {
         let starsHtml = '';
         for (let i = 1; i <= 5; i++) {

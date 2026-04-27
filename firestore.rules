@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /menu/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /config/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /resenas/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Validación por UID — inmutable, no se puede suplantar
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid in [
+            'xFPzTEAMIJajYFPnJ0PqPHCLCT32',  // super-admin
+            '84AGCj4L47M8wsVbCWr1MPc3lIj1'   // admin
+           ];
+    }
+
+  }
+}

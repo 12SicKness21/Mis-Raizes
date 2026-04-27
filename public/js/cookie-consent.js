@@ -138,16 +138,16 @@ function setCookieConsent(val) {
 }
 
 function removeBanner() {
+    // Inject keyframe BEFORE setting the animation so the browser can find it
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes slideDown { to { transform: translateY(100%); } }`;
+    document.head.appendChild(style);
+
     const banner = document.getElementById('cookie-banner');
     if (banner) {
         banner.style.animation = 'slideDown 0.5s forwards';
         setTimeout(() => banner.remove(), 500);
     }
-
-    // Add slide down animation implicitly via JS since it's not in the injected CSS
-    const style = document.createElement('style');
-    style.innerHTML = `@keyframes slideDown { to { transform: translateY(100%); } }`;
-    document.head.appendChild(style);
 }
 
 // Function to enable Google Analytics dynamically
@@ -165,6 +165,6 @@ function enableAnalytics() {
             'analytics_storage': 'granted'
         });
 
-        console.log("Analytics enabled via Cookie Consent");
+        // Analytics enabled
     }
 }

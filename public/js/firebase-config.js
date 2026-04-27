@@ -36,3 +36,13 @@ function escapeHtml(str) {
     div.textContent = str || '';
     return div.innerHTML;
 }
+
+// Shared utility: escapa caracteres peligrosos para uso en atributos HTML (dentro de comillas dobles)
+function escapeAttr(str) {
+    return (str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/'/g, '&#039;');
+}

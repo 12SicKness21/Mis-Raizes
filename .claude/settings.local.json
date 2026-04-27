@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/Angelo/.gemini/antigravity/scratch/mis-raizes/public -type f -name \"*.js\" -exec basename {} \\\\;)",
+      "Bash(grep -E \"\\\\.html$|\\\\.css$\")",
+      "Bash(git -C /c/Users/Angelo/.gemini/antigravity/scratch/mis-raizes log --oneline)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"innerHTML\\\\s*=\" {} +)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"api\" {} +)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"async\\\\|await\" {} +)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"setInterval\\\\|setTimeout\" {} +)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"querySelector\\\\|getElementById\" {} +)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"\\\\.on\\(\" {} +)",
+      "Bash(wc -l *.js)",
+      "Bash(find . -type f -name \"*.html\" -exec grep -n \"src=\" {} +)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"\\\\.length\" {} +)",
+      "Bash(xargs wc *)",
+      "Bash(find . -type f -name \"*.js\" -exec grep -n \"Promise\" {} +)",
+      "Bash(xargs grep *)",
+      "Bash(ls *)",
+      "Bash(grep *)"
+    ]
+  }
+}

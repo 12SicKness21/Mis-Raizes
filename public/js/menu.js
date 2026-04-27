@@ -122,12 +122,12 @@ async function loadMenu() {
             const isDesayuno = cat.toUpperCase().includes('DESAYUNO');
 
             html += `
-        <section class="category-section" data-category="${cat}" id="cat-${cat.replace(/\s+/g, '-')}">
+        <section class="category-section" data-category="${escapeAttr(cat)}" id="cat-${escapeAttr(cat.replace(/\s+/g, '-'))}">
           <div class="category-header">
             <span class="category-icon">${icon}</span>
             <div>
-              <h2 class="category-title">${cat}</h2>
-              ${subtitle ? `<p class="category-subtitle">${subtitle}</p>` : ''}
+              <h2 class="category-title">${escapeHtml(cat)}</h2>
+              ${subtitle ? `<p class="category-subtitle">${escapeHtml(subtitle)}</p>` : ''}
             </div>
           </div>
           ${isDesayuno ? '<div class="category-note"><span class="icon">☕</span> Café incluido</div>' : ''}
@@ -139,8 +139,8 @@ async function loadMenu() {
                 html += `
           <div class="menu-item${extraClass}">
             <div class="item-info">
-              <p class="item-name">${item.nombre}</p>
-              ${item.descripcion ? `<p class="item-description">${item.descripcion}</p>` : ''}
+              <p class="item-name">${escapeHtml(item.nombre)}</p>
+              ${item.descripcion ? `<p class="item-description">${escapeHtml(item.descripcion)}</p>` : ''}
             </div>
             ${!isCombo ? '<div class="item-dots"></div>' : ''}
             <span class="item-price">${formatPrice(item.precio)}<span class="euro"> €</span></span>
@@ -179,7 +179,7 @@ function filterCategory(cat) {
     });
 
     if (cat !== 'all') {
-        const target = document.querySelector(`[data-category="${cat}"]`);
+        const target = document.querySelector(`[data-category="${CSS.escape(cat)}"]`);
         if (target) {
             const navHeight = document.getElementById('categoryNav').offsetHeight;
             const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 15;
@@ -273,7 +273,6 @@ function showWeeklyModal() {
     const modal = document.getElementById('weeklyModal');
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden'; // Prevent scroll
-    loadWeeklyModalData();
 }
 
 function closeWeeklyModal() {
@@ -282,9 +281,6 @@ function closeWeeklyModal() {
     document.body.style.overflow = ''; // Restore scroll
 }
 
-async function loadWeeklyModalData() {
-    // Dynamic loading removed, displaying static image only
-}
 
 // Close modal when clicking outside content
 window.addEventListener('click', (e) => {

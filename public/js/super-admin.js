@@ -11,10 +11,13 @@ const statusMessage = document.getElementById('statusMessage');
 
 const REVIEWS_COLLECTION = 'resenas';
 
+// UID del único usuario autorizado para el super-admin
+const SUPER_ADMIN_UID = 'xFPzTEAMIJajYFPnJ0PqPHCLCT32';
+
 // Firebase Auth Listener
 auth.onAuthStateChanged((user) => {
     if (user) {
-        if (user.email === 'sickness@misrazies.es' || user.email === 'sickness@misraizes.es') {
+        if (user.uid === SUPER_ADMIN_UID) {
             loginScreen.style.display = 'none';
             adminPanel.style.display = 'block';
         } else {
