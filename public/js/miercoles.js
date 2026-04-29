@@ -8,9 +8,13 @@
 (function () {
   'use strict';
 
+  // ── CIERRE DE MIÉRCOLES DESHABILITADO ──
+  // Para reactivar: elimina estas 3 líneas
+  return;
+
   // ── 1. Comprobar si es miércoles (día 3 en JS: 0=Dom, 1=Lun... 3=Mié) ──
   const hoy = new Date().getDay();
-  if (hoy !== 3) return; 
+  if (hoy !== 3) return;
 
   // ── 2. Estilos del overlay ──
   const style = document.createElement('style');

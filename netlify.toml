@@ -1,7 +1,37 @@
 [build]
   publish = "public"
 
+# ─────────────────────────────────────────────
+# Redirección para el panel admin
+# ─────────────────────────────────────────────
 [[redirects]]
   from = "/admin"
   to = "/admin.html"
   status = 200
+
+# ─────────────────────────────────────────────
+# Headers de seguridad (todas las páginas)
+# ─────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.googleusercontent.com https://firebasestorage.googleapis.com https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://storage.googleapis.com https://firebasestorage.googleapis.com https://www.google-analytics.com https://www.googletagmanager.com; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+
+# ─────────────────────────────────────────────
+# Headers extra solo para los paneles admin
+# (no indexar en buscadores)
+# ─────────────────────────────────────────────
+[[headers]]
+  for = "/admin*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/super-admin*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

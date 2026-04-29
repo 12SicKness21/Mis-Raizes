@@ -1,0 +1,11 @@
+# Mis Raízes - robots.txt
+# Bloquear acceso de crawlers a paneles administrativos
+
+User-agent: *
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /super-admin
+Disallow: /super-admin.html
+Allow: /
+
+Sitemap: https://mis-raizes.es/sitemap.xml
