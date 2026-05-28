@@ -22,7 +22,8 @@ service cloud.firestore {
       return request.auth != null
         && request.auth.uid in [
             'xFPzTEAMIJajYFPnJ0PqPHCLCT32',  // super-admin
-            '84AGCj4L47M8wsVbCWr1MPc3lIj1'   // admin
+            '84AGCj4L47M8wsVbCWr1MPc3lIj1',  // admin_1@misraizes.com
+            '9iKg9xvGsvUDwVHZJay1aZE1SKw1'   // admin@misraizes.es
            ];
     }
 
