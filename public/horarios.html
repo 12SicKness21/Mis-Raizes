@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap"
         rel="stylesheet" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
         rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
@@ -42,6 +42,7 @@
     <title>Horarios | Mis Raízes - Cocina Peruana</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="img/Logo.webp">
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body class="bg-background-dark font-display text-slate-100 min-h-screen flex flex-col antialiased">
@@ -161,10 +162,15 @@
                 </div>
                 <div class="divide-y divide-primary/5">
                     <div class="flex items-center justify-between px-8 py-6 hover:bg-white/5 transition-colors">
-                        <span class="text-slate-400 font-bold uppercase tracking-widest">Lunes, Martes, Jueves, Viernes,
-                            Sabado y Domingo</span>
-                        <div class="flex items-center gap-4">
-                            <span class="text-white font-black text-xl italic">09:00 A 23:00</span>
+                        <span class="text-slate-400 font-bold uppercase tracking-widest">Miércoles y Jueves</span>
+                        <div class="flex items-center gap-4 text-right">
+                            <span class="text-white font-black text-lg sm:text-xl italic leading-tight">12:00 A 17:00<br>19:30 A 23:00</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between px-8 py-6 hover:bg-white/5 transition-colors">
+                        <span class="text-slate-400 font-bold uppercase tracking-widest">Viernes, Sábado y Domingo</span>
+                        <div class="flex items-center gap-4 text-right">
+                            <span class="text-white font-black text-lg sm:text-xl italic leading-tight">09:00 A 17:00<br>19:30 A 23:00</span>
                         </div>
                     </div>
                 </div>
@@ -227,6 +233,15 @@
         modalBackdrop.addEventListener('click', closeMenu);
     </script>
     <script src="js/miercoles.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+                    .catch(err => console.error('Error al registrar el Service Worker:', err));
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap"
         rel="stylesheet" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
         rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
@@ -44,6 +44,7 @@
     <title>Reseñas | Mis Raízes - Cocina Peruana</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body class="bg-background-dark font-display text-slate-100 min-h-screen flex flex-col antialiased">
@@ -236,6 +237,15 @@
     <script src="js/firebase-config.js"></script>
     <script src="js/reseñas-public.js"></script>
     <script src="js/cookie-consent.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+                    .catch(err => console.error('Error al registrar el Service Worker:', err));
+            });
+        }
+    </script>
 </body>
 
 </html>
