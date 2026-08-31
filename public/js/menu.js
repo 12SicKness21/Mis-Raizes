@@ -130,7 +130,7 @@ async function loadMenu() {
               ${subtitle ? `<p class="category-subtitle">${escapeHtml(subtitle)}</p>` : ''}
             </div>
           </div>
-          ${isDesayuno ? '<div class="category-note"><span class="icon">☕</span> Café incluido</div>' : ''}
+          ${isDesayuno ? '<div class="category-note"><span class="icon">☕</span> Café + 1€</div>' : ''}
           <div class="menu-items">
       `;
 
