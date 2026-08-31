@@ -24,7 +24,7 @@ function getCategoryIcon(category) {
 
 function getCategorySubtitle(category) {
     const upper = category.toUpperCase();
-    if (upper.includes('DESAYUNOS')) return 'Servido de 9:00 a 12:00';
+    if (upper.includes('DESAYUNOS') || upper.includes('BATIDOS')) return 'Todo el día';
     if (upper.includes('CRIOLLOS')) return 'Platos que regresan al Perú';
     if (upper.includes('MARINOS')) return 'Del mar a la mesa';
     if (upper.includes('COMBOS')) return 'Las mejores combinaciones';
@@ -126,7 +126,7 @@ async function loadMenu() {
           <div class="category-header">
             <span class="category-icon">${icon}</span>
             <div>
-              <h2 class="category-title">${escapeHtml(cat)}</h2>
+              <h2 class="category-title">${escapeHtml(cat.replace(/\(TODOS LOS DÍAS\)/gi, '').trim())}</h2>
               ${subtitle ? `<p class="category-subtitle">${escapeHtml(subtitle)}</p>` : ''}
             </div>
           </div>

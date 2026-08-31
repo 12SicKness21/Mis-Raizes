@@ -5,6 +5,7 @@
 var menuItems = [];
 var categoryDocs = []; // Track Firestore category documents
 var categoryOrder = []; // Track manual category order for drag-and-drop
+var draggedItemIndex = null; // Track item being dragged
 
 // === Auth with Firebase ===
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
@@ -195,8 +196,12 @@ function renderSections() {
         for (var j = 0; j < items.length; j++) {
             var item = items[j].item;
             var idx = items[j].globalIndex;
+            var isNo = item.disponible === 'no';
 
-            html += '<div class="item-row" data-index="' + idx + '">';
+            html += '<div class="item-row' + (isNo ? ' status-no' : '') + '" data-index="' + idx + '">';
+            html += '<div class="item-field item-drag">';
+            html += '<span class="item-drag-handle" title="Arrastra para reordenar">☰</span>';
+            html += '</div>';
             html += '<div class="item-field item-name">';
             html += '<input class="cell-input" value="' + escapeHtml(item.nombre || '') + '" placeholder="Nombre del plato" onchange="updateItem(' + idx + ', \'nombre\', this.value)">';
             html += '</div>';
@@ -225,6 +230,7 @@ function renderSections() {
 
     container.innerHTML = html;
     initCategoryDrag();
+    initItemDrag();
 }
 
 // === Category Drag and Drop ===
@@ -327,6 +333,125 @@ function reorderCategories() {
     categoryOrder = newOrder;
 }
 
+// === Item Drag and Drop ===
+function initItemDrag() {
+    var rows = document.querySelectorAll('.item-row');
+    rows.forEach(function (row) {
+        var handle = row.querySelector('.item-drag-handle');
+        if (handle) {
+            handle.addEventListener('mousedown', function () {
+                row.setAttribute('draggable', 'true');
+            });
+            handle.addEventListener('mouseup', function () {
+                row.setAttribute('draggable', 'false');
+            });
+        }
+        row.setAttribute('draggable', 'false');
+
+        row.addEventListener('dragstart', function (e) {
+            draggedItemIndex = parseInt(row.dataset.index);
+            row.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', String(draggedItemIndex));
+        });
+
+        row.addEventListener('dragend', function () {
+            row.classList.remove('dragging');
+            draggedItemIndex = null;
+            document.querySelectorAll('.item-row.drag-over').forEach(function (el) {
+                el.classList.remove('drag-over');
+            });
+        });
+
+        row.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            if (draggedItemIndex !== null && draggedItemIndex !== parseInt(row.dataset.index)) {
+                row.classList.add('drag-over');
+            }
+        });
+
+        row.addEventListener('dragleave', function () {
+            row.classList.remove('drag-over');
+        });
+
+        row.addEventListener('drop', function (e) {
+            e.preventDefault();
+            row.classList.remove('drag-over');
+            if (draggedItemIndex === null) return;
+            var targetIndex = parseInt(row.dataset.index);
+            if (draggedItemIndex === targetIndex) return;
+
+            moveMenuItem(draggedItemIndex, targetIndex);
+        });
+    });
+
+    var itemContainers = document.querySelectorAll('.category-items');
+    itemContainers.forEach(function (container) {
+        container.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            if (draggedItemIndex !== null) {
+                container.classList.add('drag-over-container');
+            }
+        });
+
+        container.addEventListener('dragleave', function () {
+            container.classList.remove('drag-over-container');
+        });
+
+        container.addEventListener('drop', function (e) {
+            e.preventDefault();
+            container.classList.remove('drag-over-container');
+            if (draggedItemIndex === null) return;
+
+            var section = container.closest('.category-section');
+            if (!section) return;
+            var targetCategory = section.dataset.category;
+
+            var draggedItem = menuItems[draggedItemIndex];
+            var targetIndex = -1;
+
+            for (var j = menuItems.length - 1; j >= 0; j--) {
+                if (menuItems[j].categoria === targetCategory) {
+                    targetIndex = j;
+                    break;
+                }
+            }
+
+            if (targetIndex !== -1) {
+                if (draggedItemIndex === targetIndex) return;
+                moveMenuItem(draggedItemIndex, targetIndex);
+            } else {
+                draggedItem.categoria = targetCategory;
+                menuItems.splice(draggedItemIndex, 1);
+                menuItems.push(draggedItem);
+                renderSections();
+                showStatus('Plato movido. Recuerda guardar los cambios.', 'info');
+            }
+        });
+    });
+}
+
+function moveMenuItem(fromIndex, toIndex) {
+    var draggedItem = menuItems[fromIndex];
+    var targetItem = menuItems[toIndex];
+
+    draggedItem.categoria = targetItem.categoria;
+
+    menuItems.splice(fromIndex, 1);
+
+    var adjustedToIndex = toIndex;
+    if (fromIndex < toIndex) {
+        adjustedToIndex = toIndex - 1;
+    }
+
+    menuItems.splice(adjustedToIndex, 0, draggedItem);
+
+    renderSections();
+    showStatus('Plato movido. Recuerda guardar los cambios.', 'info');
+}
+
 // === CRUD Operations ===
 var ALLOWED_ITEM_FIELDS = ['nombre', 'precio', 'descripcion', 'disponible'];
 
@@ -336,6 +461,14 @@ function updateItem(index, field, value) {
     if (field === 'disponible') {
         if (value !== 'si' && value !== 'no') return;
         menuItems[index][field] = value;
+        var row = document.querySelector('.item-row[data-index="' + index + '"]');
+        if (row) {
+            if (value === 'no') {
+                row.classList.add('status-no');
+            } else {
+                row.classList.remove('status-no');
+            }
+        }
         return;
     }
 
