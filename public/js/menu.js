@@ -6,6 +6,7 @@
 const CATEGORY_ICONS = {
     'DESAYUNOS': '☀️',
     'PLATOS CRIOLLOS': '🍽️',
+    'FAST FOOD': '🍔',
     'COMBOS': '⭐',
     'ENTRADAS': '🥑',
     'POSTRES': '🍰',
@@ -120,6 +121,10 @@ async function loadMenu() {
             const subtitle = getCategorySubtitle(cat);
             const isCombo = cat.toUpperCase().includes('COMBO');
             const isDesayuno = cat.toUpperCase().includes('DESAYUNO');
+            const isFastFood = cat.toUpperCase().includes('FAST FOOD') ||
+                cat.toUpperCase().includes('FAST-FOOD') ||
+                cat.toUpperCase().includes('FASTFOOD') ||
+                (cat.toUpperCase().includes('PLATOS') && cat.toUpperCase().includes('TARDES'));
 
             html += `
         <section class="category-section" data-category="${escapeAttr(cat)}" id="cat-${escapeAttr(cat.replace(/\s+/g, '-'))}">
@@ -131,6 +136,7 @@ async function loadMenu() {
             </div>
           </div>
           ${isDesayuno ? '<div class="category-note"><span class="icon">☕</span> Café + 1€</div>' : ''}
+          ${isFastFood ? '<div class="category-note"><span class="icon">🍳🍌</span> Huevo y plátano + 2€</div>' : ''}
           <div class="menu-items">
       `;
 
