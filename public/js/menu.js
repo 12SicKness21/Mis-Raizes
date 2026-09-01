@@ -136,7 +136,7 @@ async function loadMenu() {
             </div>
           </div>
           ${isDesayuno ? '<div class="category-note"><span class="icon">☕</span> Café + 1€</div>' : ''}
-          ${isFastFood ? '<div class="category-note"><span class="icon">🍳🍌</span> Huevo y plátano + 2€</div>' : ''}
+          ${isFastFood ? '<div class="category-note"><span class="icon"></span> Huevo y plátano + 2€</div>' : ''}
           <div class="menu-items">
       `;
 
