@@ -80,7 +80,7 @@ const DISH_IMAGE_MAP = {
     '¼ pollo a la brasa': 'pollo_a_la_brasa',
     '1/4 pollo a la brasa': 'pollo_a_la_brasa',
     'pollo a la brasa': 'pollo_a_la_brasa',
-    'sopa wantan': 'sopa_a_la_minuta',
+    'sopa wantan': 'sopa_wantan',
     'wantan frito': 'wantan_frito',
     'tequenos': 'tequenos',
     'tequeños': 'tequenos',
@@ -431,13 +431,13 @@ function generateDishHTML(plato) {
 }
 
 // Controladores de interacción
-window.selectDay = function(dayKey) {
+window.selectDay = function (dayKey) {
     currentSelectedDay = dayKey;
     currentViewMode = 'day';
     renderMenu();
 };
 
-window.toggleViewMode = function() {
+window.toggleViewMode = function () {
     currentViewMode = (currentViewMode === 'day') ? 'week' : 'day';
     renderMenu();
 };
