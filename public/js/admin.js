@@ -645,62 +645,202 @@ function printQR() {
     window.print();
 }
 
-// === Weekly Menu ===
+// === Monthly Menu Management ===
+var adminCurrentDayTab = 1;
+
+var DEFAULT_MONTHLY_TEMPLATE = {
+    mes: "Septiembre",
+    precio: "13,90€",
+    incluye: "Primero + Segundo + Bebida + Postre",
+    dias: {
+        1: {
+            nombre: "Lunes",
+            entradas: ["Ceviche", "Aguadito", "Causa Limeña"],
+            segundos: ["Arroz con pollo", "Lentejas c/ (dorada o filete)", "Cerdo con ensalada rusa", "¼ pollo a la brasa"]
+        },
+        2: {
+            nombre: "Martes",
+            entradas: ["Sopa wantan", "Wantan frito", "Tequeños", "Papa rellena"],
+            segundos: ["Combinado de pollo", "Chijaukay", "Aeropuerto", "¼ pollo a la brasa"]
+        },
+        3: {
+            nombre: "Miércoles",
+            cerrado: true,
+            mensaje: "Cerrado por descanso del personal",
+            entradas: [],
+            segundos: []
+        },
+        4: {
+            nombre: "Jueves",
+            entradas: ["Leche de tigre", "Anticucho", "Caldo de gallina"],
+            segundos: ["Cau cau", "Tallarines rojos con papa a la huancaína", "¼ pollo a la brasa"]
+        },
+        5: {
+            nombre: "Viernes",
+            entradas: ["Patasca", "Ceviche", "Chicharrón de pota"],
+            segundos: ["Picante de carne", "Ají de gallina", "¼ pollo a la brasa", "Pollada"]
+        }
+    }
+};
+
 function showWeeklyMenu() {
     document.getElementById('weeklyMenuModal').style.display = '';
+    loadMonthlyMenuData();
 }
 
 function closeWeeklyMenu() {
     document.getElementById('weeklyMenuModal').style.display = 'none';
 }
 
-async function loadWeeklyMenuData() {
-    try {
-        var doc = await db.collection('config').doc('weekly_menu').get();
-        if (doc.exists) {
-            var data = doc.data();
-            var primeros = data.primeros || [];
-            var segundos = data.segundos || [];
+function switchAdminMenuDay(dayNum) {
+    adminCurrentDayTab = dayNum;
 
-            for (var i = 1; i <= 4; i++) {
-                document.getElementById('p' + i).value = primeros[i - 1] || '';
-                document.getElementById('s' + i).value = segundos[i - 1] || '';
-            }
-            if (data.fecha) {
-                document.getElementById('menuFecha').value = data.fecha;
+    for (var d = 1; d <= 5; d++) {
+        var btn = document.getElementById('adminTabBtn_' + d);
+        var panel = document.getElementById('adminDayPanel_' + d);
+        if (btn) {
+            if (d === dayNum) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
             }
         }
-    } catch (err) {
-        console.error('Error loading weekly menu:', err);
+        if (panel) {
+            panel.style.display = (d === dayNum) ? '' : 'none';
+        }
     }
 }
 
-async function publishWeeklyMenu() {
-    try {
-        var primeros = [];
-        var segundos = [];
+function toggleDayCerrado(dayNum) {
+    var checkEl = document.getElementById('adminCerrado_' + dayNum);
+    var platosEl = document.getElementById('adminMiercolesPlatos');
+    if (checkEl && platosEl) {
+        platosEl.style.display = checkEl.checked ? 'none' : '';
+    }
+}
 
-        for (var i = 1; i <= 4; i++) {
-            var pVal = document.getElementById('p' + i).value.trim();
-            var sVal = document.getElementById('s' + i).value.trim();
-            if (pVal) primeros.push(pVal);
-            if (sVal) segundos.push(sVal);
+function loadDefaultTemplate() {
+    if (confirm('¿Restablecer los campos con la plantilla base de Septiembre?')) {
+        populateAdminMenuForm(DEFAULT_MONTHLY_TEMPLATE);
+        showStatus('ℹ️ Plantilla cargada en el formulario', 'info');
+    }
+}
+
+function populateAdminMenuForm(data) {
+    if (!data) return;
+
+    if (document.getElementById('menuMes')) {
+        document.getElementById('menuMes').value = data.mes || 'Septiembre';
+    }
+    if (document.getElementById('menuPrecio')) {
+        document.getElementById('menuPrecio').value = data.precio || '13,90€';
+    }
+    if (document.getElementById('menuIncluye')) {
+        document.getElementById('menuIncluye').value = data.incluye || 'Primero + Segundo + Bebida + Postre';
+    }
+
+    var dias = data.dias || {};
+    for (var d = 1; d <= 5; d++) {
+        var dayInfo = dias[d] || {};
+        var entEl = document.getElementById('adminEntradas_' + d);
+        var segEl = document.getElementById('adminSegundos_' + d);
+        var cerrEl = document.getElementById('adminCerrado_' + d);
+
+        if (entEl) entEl.value = (dayInfo.entradas || []).join('\n');
+        if (segEl) segEl.value = (dayInfo.segundos || []).join('\n');
+        if (cerrEl) {
+            cerrEl.checked = !!dayInfo.cerrado;
+            toggleDayCerrado(d);
+        }
+    }
+
+    switchAdminMenuDay(adminCurrentDayTab || 1);
+}
+
+async function loadMonthlyMenuData() {
+    try {
+        var doc = await db.collection('config').doc('monthly_menu').get();
+        if (doc.exists && doc.data() && doc.data().dias) {
+            populateAdminMenuForm(doc.data());
+        } else {
+            populateAdminMenuForm(DEFAULT_MONTHLY_TEMPLATE);
+        }
+    } catch (err) {
+        console.warn('Cargando plantilla base por defecto:', err);
+        populateAdminMenuForm(DEFAULT_MONTHLY_TEMPLATE);
+    }
+}
+
+async function publishMonthlyMenu() {
+    try {
+        showStatus('Guardando menú del mes...', 'info');
+
+        var mes = (document.getElementById('menuMes').value || 'Septiembre').trim();
+        var precio = (document.getElementById('menuPrecio').value || '13,90€').trim();
+        var incluye = (document.getElementById('menuIncluye').value || 'Primero + Segundo + Bebida + Postre').trim();
+
+        var dias = {};
+        var dayNames = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes' };
+
+        for (var d = 1; d <= 5; d++) {
+            var cerrEl = document.getElementById('adminCerrado_' + d);
+            var isClosed = cerrEl ? cerrEl.checked : false;
+
+            var entEl = document.getElementById('adminEntradas_' + d);
+            var segEl = document.getElementById('adminSegundos_' + d);
+
+            var entradas = [];
+            var segundos = [];
+
+            if (!isClosed) {
+                if (entEl && entEl.value.trim()) {
+                    entradas = entEl.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+                }
+                if (segEl && segEl.value.trim()) {
+                    segundos = segEl.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+                }
+            }
+
+            dias[d] = {
+                id: dayNames[d].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+                nombre: dayNames[d],
+                activo: !isClosed,
+                cerrado: isClosed,
+                mensaje: isClosed ? 'Cerrado por descanso del personal' : '',
+                entradas: entradas,
+                segundos: segundos
+            };
         }
 
-        var pFecha = document.getElementById('menuFecha').value.trim();
+        var payload = {
+            mes: mes,
+            precio: precio,
+            incluye: incluye,
+            dias: dias,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        // Guardar configuración mensual en config/monthly_menu
+        await db.collection('config').doc('monthly_menu').set(payload);
+
+        // Guardar snapshot en weekly_menu para compatibilidad
+        var today = new Date().getDay();
+        var targetDayKey = (today >= 1 && today <= 5 && !dias[today].cerrado) ? today : 1;
+        var activeDayData = dias[targetDayKey] || dias[1];
 
         await db.collection('config').doc('weekly_menu').set({
-            primeros: primeros,
-            segundos: segundos,
-            fecha: pFecha,
+            mes: mes,
+            primeros: activeDayData.entradas || [],
+            segundos: activeDayData.segundos || [],
+            fecha: mes + ' · ' + activeDayData.nombre,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        showStatus('✅ Menú del día publicado correctamente', 'success');
+        showStatus('✅ Menú de ' + mes + ' guardado y publicado correctamente', 'success');
         closeWeeklyMenu();
     } catch (err) {
-        console.error('Error publishing weekly menu:', err);
-        showStatus('❌ Error al publicar el menú', 'error');
+        console.error('Error publicando menú mensual:', err);
+        showStatus('❌ Error al guardar el menú: ' + err.message, 'error');
     }
 }
 
@@ -752,8 +892,9 @@ function getDishImagePaths(dishName) {
         .replace(/^_+|_+$/g, '');
 
     return [
+        'img/menu/' + baseName + '.avif',
         'img/menu/' + baseName + '.webp',
-        'img/menu/' + baseName + '.avif'
+        'img/menu/' + baseName + '.jpg'
     ];
 }
 
@@ -794,23 +935,33 @@ async function getAllValidImages(dishes) {
     return result;
 }
 
-
 // === Download Menu as Image ===
 async function downloadMenuImage() {
     showStatus('Generando imagen, por favor espera...', 'info');
 
-    var fecha = document.getElementById('menuFecha').value.trim();
-    if (fecha) fecha = "Menú - " + fecha;
+    var currentDayNumber = adminCurrentDayTab || 1;
+    var dayNames = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes' };
+    var dayName = dayNames[currentDayNumber] || 'Hoy';
+    var mes = (document.getElementById('menuMes') ? document.getElementById('menuMes').value : 'Septiembre').trim();
 
-    var primeros = [];
-    var segundos = [];
-
-    for (var i = 1; i <= 4; i++) {
-        var pVal = document.getElementById('p' + i).value.trim();
-        var sVal = document.getElementById('s' + i).value.trim();
-        if (pVal) primeros.push(pVal);
-        if (sVal) segundos.push(sVal);
+    var cerrEl = document.getElementById('adminCerrado_' + currentDayNumber);
+    if (cerrEl && cerrEl.checked) {
+        showStatus('⚠️ ' + dayName + ' está marcado como cerrado. Selecciona otro día para generar imagen.', 'error');
+        return;
     }
+
+    var entEl = document.getElementById('adminEntradas_' + currentDayNumber);
+    var segEl = document.getElementById('adminSegundos_' + currentDayNumber);
+
+    var primeros = entEl ? entEl.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+    var segundos = segEl ? segEl.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+
+    if (primeros.length === 0 && segundos.length === 0) {
+        showStatus('⚠️ No hay platos introducidos para ' + dayName, 'error');
+        return;
+    }
+
+    var fecha = mes + " · " + dayName;
 
     // Process Texts
     var previewPrimeros = document.getElementById('previewPrimeros');

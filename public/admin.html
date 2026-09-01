@@ -87,35 +87,116 @@
         </div>
     </div>
 
-    <!-- Weekly Menu Modal -->
+    <!-- Monthly Menu Modal -->
     <div class="modal-overlay" id="weeklyMenuModal" style="display:none;">
         <div class="modal-card modal-wide">
             <button class="modal-close" onclick="closeWeeklyMenu()">✕</button>
-            <h2 class="modal-title">Menú del Día</h2>
-            <p class="modal-subtitle">Configura los platos del menú</p>
+            <h2 class="modal-title">Menú del Mes</h2>
+            <p class="modal-subtitle">Configura la programación mensual de platos (Lunes a Viernes)</p>
 
             <div class="weekly-menu-form">
-                <div class="form-group">
-                    <h3 class="form-section-title">FECHA</h3>
-                    <input type="text" id="menuFecha" class="cell-input" placeholder="Ej. Viernes 6">
+                <!-- Meta Info: Mes y Precio -->
+                <div class="admin-meta-row">
+                    <div class="form-group">
+                        <label class="form-section-title" for="menuMes">MES</label>
+                        <input type="text" id="menuMes" class="cell-input" placeholder="Ej. Septiembre">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-section-title" for="menuPrecio">PRECIO</label>
+                        <input type="text" id="menuPrecio" class="cell-input" placeholder="13,90€">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <h3 class="form-section-title">PRIMEROS</h3>
-                    <input type="text" id="p1" class="cell-input" placeholder="Primer plato 1">
-                    <input type="text" id="p2" class="cell-input" placeholder="Primer plato 2">
-                    <input type="text" id="p3" class="cell-input" placeholder="Primer plato 3">
-                    <input type="text" id="p4" class="cell-input" placeholder="Primer plato 4">
+                    <label class="form-section-title" for="menuIncluye">INCLUYE</label>
+                    <input type="text" id="menuIncluye" class="cell-input" placeholder="Primero + Segundo + Bebida + Postre">
                 </div>
+
+                <!-- Selector de Día -->
                 <div class="form-group">
-                    <h3 class="form-section-title">SEGUNDOS</h3>
-                    <input type="text" id="s1" class="cell-input" placeholder="Segundo plato 1">
-                    <input type="text" id="s2" class="cell-input" placeholder="Segundo plato 2">
-                    <input type="text" id="s3" class="cell-input" placeholder="Segundo plato 3">
-                    <input type="text" id="s4" class="cell-input" placeholder="Segundo plato 4">
+                    <h3 class="form-section-title">SELECCIONA EL DÍA PARA EDITAR</h3>
+                    <div class="admin-day-tabs">
+                        <button type="button" class="admin-day-tab-btn active" id="adminTabBtn_1" onclick="switchAdminMenuDay(1)">Lunes</button>
+                        <button type="button" class="admin-day-tab-btn" id="adminTabBtn_2" onclick="switchAdminMenuDay(2)">Martes</button>
+                        <button type="button" class="admin-day-tab-btn" id="adminTabBtn_3" onclick="switchAdminMenuDay(3)">Miércoles</button>
+                        <button type="button" class="admin-day-tab-btn" id="adminTabBtn_4" onclick="switchAdminMenuDay(4)">Jueves</button>
+                        <button type="button" class="admin-day-tab-btn" id="adminTabBtn_5" onclick="switchAdminMenuDay(5)">Viernes</button>
+                    </div>
                 </div>
-                <div class="flex gap-4">
-                    <button class="btn btn-gold flex-1" onclick="publishWeeklyMenu()">PUBLICAR MENÚ</button>
-                    <button class="btn btn-green flex-1" onclick="downloadMenuImage()">DESCARGAR IMAGEN</button>
+
+                <!-- Formularios por Día -->
+                <!-- Lunes -->
+                <div class="admin-day-panel" id="adminDayPanel_1">
+                    <div class="form-group">
+                        <label class="form-section-title">PRIMEROS / ENTRADAS - LUNES (1 por línea)</label>
+                        <textarea id="adminEntradas_1" class="menu-textarea" rows="4" placeholder="Ceviche&#10;Aguadito&#10;Causa Limeña"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-section-title">SEGUNDOS - LUNES (1 por línea)</label>
+                        <textarea id="adminSegundos_1" class="menu-textarea" rows="4" placeholder="Arroz con pollo&#10;Lentejas c/ (dorada o filete)&#10;Cerdo con ensalada rusa&#10;¼ pollo a la brasa"></textarea>
+                    </div>
+                </div>
+
+                <!-- Martes -->
+                <div class="admin-day-panel" id="adminDayPanel_2" style="display:none;">
+                    <div class="form-group">
+                        <label class="form-section-title">PRIMEROS / ENTRADAS - MARTES (1 por línea)</label>
+                        <textarea id="adminEntradas_2" class="menu-textarea" rows="4" placeholder="Sopa wantan&#10;Wantan frito&#10;Tequeños&#10;Papa rellena"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-section-title">SEGUNDOS - MARTES (1 por línea)</label>
+                        <textarea id="adminSegundos_2" class="menu-textarea" rows="4" placeholder="Combinado de pollo&#10;Chijaukay&#10;Aeropuerto&#10;¼ pollo a la brasa"></textarea>
+                    </div>
+                </div>
+
+                <!-- Miércoles -->
+                <div class="admin-day-panel" id="adminDayPanel_3" style="display:none;">
+                    <div class="form-group" style="padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                        <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color: var(--gold-light); font-weight:bold;">
+                            <input type="checkbox" id="adminCerrado_3" checked onchange="toggleDayCerrado(3)">
+                            <span>Cerrado por descanso del personal</span>
+                        </label>
+                    </div>
+                    <div id="adminMiercolesPlatos" style="display:none;">
+                        <div class="form-group">
+                            <label class="form-section-title">PRIMEROS / ENTRADAS - MIÉRCOLES (1 por línea)</label>
+                            <textarea id="adminEntradas_3" class="menu-textarea" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-section-title">SEGUNDOS - MIÉRCOLES (1 por línea)</label>
+                            <textarea id="adminSegundos_3" class="menu-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jueves -->
+                <div class="admin-day-panel" id="adminDayPanel_4" style="display:none;">
+                    <div class="form-group">
+                        <label class="form-section-title">PRIMEROS / ENTRADAS - JUEVES (1 por línea)</label>
+                        <textarea id="adminEntradas_4" class="menu-textarea" rows="4" placeholder="Leche de tigre&#10;Anticucho&#10;Caldo de gallina"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-section-title">SEGUNDOS - JUEVES (1 por línea)</label>
+                        <textarea id="adminSegundos_4" class="menu-textarea" rows="4" placeholder="Cau cau&#10;Tallarines rojos con papa a la huancaína&#10;¼ pollo a la brasa"></textarea>
+                    </div>
+                </div>
+
+                <!-- Viernes -->
+                <div class="admin-day-panel" id="adminDayPanel_5" style="display:none;">
+                    <div class="form-group">
+                        <label class="form-section-title">PRIMEROS / ENTRADAS - VIERNES (1 por línea)</label>
+                        <textarea id="adminEntradas_5" class="menu-textarea" rows="4" placeholder="Patasca&#10;Ceviche&#10;Chicharrón de pota"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-section-title">SEGUNDOS - VIERNES (1 por línea)</label>
+                        <textarea id="adminSegundos_5" class="menu-textarea" rows="4" placeholder="Picante de carne&#10;Ají de gallina&#10;¼ pollo a la brasa&#10;Pollada"></textarea>
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
+                    <button class="btn btn-gold flex-1" onclick="publishMonthlyMenu()">💾 GUARDAR MENÚ DEL MES</button>
+                    <button class="btn btn-outline" onclick="loadDefaultTemplate()" title="Restaura la plantilla base">🔄 Plantilla</button>
+                    <button class="btn btn-green" onclick="downloadMenuImage()">📸 DESCARGAR IMAGEN</button>
                 </div>
             </div>
         </div>
